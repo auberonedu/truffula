@@ -67,7 +67,27 @@ class ColorPrinterTest {
     // Assert: Verify the printed output
     assertEquals(expectedOutput, outputStream.toString());
   }
+
   // YELLOW TEST
+  @Test
+  void testPrintlnWithYellowColorAndReset() {
+    // Arrange: Capture the printed output
+    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    PrintStream printStream = new PrintStream(outputStream);
+
+    ColorPrinter printer = new ColorPrinter(printStream);
+    printer.setCurrentColor(ConsoleColor.YELLOW);
+
+    // Act: Print the message
+    String message = "I speak because the trees";
+    printer.println(message);
+
+    String expectedOutput = ConsoleColor.YELLOW + "I speak because the trees" + System.lineSeparator()
+        + ConsoleColor.RESET;
+
+    // Assert: Verify the printed output
+    assertEquals(expectedOutput, outputStream.toString());
+  }
   // BLUE TEST
   // PURPLE TEST
   // CYAN TEST
