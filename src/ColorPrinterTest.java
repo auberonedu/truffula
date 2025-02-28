@@ -38,15 +38,35 @@ class ColorPrinterTest {
     printer.setCurrentColor(ConsoleColor.BLACK);
 
     // Act: Print the message
-    String message = "I speak for the trees";
+    String message = "I speak against the trees";
     printer.println(message);
 
-    String expectedOutput = ConsoleColor.BLACK + "I speak for the trees" + System.lineSeparator() + ConsoleColor.RESET;
+    String expectedOutput = ConsoleColor.BLACK + "I speak against the trees" + System.lineSeparator()
+        + ConsoleColor.RESET;
 
     // Assert: Verify the printed output
     assertEquals(expectedOutput, outputStream.toString());
   }
+
   // GREEN TEST
+  @Test
+  void testPrintlnWithGreenColorAndReset() {
+    // Arrange: Capture the printed output
+    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    PrintStream printStream = new PrintStream(outputStream);
+
+    ColorPrinter printer = new ColorPrinter(printStream);
+    printer.setCurrentColor(ConsoleColor.GREEN);
+
+    // Act: Print the message
+    String message = "I speak to the trees";
+    printer.println(message);
+
+    String expectedOutput = ConsoleColor.GREEN + "I speak to the trees" + System.lineSeparator() + ConsoleColor.RESET;
+
+    // Assert: Verify the printed output
+    assertEquals(expectedOutput, outputStream.toString());
+  }
   // YELLOW TEST
   // BLUE TEST
   // PURPLE TEST
