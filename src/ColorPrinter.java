@@ -86,6 +86,13 @@ public class ColorPrinter {
    * @param reset   if true, resets the color after printing; if false, keeps the current color
    */
   public void print(String message, boolean reset) {
+    // Base cases
+    if (message == null) {
+      throw new IllegalArgumentException("Message cannot be null.");
+    }
+
+    if (message.isEmpty()) return;
+    
     if (reset) {
       printStream.print(currentColor + message + ConsoleColor.RESET);
    } else {
@@ -112,5 +119,16 @@ public class ColorPrinter {
   public ColorPrinter(PrintStream printStream, ConsoleColor color) {
     this.printStream = printStream;
     this.currentColor = color;
+  }
+
+  // main method for additional testing
+  public static void main(String[] args) {
+    ColorPrinter printer = new ColorPrinter(System.out);
+
+    printer.setCurrentColor(ConsoleColor.RED);
+    printer.println("This is red text.");
+
+    String x = null;
+    printer.println(x);
   }
 }
