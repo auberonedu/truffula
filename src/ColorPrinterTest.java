@@ -88,10 +88,91 @@ class ColorPrinterTest {
     // Assert: Verify the printed output
     assertEquals(expectedOutput, outputStream.toString());
   }
+
   // BLUE TEST
+  @Test
+  void testPrintlnWithBlueColorAndReset() {
+    // Arrange: Capture the printed output
+    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    PrintStream printStream = new PrintStream(outputStream);
+
+    ColorPrinter printer = new ColorPrinter(printStream);
+    printer.setCurrentColor(ConsoleColor.BLUE);
+
+    // Act: Print the message
+    String message = "I speak because the trees";
+    printer.println(message);
+
+    String expectedOutput = ConsoleColor.BLUE + "I speak because the trees" + System.lineSeparator()
+        + ConsoleColor.RESET;
+
+    // Assert: Verify the printed output
+    assertEquals(expectedOutput, outputStream.toString());
+  }
+
   // PURPLE TEST
+  @Test
+  void testPrintlnWithPurpleColorAndReset() {
+    // Arrange: Capture the printed output
+    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    PrintStream printStream = new PrintStream(outputStream);
+
+    ColorPrinter printer = new ColorPrinter(printStream);
+    printer.setCurrentColor(ConsoleColor.PURPLE);
+
+    // Act: Print the message
+    String message = "I speak because the trees";
+    printer.println(message);
+
+    String expectedOutput = ConsoleColor.PURPLE + "I speak because the trees" + System.lineSeparator()
+        + ConsoleColor.RESET;
+
+    // Assert: Verify the printed output
+    assertEquals(expectedOutput, outputStream.toString());
+  }
+
   // CYAN TEST
+  @Test
+  void testPrintlnWithCyanColorAndReset() {
+    // Arrange: Capture the printed output
+    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    PrintStream printStream = new PrintStream(outputStream);
+
+    ColorPrinter printer = new ColorPrinter(printStream);
+    printer.setCurrentColor(ConsoleColor.CYAN);
+
+    // Act: Print the message
+    String message = "I speak because the trees";
+    printer.println(message);
+
+    String expectedOutput = ConsoleColor.CYAN + "I speak because the trees" + System.lineSeparator()
+        + ConsoleColor.RESET;
+
+    // Assert: Verify the printed output
+    assertEquals(expectedOutput, outputStream.toString());
+  }
+
   // WHITE TEST
+  @Test
+  void testPrintlnWithWhiteColorAndReset() {
+    // Arrange: Capture the printed output
+    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    PrintStream printStream = new PrintStream(outputStream);
+
+    ColorPrinter printer = new ColorPrinter(printStream);
+    printer.setCurrentColor(ConsoleColor.WHITE);
+
+    // Act: Print the message
+    String message = "I speak because the trees";
+    printer.println(message);
+
+    String expectedOutput = ConsoleColor.WHITE + "I speak because the trees" + System.lineSeparator()
+        + ConsoleColor.RESET;
+
+    // Assert: Verify the printed output
+    assertEquals(expectedOutput, outputStream.toString());
+  }
+
   @Test
   void testPrintlnWithNoReset() {
     // Arrange: Capture the printed output
@@ -103,7 +184,6 @@ class ColorPrinterTest {
     // Act: Print the message
     String message = "I speak for the trees";
     printer.println(message, false);
-
 
     String expectedOutput = ConsoleColor.WHITE + "I speak for the trees" + System.lineSeparator();
 
@@ -123,7 +203,6 @@ class ColorPrinterTest {
     String message = "I speak for the trees";
     printer.print(message, false);
 
-
     String expectedOutput = ConsoleColor.WHITE + "I speak for the trees";
 
     // Assert: Verify the printed output
@@ -142,7 +221,6 @@ class ColorPrinterTest {
     String message = "I speak for the trees";
     printer.print(message, true);
 
-
     String expectedOutput = ConsoleColor.WHITE + "I speak for the trees" + ConsoleColor.RESET;
 
     // Assert: Verify the printed output
@@ -158,13 +236,11 @@ class ColorPrinterTest {
     ColorPrinter printer = new ColorPrinter(printStream);
     printer.setCurrentColor(ConsoleColor.CYAN);
     // Act: Print the message
-    
-    
+
     printer.setCurrentColor(ConsoleColor.YELLOW);
     String message = "I speak for the trees";
     printer.println(message);
     String expectedOutput = ConsoleColor.YELLOW + "I speak for the trees" + System.lineSeparator() + ConsoleColor.RESET;
-    
 
     // Assert: Verify the printed output
     assertEquals(expectedOutput, outputStream.toString());
