@@ -71,6 +71,33 @@ class ColorPrinterTest {
     assertEquals(expectedOutput, outputStream.toString());
   }
 
+  // Test one red line, two yellow lines
+  @Test
+  void testPrintRedResetYellowNoResetYellow() {
+    // Arrange: Capture the printed output
+    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    PrintStream printStream = new PrintStream(outputStream);
+
+    ColorPrinter printer = new ColorPrinter(printStream);
+
+    // Act: Print the messages
+    printer.setCurrentColor(ConsoleColor.RED);
+    String message1 = "Apples!";
+    printer.print(message1);
+
+    printer.setCurrentColor(ConsoleColor.YELLOW);
+    String message2 = "Bananas!";
+    printer.print(message2, false);
+
+    String message3 = "Pineapples!";
+    printer.print(message3);
+
+    String expectedOutput = ConsoleColor.RED + "Apples!" + ConsoleColor.RESET + ConsoleColor.YELLOW + "Bananas!" + ConsoleColor.YELLOW + "Pineapples!" + ConsoleColor.RESET;
+
+    // Assert: Verify the printed output
+    assertEquals(expectedOutput, outputStream.toString());
+  }
+
   // Throws illegalArgumentException when null input
   @Test
   void testPrintNullInput() {
