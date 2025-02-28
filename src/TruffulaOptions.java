@@ -101,16 +101,12 @@ public class TruffulaOptions  {
    * @throws FileNotFoundException if the directory cannot be found or if the path points to a file
    */
   public TruffulaOptions(String[] args) throws IllegalArgumentException, FileNotFoundException {
-
-    // "/filefolder/files/files2/"
-
-    // if args.length == 0, illegalArgumentException
     if (args.length == 0) {
       throw new IllegalArgumentException("Missing arguments.");
     }
 
     // Set default values
-    root = new File(args[args.length - 1]);
+    root = new File(args[args.length - 1]).getParentFile();;
     boolean showHiddenToggle = false;
     boolean useColorToggle = true;
 
@@ -135,9 +131,9 @@ public class TruffulaOptions  {
     }
 
     if (showHiddenToggle) { 
-      showHidden = true;
-    } else {
       showHidden = false;
+    } else {
+      showHidden = true;
     }
 
     if (useColorToggle) { 
