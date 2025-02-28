@@ -106,16 +106,19 @@ public class TruffulaOptions  {
     }
 
     // Set default values
-    root = new File(args[args.length - 1]).getParentFile();;
+  
     boolean showHiddenToggle = false;
     boolean useColorToggle = true;
+    File path = new File(args[args.length - 1]);
 
     // if does not exist or is not directory, throw illegalArgumentException
-    if (!root.exists()) {
+    if (!path.exists()) {
       throw new FileNotFoundException("File/directory not found.");
-    } else if (!root.isDirectory()) {
+    } else if (!path.isDirectory()) {
       throw new IllegalArgumentException("File is not a directory.");
     }
+
+    root = path.getParentFile();
 
     if (args.length > 1) {
       for (int i = 0; i < args.length - 2; i++) {
