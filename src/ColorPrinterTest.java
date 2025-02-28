@@ -6,7 +6,6 @@ import java.io.PrintStream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-
 class ColorPrinterTest {
 
   @Test
@@ -49,8 +48,28 @@ class ColorPrinterTest {
     assertEquals(expectedOutput, outputStream.toString());
   }
 
-  // change colors
+  @Test
+  void testWithColorChange() {
+    // Arrange: Capture the printed output
+    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    PrintStream printStream = new PrintStream(outputStream);
 
+    ColorPrinter printer = new ColorPrinter(printStream);
+    printer.setCurrentColor(ConsoleColor.BLUE);
+
+    // Act: Print the messages
+    String message1 = "I speak for the trees";
+    printer.print(message1);
+
+    printer.setCurrentColor(ConsoleColor.GREEN);
+    String message2 = "I love Binary trees!";
+    printer.print(message2);
+
+    String expectedOutput = ConsoleColor.BLUE + "I speak for the trees" + ConsoleColor.RESET + ConsoleColor.GREEN + "I love Binary trees!" + ConsoleColor.RESET;
+
+    // Assert: Verify the printed output
+    assertEquals(expectedOutput, outputStream.toString());
+  }
 
   // Throws illegalArgumentException when null input
   @Test
