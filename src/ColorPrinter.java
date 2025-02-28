@@ -1,3 +1,4 @@
+import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
 /**
@@ -86,7 +87,7 @@ public class ColorPrinter {
    * @param reset   if true, resets the color after printing; if false, keeps the current color
    */
   public void print(String message, boolean reset) {
-    // TODO: Implement this!
+    printStream.print(currentColor+ message + ConsoleColor.RESET);
   }
 
   /**
@@ -108,5 +109,11 @@ public class ColorPrinter {
   public ColorPrinter(PrintStream printStream, ConsoleColor color) {
     this.printStream = printStream;
     this.currentColor = color;
+  }
+
+  public static void main(String[] args){
+    
+    ColorPrinter printer = new ColorPrinter(System.out, ConsoleColor.CYAN);
+    printer.println("hi");
   }
 }
