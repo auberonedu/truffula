@@ -102,9 +102,33 @@ public class TruffulaOptions  {
    */
   public TruffulaOptions(String[] args) throws IllegalArgumentException, FileNotFoundException {
     // TODO: Replace the below lines with your implementation
-    root = null;
+
+    // Set default values
+    // root = null;
     showHidden = false;
     useColor = false;
+
+    // Create File from last arg, test
+    // Note: File objects represents abstractions of files or directory paths
+    // Can retrieve metaData, create new files/directories (but not read or write data to file), delete, rename, check if exists, check properties, list files and directories within a dir
+    File dir = new File(args[args.length - 1]);
+
+    // if does not exist or is not directory, throw illegalArgumentException
+    if (!dir.exists() || !dir.isDirectory()) {
+      // TODO: throw illegalArgumentException
+    } else {
+    root = dir;
+    }
+
+    // TODO: Process any extra args
+
+    // if args length longer than 1, 
+      // for args list from 0 to length - 2
+        // if arg[i].equals("-h")
+          // showHidden = true
+        // else if arg[i].equals("-nc")
+          // useColor = true
+        // else throw illegalArgumentException
   }
 
   /**
