@@ -26,14 +26,34 @@ class ColorPrinterTest {
     // Assert: Verify the printed output
     assertEquals(expectedOutput, outputStream.toString());
   }
+
   // BLACK TEST
+  @Test
+  void testPrintlnWithBlackColorAndReset() {
+    // Arrange: Capture the printed output
+    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    PrintStream printStream = new PrintStream(outputStream);
+
+    ColorPrinter printer = new ColorPrinter(printStream);
+    printer.setCurrentColor(ConsoleColor.BLACK);
+
+    // Act: Print the message
+    String message = "I speak for the trees";
+    printer.println(message);
+
+    String expectedOutput = ConsoleColor.BLACK + "I speak for the trees" + System.lineSeparator() + ConsoleColor.RESET;
+
+    // Assert: Verify the printed output
+    assertEquals(expectedOutput, outputStream.toString());
+  }
   // GREEN TEST
   // YELLOW TEST
   // BLUE TEST
   // PURPLE TEST
   // CYAN TEST
   // WHITE TEST
-  // printlt(message) automatic reset test
+  // println(message) automatic reset test
+  // println(message) with no auto reset
   // print(message) automatic reset test
   // print(message, reset)
 }
