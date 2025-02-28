@@ -101,34 +101,51 @@ public class TruffulaOptions  {
    * @throws FileNotFoundException if the directory cannot be found or if the path points to a file
    */
   public TruffulaOptions(String[] args) throws IllegalArgumentException, FileNotFoundException {
-    // TODO: Replace the below lines with your implementation
 
-    // Set default values
-    // root = null;
-    showHidden = false;
-    useColor = false;
+    // "/filefolder/files/files2/"
 
-    // Create File from last arg, test
-    // Note: File objects represents abstractions of files or directory paths
-    // Can retrieve metaData, create new files/directories (but not read or write data to file), delete, rename, check if exists, check properties, list files and directories within a dir
-    File dir = new File(args[args.length - 1]);
-
-    // if does not exist or is not directory, throw illegalArgumentException
-    if (!dir.exists() || !dir.isDirectory()) {
-      // TODO: throw illegalArgumentException
-    } else {
-    root = dir;
+    // if args.length == 0, illegalArgumentException
+    if (args.length == 0) {
+      throw new IllegalArgumentException("Missing arguments.");
     }
 
-    // TODO: Process any extra args
+    // Set default values
+    root = new File(args[args.length - 1]);
+    boolean showHiddenToggle = false;
+    boolean useColorToggle = true;
 
-    // if args length longer than 1, 
-      // for args list from 0 to length - 2
-        // if arg[i].equals("-h")
-          // showHidden = true
-        // else if arg[i].equals("-nc")
-          // useColor = true
-        // else throw illegalArgumentException
+    // if does not exist or is not directory, throw illegalArgumentException
+    if (!root.exists()) {
+      throw new FileNotFoundException("File/directory not found.");
+    } else if (!root.isDirectory()) {
+      throw new IllegalArgumentException("File is not a directory.");
+    }
+
+    if (args.length > 1) {
+      for (int i = 0; i < args.length - 2; i++) {
+        String flag = args[i];
+        if (flag.equals("-h")) {
+          showHiddenToggle = true;
+        } else if (flag.equals("-nc")) {
+          useColorToggle = false;
+        } else {
+          throw new IllegalArgumentException("Command contains unknown/invalid flags.");
+        }
+      }
+    }
+
+    if (showHiddenToggle) { 
+      showHidden = true;
+    } else {
+      showHidden = false;
+    }
+
+    if (useColorToggle) { 
+      useColor = true;
+    } else {
+      useColor = false;
+    }
+
   }
 
   /**
