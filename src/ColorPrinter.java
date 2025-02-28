@@ -92,7 +92,7 @@ public class ColorPrinter {
     }
 
     if (message.isEmpty()) return;
-    
+
     if (reset) {
       printStream.print(currentColor + message + ConsoleColor.RESET);
    } else {
@@ -121,14 +121,40 @@ public class ColorPrinter {
     this.currentColor = color;
   }
 
-  // main method for additional testing
   public static void main(String[] args) {
     ColorPrinter printer = new ColorPrinter(System.out);
 
+    // RED color
     printer.setCurrentColor(ConsoleColor.RED);
     printer.println("This is red text.");
 
-    String x = null;
-    printer.println(x);
+    // BLACK color
+    printer.setCurrentColor(ConsoleColor.BLACK);
+    printer.println("This is black text.");
+
+    // GREEN color
+    printer.setCurrentColor(ConsoleColor.GREEN);
+    printer.println("This is green text.");
+
+    // YELLOW color
+    printer.setCurrentColor(ConsoleColor.YELLOW);
+    printer.println("This is yellow text.");
+
+    // BLUE color
+    printer.setCurrentColor(ConsoleColor.BLUE);
+    printer.println("This is blue text.");
+
+    // PURPLE color (testing the reset)
+    printer.setCurrentColor(ConsoleColor.PURPLE);
+    printer.println("This is purple text.", false);
+    printer.println("This is purple text too.");
+
+    // CYAN color
+    printer.setCurrentColor(ConsoleColor.CYAN);
+    printer.println("This is cyan text.");
+
+    // WHITE color
+    printer.setCurrentColor(ConsoleColor.WHITE);
+    printer.println("This is white text.");
   }
 }
