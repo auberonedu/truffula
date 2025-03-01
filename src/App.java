@@ -42,6 +42,20 @@ public class App {
    */
   public static void main(String[] args) throws Exception {
     // TODO: Implement this
+    try {
+      // Creating a TruffulaOptions object with the args
+      TruffulaOptions choices = new TruffulaOptions(args);
+
+      // Creating a TruffulaPrinter object by passing the choices to constructor
+      TruffulaPrinter printer = new TruffulaPrinter(choices);
+
+      // Calling printTree() on the method
+      printer.printTree();
+    } catch (Exception e) {
+      // Printing the error message 
+      System.err.println(e.getMessage());
+    }
+    
     // You should create a TruffulaOptions object using the args and
     // pass it to a new TruffulaPrinter that uses System.out
     // Then, call printTree on the TruffulaPrinter
