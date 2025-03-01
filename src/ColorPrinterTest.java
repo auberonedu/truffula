@@ -86,4 +86,43 @@ class ColorPrinterTest {
     // Assert: Verify the printed output
     assertEquals(expectedOutput, outputStream.toString());
   }
+  @Test
+  void testMultiplePrintsWithoutReset() {
+    // Arrange: Capture the printed output
+    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    PrintStream printStream = new PrintStream(outputStream);
+
+    ColorPrinter printer = new ColorPrinter(printStream);
+    printer.setCurrentColor(ConsoleColor.BLUE);
+
+    // Act: Print the message
+    printer.print("Hello", false);
+    printer.print("World", false);
+
+
+    String expectedOutput = ConsoleColor.BLUE + "Hello" + ConsoleColor.BLUE + "World";
+
+    // Assert: Verify the printed output
+    assertEquals(expectedOutput, outputStream.toString());
+  }
+  
+  @Test
+  void testMultiplePrintsWithReset() {
+    // Arrange: Capture the printed output
+    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    PrintStream printStream = new PrintStream(outputStream);
+
+    ColorPrinter printer = new ColorPrinter(printStream);
+    printer.setCurrentColor(ConsoleColor.BLUE);
+
+    // Act: Print the message
+    printer.print("Hello");
+    printer.print("World", false);
+
+
+    String expectedOutput = ConsoleColor.BLUE + "Hello" + ConsoleColor.RESET + "World";
+
+    // Assert: Verify the printed output
+    assertEquals(expectedOutput, outputStream.toString());
+  }
 }

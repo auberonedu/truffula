@@ -89,6 +89,7 @@ public class ColorPrinter {
     // TODO: Implement this!
     if(reset){
       printStream.print(currentColor + message + "\033[0m");
+      setCurrentColor(ConsoleColor.RESET);
     }else{
       printStream.print(currentColor + message);
     }
