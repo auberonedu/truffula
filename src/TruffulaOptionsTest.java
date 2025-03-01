@@ -46,15 +46,28 @@ public class TruffulaOptionsTest {
   @Test
   void testFileNotFound(@TempDir File tempDir) throws FileNotFoundException {
     // Arrange: Prepare the arguments with the temp directory
+    String randomInvalidPath = "random/nonexistent/directory/path";
+
+    // Ensure that the FileNotFoundException is thrown when passing this invalid path
+    assertThrows(FileNotFoundException.class, () -> {
+      String[] args = {randomInvalidPath};
+      new TruffulaOptions(args); 
+    });
+  }
+
+  @Test
+  void testJustColor(@TempDir File tempDir) throws FileNotFoundException {
+    // Arrange: Prepare the arguments with the temp directory
     File directory = new File(tempDir, "subfolder");
     directory.mkdir();
-    String directoryPath = "/folder/";
-    String[] args = {"-nc", "-h", "-h", directoryPath};
+    String directoryPath = directory.getAbsolutePath();
+    String[] args = {"-nc", "-nc", directoryPath};
+
+    // Act: Create TruffulaOptions instance
+    TruffulaOptions options = new TruffulaOptions(args);
 
     // Assert: Check that the root directory is set correctly
-    assertThrows(FileNotFoundException.class, () -> {
-      // Act: Create TruffulaOptions instance
-      TruffulaOptions options = new TruffulaOptions(args);
-    }, "File/directory not found.");
+    assertEquals(tempDir.getAbsolutePath(), options.getRoot().getAbsolutePath());
+    assertFalse(options.isUseColor());
   }
 }
