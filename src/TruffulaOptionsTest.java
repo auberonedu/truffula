@@ -34,7 +34,7 @@ public class TruffulaOptionsTest {
     File directory = new File(tempDir, "subfolder");
     directory.mkdir();
     String directoryPath = directory.getAbsolutePath();
-    String[] args = {"-nc", "-h", "-h", directoryPath};
+    String[] args = {"-nc", "-h", "-h", "-h", directoryPath};
 
     // Assert: Check that the root directory is set correctly
     assertThrows(IllegalArgumentException.class, () -> {
@@ -61,7 +61,7 @@ public class TruffulaOptionsTest {
     File directory = new File(tempDir, "subfolder");
     directory.mkdir();
     String directoryPath = directory.getAbsolutePath();
-    String[] args = {"-nc", "-nc", directoryPath};
+    String[] args = {"-nc", directoryPath};
 
     // Act: Create TruffulaOptions instance
     TruffulaOptions options = new TruffulaOptions(args);

@@ -107,7 +107,9 @@ public class TruffulaOptions  {
 
     // Set default values
     boolean showHiddenToggle = false;
+    boolean setHidden = false;
     boolean useColorToggle = true;
+    boolean setColor = false;
     File path = new File(args[args.length - 1]);
 
     // if does not exist or is not directory, throw illegalArgumentException
@@ -120,12 +122,20 @@ public class TruffulaOptions  {
     root = path.getParentFile();
 
     if (args.length > 1) {
-      for (int i = 0; i < args.length - 2; i++) {
+      for (int i = 0; i < args.length - 1; i++) {
         String flag = args[i];
         if (flag.equals("-h")) {
+          if (setHidden == true) {
+            throw new IllegalArgumentException("Can only set flag once.");
+          }
           showHiddenToggle = true;
+          setHidden = true;
         } else if (flag.equals("-nc")) {
+          if (setColor == true) {
+            throw new IllegalArgumentException("Can only set flag once.");
+          }
           useColorToggle = false;
+          setColor = true;
         } else {
           throw new IllegalArgumentException("Command contains unknown/invalid flags.");
         }
@@ -133,9 +143,9 @@ public class TruffulaOptions  {
     }
 
     if (showHiddenToggle) { 
-      showHidden = false;
-    } else {
       showHidden = true;
+    } else {
+      showHidden = false;
     }
 
     if (useColorToggle) { 
@@ -143,6 +153,7 @@ public class TruffulaOptions  {
     } else {
       useColor = false;
     }
+
   }
 
   /**
