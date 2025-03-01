@@ -29,7 +29,21 @@ class ColorPrinterTest {
 
   @Test
   void testPrintlnWithCyanColorAndReset() {
+    // Arrange: Capture the printed output
+    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    PrintStream printStream = new PrintStream(outputStream);
 
+    ColorPrinter printer = new ColorPrinter(printStream);
+    printer.setCurrentColor(ConsoleColor.CYAN);
+
+    // Act: Print the message
+    String message = "I speak for the trees but in CYAN color yippee";
+    printer.println(message);
+
+    String expectedOutput = ConsoleColor.CYAN + "I speak for the trees but in CYAN color yippee" + System.lineSeparator() + ConsoleColor.RESET;
+
+    // Assert: Verify the printed output
+    assertEquals(expectedOutput, outputStream.toString());
   }
   
   @Test
