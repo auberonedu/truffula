@@ -42,4 +42,19 @@ public class TruffulaOptionsTest {
       TruffulaOptions options = new TruffulaOptions(args);
     }, "Illegal Argument Exception Expected");
   }
+
+  @Test
+  void testFileNotFound(@TempDir File tempDir) throws FileNotFoundException {
+    // Arrange: Prepare the arguments with the temp directory
+    File directory = new File(tempDir, "subfolder");
+    directory.mkdir();
+    String directoryPath = "/folder/";
+    String[] args = {"-nc", "-h", "-h", directoryPath};
+
+    // Assert: Check that the root directory is set correctly
+    assertThrows(FileNotFoundException.class, () -> {
+      // Act: Create TruffulaOptions instance
+      TruffulaOptions options = new TruffulaOptions(args);
+    }, "File/directory not found.");
+  }
 }
