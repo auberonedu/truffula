@@ -26,4 +26,21 @@ class ColorPrinterTest {
     // Assert: Verify the printed output
     assertEquals(expectedOutput, outputStream.toString());
   }
+
+  @Test
+  void testPrintlnWithCyanColorAndReset() {
+
+  }
+  
+  @Test
+  void testPrintlnWithDefaultColor() {
+
+  }
+
+  @Test
+  void testPrintlnWithEmptyString() {
+
+  } 
+
+
 }
