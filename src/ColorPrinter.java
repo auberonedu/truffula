@@ -86,7 +86,11 @@ public class ColorPrinter {
    * @param reset   if true, resets the color after printing; if false, keeps the current color
    */
   public void print(String message, boolean reset) {
-    // TODO: Implement this!
+    printStream.print(message);
+
+    if (reset) {
+      printStream.print(ConsoleColor.RESET.getCode());
+    }
   }
 
   /**
@@ -115,6 +119,6 @@ public class ColorPrinter {
     ColorPrinter printer = new ColorPrinter(System.out);
     printer.setCurrentColor(ConsoleColor.RED);
     printer.println("This is red text");
-    
+
   }
 }
