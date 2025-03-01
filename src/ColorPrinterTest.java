@@ -42,5 +42,14 @@ class ColorPrinterTest {
 
   } 
 
+  @Test
+  void testPrintlnWithMultipleColors() {
+
+  }
+
+  @Test
+  void testPrintlnWithNoReset() {
+    
+  }
 
 }
