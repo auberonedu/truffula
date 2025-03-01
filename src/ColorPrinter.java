@@ -87,6 +87,11 @@ public class ColorPrinter {
    */
   public void print(String message, boolean reset) {
     // TODO: Implement this!
+    if(reset){
+      printStream.print(currentColor + message + "\033[0m");
+    }else{
+      printStream.print(currentColor + message);
+    }
   }
 
   /**
