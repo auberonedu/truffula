@@ -87,6 +87,8 @@ public class ColorPrinter {
    */
   public void print(String message, boolean reset) {
     // TODO: Implement this!
+    print(message, reset);
+
   }
 
   /**
