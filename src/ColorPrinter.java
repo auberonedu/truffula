@@ -111,4 +111,11 @@ public class ColorPrinter {
     this.printStream = printStream;
     this.currentColor = color;
   }
+
+  public static void main(String[] args) {
+
+    ColorPrinter printer = new ColorPrinter(System.out);
+    printer.setCurrentColor(ConsoleColor.RED);
+    printer.println("This is red text");
+  }
 }
