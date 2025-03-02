@@ -53,14 +53,13 @@ class ColorPrinterTest {
     PrintStream printStream = new PrintStream(outputStream);
     
     ColorPrinter printer = new ColorPrinter(printStream);
-    printer.setCurrentColor(ConsoleColor.RESET);  // This explicitly sets the color to RESET
+    printer.setCurrentColor(ConsoleColor.RESET);  
 
     // Act: Print the message
     String message = "This text is in the default color";
     printer.println(message);
 
     // Assert: Verify the printed output
-    // Since the color is RESET, the output should just be the message with no color codes
     String expectedOutput = "This text is in the default color" + System.lineSeparator() + ConsoleColor.RESET;
     assertEquals(expectedOutput, outputStream.toString());
   }
