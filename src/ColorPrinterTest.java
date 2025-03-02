@@ -48,7 +48,19 @@ class ColorPrinterTest {
   
   @Test
   void testPrintlnWithDefaultColor() {
+    // Arrange: Capture the printed output
+    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    PrintStream printStream = new PrintStream(outputStream);
+    ColorPrinter printer = new ColorPrinter(printStream);
 
+    // Act: Print the message
+    String message = "This text is in the default color";
+    printer.println(message);
+
+    String expectedOutput = "This text is in the default color" + System.lineSeparator();
+
+    // Assert: Verify the printed output
+    assertEquals(expectedOutput, outputStream.toString());
   }
 
   @Test
