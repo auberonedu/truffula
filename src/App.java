@@ -41,9 +41,12 @@ public class App {
    * Error messages will be shown for illegal arguments or a not found file
    */
   public static void main(String[] args) throws Exception {
-    // TODO: Implement this
-    // You should create a TruffulaOptions object using the args and
-    // pass it to a new TruffulaPrinter that uses System.out
+    // WAVE 3:
+    //create a TruffulaOptions object using the args
+    TruffulaOptions options = new TruffulaOptions(args);
+    //and pass it to a new TruffulaPrinter that uses System.out
+    TruffulaPrinter printer = new TruffulaPrinter(options, System.out);
     // Then, call printTree on the TruffulaPrinter
+    printer.printTree();
   }
 }
