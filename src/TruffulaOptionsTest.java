@@ -26,4 +26,32 @@ public class TruffulaOptionsTest {
     assertTrue(options.isShowHidden());
     assertFalse(options.isUseColor());
   }
+
+  @Test
+  void testValidDirectoryWithNoFlags(@TempDir File tempDir) throws FileNotFoundException {
+    // Arrange: Prepare the arguments with the temp directory and no flags
+    String directoryPath = tempDir.getAbsolutePath();
+    String[] args = {directoryPath};
+
+    // Act: Create TruffulaOptions instance
+    TruffulaOptions options = new TruffulaOptions(args);
+
+    // Assert: Check that the root directory is set and flags have default values
+    assertEquals(directoryPath, options.getRoot().getAbsolutePath());
+    assertFalse(options.isShowHidden());
+    assertTrue(options.isUseColor());
+  }
+
+  @Test
+  void testInvalidFlag(@TempDir File tempDir) {
+    // Arrange: Prepare the arguments with an invalid flag
+    String directoryPath = tempDir.getAbsolutePath();
+    String[] args = {"-invalid", directoryPath};
+
+    // Act & Assert: Check that an IllegalArgumentException is thrown
+    Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+      new TruffulaOptions(args);
+    });
+    assertEquals("Unknown flag: -invalid", exception.getMessage());
+  }
 }
