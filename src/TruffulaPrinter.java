@@ -117,7 +117,7 @@ public class TruffulaPrinter {
       return;
     }
 
-    int depth = 1;
+    int depth = 0;
   
     File[] list = root.listFiles();
     for (File file: list) {
@@ -142,9 +142,16 @@ public class TruffulaPrinter {
   // return 1 + recursion
 
   public void printTreeHelper(File root, int depth) {
-    // base case
-
+    String spaces = "   ".repeat(depth);
     // print
+    
+    File[] list = root.listFiles();
+    for (File file: list) {
+      // if is directory
+      // feed the depth into recursive helper
+      out.println(spaces + file);
+      printTreeHelper(file, depth);
+    }
     // depth
     // continue recursion
   }
