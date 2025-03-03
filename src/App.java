@@ -41,7 +41,6 @@ public class App {
    * Error messages will be shown for illegal arguments or a not found file
    */
   public static void main(String[] args) throws Exception {
-    // TODO: Implement this
     try {
       // Creating a TruffulaOptions object with the args
       TruffulaOptions choices = new TruffulaOptions(args);
@@ -52,12 +51,8 @@ public class App {
       // Calling printTree() on the method
       printer.printTree();
     } catch (Exception e) {
-      // Printing the error message 
       System.err.println(e.getMessage());
     }
-    
-    // You should create a TruffulaOptions object using the args and
-    // pass it to a new TruffulaPrinter that uses System.out
-    // Then, call printTree on the TruffulaPrinter
+  
   }
 }

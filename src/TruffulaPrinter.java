@@ -1,3 +1,4 @@
+import java.io.File;
 import java.io.PrintStream;
 import java.util.List;
 
@@ -105,6 +106,26 @@ public class TruffulaPrinter {
   public void printTree() {
     // TODO: Implement this!
     // REQUIRED: ONLY use java.io, DO NOT use java.nio
+
+    File root = options.getRoot();
+
+    // base case
+    // exists, null, is not directory
+    // .isDirectory()
+    if (!root.exists() || root == null || !root.isDirectory()) {
+      out.println("Invalid/missing directory.");
+      return;
+    }
+
+    int depth = 1;
+  
+    File[] list = root.listFiles();
+    for (File file: list) {
+      // if is directory
+      // feed the depth into recursive helper
+      printTreeHelper(file, depth);
+    }
+
     
     // Hints:
     // - Add a recursive helper method
@@ -114,5 +135,17 @@ public class TruffulaPrinter {
 
     out.println("printTree was called!");
     out.println("My options are: " + options);
+  }
+
+  // helper method takes in root and count
+  // String spaces = "   ".repeat(depth)
+  // return 1 + recursion
+
+  public void printTreeHelper(File root, int depth) {
+    // base case
+
+    // print
+    // depth
+    // continue recursion
   }
 }
