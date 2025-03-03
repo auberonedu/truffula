@@ -109,4 +109,9 @@ public class ColorPrinter {
     this.printStream = printStream;
     this.currentColor = color;
   }
+
+  public static void main(String[] args) {
+    
+    
+  }
 }
