@@ -73,8 +73,7 @@ class ColorPrinterTest {
 
   @Test
   void testPrintlnWithGreenColorAndReset() {
-
-        
+  
     // Arrange
     ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
     PrintStream printStream = new PrintStream(outputStream);
@@ -91,5 +90,27 @@ class ColorPrinterTest {
 
     // Assert: Verify the printed output
     assertEquals(expectedOutput, outputStream.toString()); 
+  }
+
+  @Test
+  void testPrintlnWithBlackColorAndReset() {
+
+    // Arrange
+    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    PrintStream printStream = new PrintStream(outputStream);
+
+    ColorPrinter printer = new ColorPrinter(printStream);
+    printer.setCurrentColor(ConsoleColor.BLACK);
+
+    // Act: Print the message
+    String message = "I speak for the kitties";
+    printer.println(message);
+
+
+    String expectedOutput = ConsoleColor.BLACK + "I speak for the kitties" + System.lineSeparator() + ConsoleColor.RESET;
+
+    // Assert: Verify the printed output
+    assertEquals(expectedOutput, outputStream.toString());
+
   }
 }
