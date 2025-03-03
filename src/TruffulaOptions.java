@@ -129,7 +129,8 @@ public class TruffulaOptions  {
 
     // Checks if last argument is a path
     String path = args[args.length - 1];
-    root = new File(path);
+    root = new File(path); // root = new File(path).getParentFile();
+    root.getParentFile(); //testcase 2
 
     // Check if the path exists and is a directory
     if (!root.exists()) {
