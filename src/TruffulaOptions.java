@@ -103,37 +103,40 @@ public class TruffulaOptions  {
   public TruffulaOptions(String[] args) throws IllegalArgumentException, FileNotFoundException {
     // TODO: Replace the below lines with your implementation
     //look over this part again might need to fix this part again
-    if (args.length == 0){
-      throw new IllegalArgumentException("No argument provided.");
+    if (args == null || args.length == 0){
+      throw new IllegalArgumentException("No argument provided. A path is required.");
     }
+
+    boolean showHidden = false;
+    boolean useColor = true;
+    File rootDir = null;
+
+    // parses the flags
+    for (int i = 0; i < args.length - 1; i++) {
+      String arg = args[i];
+
+      if (arg.equals("-h")) {
+        showHidden = true;
+      } else if (arg.equals("-nc")) {
+        useColor = false;
+      } else if (arg.startsWith("-")) {
+        throw new IllegalArgumentException("Unknown argument: " + arg);
+      }
+    }  
 
     String path = args[args.length - 1];
-    File rootDir = new File(path);
+    rootDir = new File(path);
+
     if (!rootDir.exists()){
-      throw new FileNotFoundException("Directory not found: " + path);
+      throw new FileNotFoundException("Directory not found: " + rootDir.getAbsolutePath());
     }
     if (!rootDir.isDirectory()){
-      throw new FileNotFoundException("Provided path is not a directory: " + path);
+      throw new FileNotFoundException("Provided path is not a directory: " + rootDir.getAbsolutePath());
     }
-    
-
-    boolean rootDirShowHidden = false;
-    boolean rootDirUseColor = true;
-
-    for (String arg : args){
-      if (arg.equals("-h")){
-        rootDirShowHidden = true;
-      } else if (arg.equals("-nc")) {
-        rootDirUseColor = false;
-      } else if (!arg.startsWith("-")){
-        continue;
-      } else {
-        throw new IllegalArgumentException("Unknown argument" + arg);
-      }
-    }
+    // parsed values to its instance variables
     this.root = rootDir;
-    this.showHidden = rootDirShowHidden;
-    this.useColor = rootDirUseColor;
+    this.showHidden = showHidden;
+    this.useColor = useColor;
   }
 
   /**
