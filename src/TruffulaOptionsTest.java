@@ -64,16 +64,16 @@ public class TruffulaOptionsTest {
     //THIS FINAL TEST IS NOT PASSING CURRENTLY PLEASE CHECK OUT
     
     //default behavior with only a valid directory (should enable color and hide hidden files)
-    // @Test
-    // void testDefaultBehavior(@TempDir File tempDir) throws FileNotFoundException {
-    //     // Arrange
-    //     String[] args = {tempDir.getAbsolutePath()};
+    @Test
+    void testDefaultBehavior(@TempDir File tempDir) throws FileNotFoundException {
+        // Arrange
+        String[] args = {tempDir.getAbsolutePath()};
 
-    //     // Act
-    //     TruffulaOptions options = new TruffulaOptions(args);
+        // Act
+        TruffulaOptions options = new TruffulaOptions(args);
 
-    //     // Assert
-    //     assertEquals(tempDir.getAbsolutePath(), options.getRoot().getAbsolutePath());
-    //     assertFalse(options.isShowHidden()); // Default is to NOT show hidden files
-    // }
+        // Assert
+        assertEquals(args, options.getRoot());
+        assertFalse(options.isShowHidden()); // Default is to NOT show hidden files
+    }
 }
