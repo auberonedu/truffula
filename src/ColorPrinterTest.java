@@ -29,6 +29,22 @@ class ColorPrinterTest {
 
   @Test
   void testPrintlnWithDefaultColor(){
+    // Arrange: Capture the printed output
+    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    PrintStream printStream = new PrintStream(outputStream);
+
+    ColorPrinter printer = new ColorPrinter(printStream);
+
+    printer.setCurrentColor(ConsoleColor.RESET);
+
+    // Act: Print the message
+    String message = "Testing Default Color";
+    printer.println(message);
+
+    String expectedOutput = "Testing Default Color" + System.lineSeparator() + ConsoleColor.RESET;
+
+    // Assert: Verify the printed output
+    assertEquals(expectedOutput, outputStream.toString());
 
   }
 
