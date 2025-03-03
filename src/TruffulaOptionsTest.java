@@ -26,4 +26,56 @@ public class TruffulaOptionsTest {
     assertTrue(options.isShowHidden());
     assertFalse(options.isUseColor());
   }
+
+  // Additional Tests
+
+  @Test
+  void testValidDirectoryIsSetWithColor(@TempDir File tempDir) throws FileNotFoundException {
+
+    // Arrange
+    File directory = new File(tempDir, "subfolder");
+    directory.mkdir();
+    String directoryPath = directory.getAbsolutePath();
+    String[] args = {"-h", directoryPath};
+
+    // Act
+    TruffulaOptions options = new TruffulaOptions(args);
+
+    // Assert
+    assertEquals(tempDir.getAbsolutePath(), options.getRoot().getAbsolutePath());
+    assertTrue(options.isShowHidden());
+    assertFalse(options.isUseColor());
+  }
+
+  @Test
+  void testValidDirectoryIsSetWithHiddenFoldersAndColor(@TempDir File tempDir) throws FileNotFoundException {
+
+    // Arrange
+    File directory = new File(tempDir, "subfolder");
+    directory.mkdir();
+    String directoryPath = directory.getAbsolutePath();
+    String[] args = {directoryPath};
+
+    // Act
+    TruffulaOptions options = new TruffulaOptions(args);
+
+    // Assert
+    assertEquals(tempDir.getAbsolutePath(), options.getRoot().getAbsolutePath());
+    assertTrue(options.isShowHidden());
+    assertFalse(options.isUseColor());
+  }
+
+  @Test
+  void testInvalidDirectory() {
+
+    
+
+  }
+
+  @Test
+  void testPathArgumentMissing() {
+
+
+
+  }
 }
