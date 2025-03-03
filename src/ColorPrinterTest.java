@@ -125,4 +125,22 @@ class ColorPrinterTest {
     // Assert: Verify the printed output
     assertEquals(expectedOutput, outputStream.toString());
   }
+
+  @Test
+
+  void testResetSetTrue(){
+    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    PrintStream printStream = new PrintStream(outputStream);
+
+    ColorPrinter printer = new ColorPrinter(printStream);
+    printer.setCurrentColor(ConsoleColor.BLUE);
+
+    //act
+    printer.print("Mr. Onceler you are killing the forrest", true);
+    printer.println(" with your greed");
+
+    String expectedOutput1 = ConsoleColor.BLUE +  "Mr. Onceler you are killing the forrest" + ConsoleColor.RESET +  " with your greed" + System.lineSeparator();
+    assertEquals(expectedOutput1, outputStream.toString());
+    
+  }
 }

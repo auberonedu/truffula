@@ -1,3 +1,4 @@
+import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
 /**
@@ -27,6 +28,36 @@ public class ColorPrinter {
    * The PrintStream to which the colored output will be written.
    */
   private final PrintStream printStream;
+
+  public static void main(String[] args) {
+
+    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    PrintStream printStream = new PrintStream(outputStream);
+    ColorPrinter printer = new ColorPrinter(printStream);
+    //ColorPrinter printer = new ColorPrinter(System.out);
+
+    // Test printing in different colors
+    printer.setCurrentColor(ConsoleColor.RED);
+    printer.println("This is a red message.");
+    printer.println("color should have reset on newline");
+
+    printer.setCurrentColor(ConsoleColor.GREEN);
+    printer.println("This is a green message.");
+
+    printer.println("color reset on reset newline");
+
+    printer.setCurrentColor(ConsoleColor.YELLOW);
+    printer.println("This is a yellow message.", false); 
+
+    printer.print
+    ("still yellow no new line after ");
+
+    printer.setCurrentColor(ConsoleColor.BLUE);
+    printer.print("color reset on newline");
+    printer.print("color reset not on newline");
+
+    System.out.println(outputStream);
+  }
 
   /**
    * Returns the current color set for the printer.
@@ -87,12 +118,11 @@ public class ColorPrinter {
    */
   public void print(String message, boolean reset) {
     // TODO: Implement this!
-    if(reset){
-      printStream.print(currentColor + message + "\033[0m");
-      setCurrentColor(ConsoleColor.RESET);
-    }else{
       printStream.print(currentColor + message);
-    }
+    
+      if(reset){
+        setCurrentColor(ConsoleColor.RESET);
+      }
   }
 
   /**
