@@ -16,6 +16,7 @@ public class TruffulaOptionsTest {
     // Arrange: Prepare the arguments with the temp directory
     File directory = new File(tempDir, "subfolder");
     directory.mkdir();
+    //tempDir/subfolder
     String directoryPath = directory.getAbsolutePath();
     String[] args = {"-nc", "-h", directoryPath};
 
@@ -23,7 +24,7 @@ public class TruffulaOptionsTest {
     TruffulaOptions options = new TruffulaOptions(args);
 
     // Assert: Check that the root directory is set correctly
-    assertEquals(tempDir.getAbsolutePath(), options.getRoot().getAbsolutePath());
+    assertEquals(directory.getAbsolutePath(), options.getRoot().getAbsolutePath());
     assertTrue(options.isShowHidden());
     assertFalse(options.isUseColor());
   }
