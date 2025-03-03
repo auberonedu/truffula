@@ -139,6 +139,9 @@ public class TruffulaOptions  {
         throw new FileNotFoundException("The path is not a directory: " + path);
     }
 
+    // Use parent directory, which would be the base directory as the root file
+    root = root.getParentFile();
+
     // Parsed values assigned to its instance variables
     this.root = root;
     this.showHidden = showHidden;
