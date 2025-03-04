@@ -117,16 +117,6 @@ public class TruffulaPrinter {
     out.println(root.getName() + "/");
   
     File[] listOfFiles = root.listFiles();
-    // out.println("Number of files: " + String.valueOf(listOfFiles.length));
-    // for (File file: listOfFiles) {
-    //   if (file.isDirectory()) {
-    //     out.println(file.getName() + "/");
-    //     printTreeHelper(file, depth);
-    //   } else {
-    //     out.println(file.getName());
-    //   }
-    // }
-
 
     for (File file: listOfFiles) {
         printTreeHelper(file, depth);
@@ -155,7 +145,6 @@ public class TruffulaPrinter {
     }
 
     String spaces = spacesString.toString();
-    // out.print(spaces);
 
     // if file is not a directoy, print spaces + file
     if (!root.isDirectory()) {
