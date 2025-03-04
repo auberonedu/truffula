@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -55,5 +56,33 @@ public class TruffulaOptionsTest {
       new TruffulaOptions(args);
     });
     assertEquals("Unknown flag: -invalid", exception.getMessage());
+  }
+
+  @Test
+  void testPathFile(@TempDir File tempDir) throws IOException {
+      // Arrange: Create a file (not a directory) in the temp directory
+      File file = new File(tempDir, "testfile.txt");
+      file.createNewFile();
+      String filePath = file.getAbsolutePath();
+      String[] args = {filePath};
+  
+      // Act & Assert: Check that a FileNotFoundException is thrown
+      Exception exception = assertThrows(FileNotFoundException.class, () -> {
+          new TruffulaOptions(args);
+      });
+      assertEquals("The path is not a directory: " + filePath, exception.getMessage());
+  }
+
+  @Test
+  void testPathDoesNotExist() {
+    // Arrange: Prepare the arguments with a path that does not exist
+    String noPath = "/this/path/does/not/exist";
+    String[] args = {noPath};
+
+    // Act & Assert: Check that a FileNotFoundException is thrown
+    Exception exception = assertThrows(FileNotFoundException.class, () -> {
+        new TruffulaOptions(args);
+    });
+    assertEquals("The directory does not exist: " + noPath, exception.getMessage());
   }
 }
