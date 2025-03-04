@@ -123,13 +123,11 @@ public class ColorPrinter {
    */
   public void print(String message, boolean reset) {
     // TODO: Implement this!
-    
     printStream.print(currentColor + message);
-
+    
     if(reset){
       setCurrentColor(ConsoleColor.RESET);
       }
-      
   }
 
   /**
