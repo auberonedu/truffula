@@ -112,7 +112,14 @@ public class TruffulaPrinter {
     // DO NOT USE SYSTEM.OUT.PRINTLN
     // USE out.println instead (will use your ColorPrinter)
 
+    printTreeMethodHelper();
+
+
     out.println("printTree was called!");
     out.println("My options are: " + options);
+  }
+
+  public static void printTreeMethodHelper() {
+    
   }
 }
