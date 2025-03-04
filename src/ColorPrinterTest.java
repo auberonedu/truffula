@@ -1,3 +1,4 @@
+import java.awt.print.PrinterAbortException;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
@@ -71,7 +72,20 @@ class ColorPrinterTest {
 
   @Test
   void testPrintlnWithMultipleColors(){
+    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    PrintStream printStream = new PrintStream(outputStream);
+
+    ColorPrinter printer = new ColorPrinter(printStream);
+
+    //Act: Printing the colored messages
+    printer.setCurrentColor(ConsoleColor.GREEN);
+    printer.println("Green tall grass");
+
+    String expectedOutput = ConsoleColor.GREEN + "Green tall grass" + System.lineSeparator() + ConsoleColor.RESET +
+    ConsoleColor.YELLOW + "Burning Yellow sun" + System.lineSeparator() + ConsoleColor.RESET;
     
+    // Assert verify the printed output
+    assertEquals(expectedOutput, outputStream.toString());
   }
 
   @Test
