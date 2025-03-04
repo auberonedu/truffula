@@ -117,6 +117,7 @@ public class TruffulaPrinter {
     // If root is hidden, showHidden off, return error
     if (showHidden == false && root.isHidden()) {
       out.println("Root is hidden.");
+      // throw exception illegalargument
       return;
     }
 
@@ -162,11 +163,13 @@ public class TruffulaPrinter {
     String spaces = spacesString.toString();
 
     // if file is not a directory, print spaces + file
-    if (!root.isDirectory()) {
-      out.println(spaces + root.getName());
-      return depth;
-    } else {
-      out.println(spaces + root.getName() + "/");
+    if (!(showHidden == false && root.isHidden())) {
+      if (!root.isDirectory()) {
+        out.println(spaces + root.getName());
+        return depth;
+      } else {
+        out.println(spaces + root.getName() + "/");
+      }
     }
 
     File[] list = root.listFiles();
