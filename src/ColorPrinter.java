@@ -88,7 +88,7 @@ public class ColorPrinter {
   public void print(String message, boolean reset) {
     // TODO: Implement this!
 
-    // sudo code? -augy
+    // pseudo code? -augy
     // printStream.append(currentColor + message);
     // if (reset)
       // currentColor = ConsoleColor.RESET
