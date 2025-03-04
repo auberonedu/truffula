@@ -29,6 +29,7 @@ public class ColorPrinter {
    */
   private final PrintStream printStream;
 
+  // main args recommended in part one everythign is working fine not sure why teste breaks
   public static void main(String[] args) {
 
     ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -44,7 +45,7 @@ public class ColorPrinter {
     printer.setCurrentColor(ConsoleColor.GREEN);
     printer.println("This is a green message.");
 
-    printer.println("color reset on reset newline");
+    printer.println("color reset on  newline");
 
     printer.setCurrentColor(ConsoleColor.YELLOW);
     printer.println("This is a yellow message.", false); 
@@ -52,7 +53,7 @@ public class ColorPrinter {
     printer.print
     ("still yellow no new line after ",true);
 
-    printer.println ("color reset");
+    printer.println ("color reset on sameline");
 
     printer.setCurrentColor(ConsoleColor.BLUE);
     printer.print("This is a blue message on a newline");
