@@ -119,7 +119,7 @@ public class TruffulaOptions  {
       throw new IllegalArgumentException("File is not a directory.");
     }
 
-    root = path.getParentFile();
+    root = path;
 
     if (args.length > 1) {
       for (int i = 0; i < args.length - 1; i++) {

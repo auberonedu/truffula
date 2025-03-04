@@ -109,21 +109,31 @@ public class TruffulaPrinter {
 
     File root = options.getRoot();
 
+    // out.println(root.getAbsolutePath());
+
     // base case
     // exists, null, is not directory
     // .isDirectory()
-    if (!root.exists() || root == null || !root.isDirectory()) {
+    if (root == null || !root.isDirectory()) {
       out.println("Invalid/missing directory.");
       return;
     }
 
     int depth = 0;
   
-    File[] list = root.listFiles();
-    for (File file: list) {
+    File[] listOfFiles = root.listFiles();
+    // out.println("Number of files: " + String.valueOf(listOfFiles.length));
+    for (File file: listOfFiles) {
       // if is directory
       // feed the depth into recursive helper
-      printTreeHelper(file, depth);
+      // out.print(file.getName());
+      // out.println(file.getName());
+      if (file.isDirectory()) {
+        out.println(file.getName() + "/");
+        printTreeHelper(file, depth);
+      } else {
+        out.println(file.getName());
+      }
     }
 
     
@@ -141,17 +151,28 @@ public class TruffulaPrinter {
   // String spaces = "   ".repeat(depth)
   // return 1 + recursion
 
-  public void printTreeHelper(File root, int depth) {
-    String spaces = "   ".repeat(depth);
+  public int printTreeHelper(File root, int depth) {
+    // String spaces = "   ".repeat();
     // print
+    depth++;
     
     File[] list = root.listFiles();
     for (File file: list) {
       // if is directory
       // feed the depth into recursive helper
-      out.println(spaces + file);
-      printTreeHelper(file, depth);
+      for (int i = 0; i < depth; i++) {
+        out.print("   ");
+      }
+      
+      if (file.isDirectory()) {
+        out.println(file.getName() + "/");
+        return depth + printTreeHelper(file, depth);
+      } else {
+        out.println(file.getName());
+      }
     }
+
+    return 0;
     // depth
     // continue recursion
   }
