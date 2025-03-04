@@ -104,16 +104,10 @@ public class TruffulaPrinter {
    *    zebra.txt
    */
   public void printTree() {
-    // TODO: Implement this!
     // REQUIRED: ONLY use java.io, DO NOT use java.nio
-
     File root = options.getRoot();
 
-    // out.println(root.getAbsolutePath());
-
-    // base case
-    // exists, null, is not directory
-    // .isDirectory()
+    // base cases 
     if (root == null || !root.isDirectory()) {
       out.println("Invalid/missing directory.");
       return;
@@ -124,10 +118,6 @@ public class TruffulaPrinter {
     File[] listOfFiles = root.listFiles();
     // out.println("Number of files: " + String.valueOf(listOfFiles.length));
     for (File file: listOfFiles) {
-      // if is directory
-      // feed the depth into recursive helper
-      // out.print(file.getName());
-      // out.println(file.getName());
       if (file.isDirectory()) {
         out.println(file.getName() + "/");
         printTreeHelper(file, depth);
@@ -136,9 +126,7 @@ public class TruffulaPrinter {
       }
     }
 
-    
     // Hints:
-    // - Add a recursive helper method
     // - For Wave 6: Use AlphabeticalFileSorter
     // DO NOT USE SYSTEM.OUT.PRINTLN
     // USE out.println instead (will use your ColorPrinter)
@@ -147,13 +135,9 @@ public class TruffulaPrinter {
     out.println("My options are: " + options);
   }
 
-  // helper method takes in root and count
-  // String spaces = "   ".repeat(depth)
-  // return 1 + recursion
-
+  // private helper to add indentation to the files structure   
   public int printTreeHelper(File root, int depth) {
-    // String spaces = "   ".repeat();
-    // print
+    // incrementing the depth 
     depth++;
     
     File[] list = root.listFiles();
@@ -172,8 +156,6 @@ public class TruffulaPrinter {
       }
     }
 
-    return 0;
-    // depth
-    // continue recursion
+    return depth;
   }
 }

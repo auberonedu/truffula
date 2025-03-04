@@ -101,4 +101,85 @@ public class TruffulaPrinterTest {
         // Assert that the output matches the expected output exactly
         assertEquals(expected.toString(), output);
     }
+
+    @Test
+    public void testNoOrderColor(@TempDir File tempDir) throws IOException {
+        // Build the example directory structure:
+        // myFolder/
+        //    .hidden.txt
+        //    Apple.txt
+        //    banana.txt
+        //    Documents/
+        //       images/
+        //          Cat.png
+        //          cat.png
+        //          Dog.png
+        //       notes.txt
+        //       README.md
+        //    zebra.txt
+
+        // Create "myFolder"
+        File myFolder = new File(tempDir, "myFolder");
+        assertTrue(myFolder.mkdir(), "myFolder should be created");
+
+        // Create visible files in myFolder
+        File apple = new File(myFolder, "Apple.txt");
+        File banana = new File(myFolder, "banana.txt");
+        File zebra = new File(myFolder, "zebra.txt");
+        apple.createNewFile();
+        banana.createNewFile();
+        zebra.createNewFile();
+
+        // Create subdirectory "Documents" in myFolder
+        File documents = new File(myFolder, "Documents");
+        assertTrue(documents.mkdir(), "Documents directory should be created");
+
+        // Create files in Documents
+        File readme = new File(documents, "README.md");
+        File notes = new File(documents, "notes.txt");
+        readme.createNewFile();
+        notes.createNewFile();
+
+        // Create subdirectory "images" in Documents
+        File images = new File(documents, "images");
+        assertTrue(images.mkdir(), "images directory should be created");
+
+        // Create files in images
+        File cat = new File(images, "cat.png");
+        File dog = new File(images, "Dog.png");
+        cat.createNewFile();
+        dog.createNewFile();
+
+        // Set up TruffulaOptions with showHidden = false and useColor = false
+        TruffulaOptions options = new TruffulaOptions(myFolder, false, false);
+
+        // Capture output using a custom PrintStream
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(baos);
+
+        // Instantiate TruffulaPrinter with custom PrintStream
+        TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
+
+        // Call printTree (output goes to printStream)
+        printer.printTree();
+
+        // Retrieve printed output
+        String output = baos.toString();
+        String nl = System.lineSeparator();
+
+        StringBuilder expected = new StringBuilder();
+        expected.append("myFolder/").append(nl);
+        expected.append("   Apple.txt").append(nl);
+        expected.append("   banana.txt").append(nl);
+        expected.append("   Documents/").append(nl);
+        expected.append("      images/").append(nl);
+        expected.append("         cat.png").append(nl);
+        expected.append("         Dog.png").append(nl);
+        expected.append("      notes.txt").append(nl);
+        expected.append("      README.md").append(nl);
+        expected.append("   zebra.txt").append(nl);
+
+        // Assert that the output matches the expected output exactly
+        assertEquals(expected.toString(), output);
+    }
 }
