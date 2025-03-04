@@ -54,10 +54,8 @@ public class TruffulaOptionsTest {
     String directoryPath = directory.getAbsolutePath();
     String[] args = {"-hm", "-y",directoryPath};
 
-    // Act:
-    TruffulaOptions options = new TruffulaOptions(args);
-
     // Assert:
+    assertThrows(IllegalArgumentException.class, () -> new TruffulaOptions(args) );
   }
 
   // Checks for Illegal Argument if path argument is missing
@@ -74,10 +72,13 @@ public class TruffulaOptionsTest {
   @Test
   void testNonexistentDirectory(@TempDir File tempDir) throws FileNotFoundException {
     // Arrange:
+    File directory = new File(tempDir, "subfolder");
 
-    // Act:
+    String directoryPath = directory.getAbsolutePath();
+    String[] args = {"-hm", "-y",directoryPath};
 
     // Assert:
+    assertThrows(IllegalArgumentException.class, () -> new TruffulaOptions(args) );
   }
 
   // Checks for File Not found if path points to a file instead of directory
