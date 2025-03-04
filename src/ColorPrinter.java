@@ -50,11 +50,15 @@ public class ColorPrinter {
     printer.println("This is a yellow message.", false); 
 
     printer.print
-    ("still yellow no new line after ");
+    ("still yellow no new line after ",true);
+
+    printer.println ("color reset");
 
     printer.setCurrentColor(ConsoleColor.BLUE);
-    printer.print("color reset on newline");
-    printer.print("color reset not on newline");
+    printer.print("This is a blue message on a newline");
+    printer.print(" color reset not on newline");
+
+  
 
     System.out.println(outputStream);
   }
@@ -118,10 +122,10 @@ public class ColorPrinter {
    */
   public void print(String message, boolean reset) {
     // TODO: Implement this!
-      printStream.print(currentColor + message);
+    printStream.print(currentColor + message);
     
-      if(reset){
-        setCurrentColor(ConsoleColor.RESET);
+    if(reset){
+      setCurrentColor(ConsoleColor.RESET);
       }
   }
 
