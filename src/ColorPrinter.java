@@ -87,6 +87,12 @@ public class ColorPrinter {
    */
   public void print(String message, boolean reset) {
     // TODO: Implement this!
+    printStream.print(currentColor.getCode() + message);
+
+    if (reset) {
+      printStream.print(ConsoleColor.RESET.getCode());
+    }
+    
   }
 
   /**
@@ -109,4 +115,17 @@ public class ColorPrinter {
     this.printStream = printStream;
     this.currentColor = color;
   }
+
+  public static void main(String[] args) {
+    ColorPrinter printer = new ColorPrinter(System.out);
+    printer.setCurrentColor(ConsoleColor.CYAN);
+
+    String message = "I speak for the trees";
+    printer.println(message);
+
+    printer.setCurrentColor(ConsoleColor.RESET);
+    printer.println(message);
+
+  }
+
 }
