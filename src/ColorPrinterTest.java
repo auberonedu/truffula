@@ -124,9 +124,8 @@ class ColorPrinterTest {
     String message = "Grapes are always purple";
     printer.println(message, false);
 
-    String expectedOutput = ConsoleColor.PURPLE + "Grapes are always purple" + System.lineSeparator();
-
     // Assert: Verify the printed output
+    String expectedOutput = ConsoleColor.PURPLE + "Grapes are always purple" + System.lineSeparator();
     assertEquals(expectedOutput, outputStream.toString());
   }
 }

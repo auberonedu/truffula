@@ -101,8 +101,7 @@ public class TruffulaOptions  {
    * @throws FileNotFoundException if the directory cannot be found or if the path points to a file
    */
   public TruffulaOptions(String[] args) throws IllegalArgumentException, FileNotFoundException {
-    // TODO: Replace the below lines with your implementation
-    //look over this part again might need to fix this part again
+    // DONE: Replace the below lines with your implementation
     if (args == null || args.length == 0){
       throw new IllegalArgumentException("No argument provided. A path is required.");
     }
