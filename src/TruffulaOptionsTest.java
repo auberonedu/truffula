@@ -26,4 +26,53 @@ public class TruffulaOptionsTest {
     assertTrue(options.isShowHidden());
     assertFalse(options.isUseColor());
   }
+      // Checks if color and hidden file isn't set
+      @Test
+      void testValidFlagsAreSet(@TempDir File tempDir) throws FileNotFoundException {
+        // Arrange:
+    
+        // Act:
+    
+        // Assert:
+      }
+    
+      // Checks for Illegal Argument if unknown flags are provided
+      @Test
+      void testForUnkownFlags(@TempDir File tempDir) throws FileNotFoundException {
+        // Arrange:
+    
+        // Act:
+    
+        // Assert:
+      }
+    
+      // Checks for Illegal Argument if path argument is missing
+      @Test
+      void testForMissingPathArgument(@TempDir File tempDir) throws FileNotFoundException {
+        // Arrange:
+    
+        // Act:
+    
+        // Assert:
+      }
+    
+     // Checks for File Not Found if specified directory doesn't exist
+     @Test
+      void testNonexistentDirectory(@TempDir File tempDir) throws FileNotFoundException {
+        // Arrange:
+    
+        // Act:
+    
+        // Assert:
+      }
+    
+     // Checks for File Not found if path points to a file instead of directory
+     @Test
+      void testsForAFile(@TempDir File tempDir) throws FileNotFoundException {
+        // Arrange:
+    
+        // Act:
+    
+        // Assert:
+      }
 }
