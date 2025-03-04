@@ -109,13 +109,44 @@ public class TruffulaOptions {
   public TruffulaOptions(String[] args) throws IllegalArgumentException, FileNotFoundException {
     // TODO: Replace the below lines with your implementation
     root = null;
-    showHidden = false;
-    useColor = false;
     // Set up error edge cases
+    int argLength = args.length;
+    if (argLength == 0 || argLength > 3){
+      throw new IllegalArgumentException("Incorrect number of arguments");
+    }
     // Check the length of the recieved array
-    // If length is one, we only recieve a path
-    // If length is 2 or more check for flags (indexes 0 and 1)
-    // If length is greater than 3 throw IllegalAguementException
+    switch (argLength) {
+      case 1:
+      showHidden = false;
+      useColor = true;
+      // If length is one, we only recieve a path
+      break;
+      case 2:
+      // check for flags (index 0)
+      if (args[0].equals("-h")){
+        showHidden = true;
+        useColor = true;
+      } else if (args[0].equals("-nc")){
+        useColor = false;
+        showHidden = false;
+      } else {
+        throw new IllegalArgumentException("Cannot recognize flag: " + args[0]);
+      }
+      // deal with path
+      break;
+      case 3:
+      // if flags are input correctly (no double flags) (order does not matter)
+      if ((args[0].equals("-h") && args[1].equals("-nc")) 
+      || args[1].equals("-h") && args[0].equals("-nc")){
+        showHidden = true;
+        useColor = false;
+      } else {
+        throw new IllegalArgumentException("Invalid flags");
+      }
+      // deal with path
+      break;
+    }
+
   }
 
   /**
