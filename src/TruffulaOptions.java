@@ -108,43 +108,53 @@ public class TruffulaOptions {
    */
   public TruffulaOptions(String[] args) throws IllegalArgumentException, FileNotFoundException {
     // TODO: Replace the below lines with your implementation
-    root = null;
     // Set up error edge cases
     int argLength = args.length;
-    if (argLength == 0 || argLength > 3){
+    if (argLength == 0 || argLength > 3) {
       throw new IllegalArgumentException("Incorrect number of arguments");
     }
+
+    // Initialize a String variable to hold the path
+    File filePath = new File(args[args.length - 1]);
+    if (!filePath.exists()) {
+      throw new FileNotFoundException("File not found or does not exist");
+    } else if (filePath.isDirectory()) {
+      throw new FileNotFoundException("Path does not leed directory");
+    } else {
+      root = filePath;
+    }
+
     // Check the length of the recieved array
     switch (argLength) {
       case 1:
-      showHidden = false;
-      useColor = true;
-      // If length is one, we only recieve a path
-      break;
-      case 2:
-      // check for flags (index 0)
-      if (args[0].equals("-h")){
-        showHidden = true;
-        useColor = true;
-      } else if (args[0].equals("-nc")){
-        useColor = false;
         showHidden = false;
-      } else {
-        throw new IllegalArgumentException("Cannot recognize flag: " + args[0]);
-      }
-      // deal with path
-      break;
+        useColor = true;
+        // If length is one, we only recieve a path
+        break;
+      case 2:
+        // check for flags (index 0)
+        if (args[0].equals("-h")) {
+          showHidden = true;
+          useColor = true;
+        } else if (args[0].equals("-nc")) {
+          useColor = false;
+          showHidden = false;
+        } else {
+          throw new IllegalArgumentException("Cannot recognize flag: " + args[0]);
+        }
+        // deal with path
+        break;
       case 3:
-      // if flags are input correctly (no double flags) (order does not matter)
-      if ((args[0].equals("-h") && args[1].equals("-nc")) 
-      || args[1].equals("-h") && args[0].equals("-nc")){
-        showHidden = true;
-        useColor = false;
-      } else {
-        throw new IllegalArgumentException("Invalid flags");
-      }
-      // deal with path
-      break;
+        // if flags are input correctly (no double flags) (order does not matter)
+        if ((args[0].equals("-h") && args[1].equals("-nc"))
+            || args[1].equals("-h") && args[0].equals("-nc")) {
+          showHidden = true;
+          useColor = false;
+        } else {
+          throw new IllegalArgumentException("Invalid flags");
+        }
+        // deal with path
+        break;
     }
 
   }
