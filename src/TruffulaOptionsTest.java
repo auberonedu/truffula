@@ -16,7 +16,7 @@ public class TruffulaOptionsTest {
     File directory = new File(tempDir, "subfolder");
     directory.mkdir();
     String directoryPath = directory.getAbsolutePath();
-    String[] args = {"-nc", "-h", directoryPath};
+    String[] args = { "-nc", "-h", directoryPath };
 
     // Act: Create TruffulaOptions instance
     TruffulaOptions options = new TruffulaOptions(args);
@@ -33,7 +33,7 @@ public class TruffulaOptionsTest {
     File directory = new File(tempDir, "subfolder");
     directory.mkdir();
     String directoryPath = directory.getAbsolutePath();
-    String[] args = {directoryPath};
+    String[] args = { directoryPath };
 
     // Act: Create TruffulaOptions instance
     TruffulaOptions options = new TruffulaOptions(args);
@@ -43,4 +43,7 @@ public class TruffulaOptionsTest {
     assertFalse(options.isShowHidden());
     assertTrue(options.isUseColor());
   }
+
+  // Test that FileNotFoundException is thrown correctly
+  // Test that IllegalArgumentException is thrown correctly
 }
