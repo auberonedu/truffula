@@ -108,13 +108,23 @@ public class TruffulaOptions  {
     for (int i = 0; i < args.length; i++){
       boolean pathFound = false;
 
-      // if startsWith "-" pathFound = false
-        // if -nc
+      String currentString = args[i];
 
-        // if -h
-
-        // else 
-          // throw exception
+      if (currentString.startsWith("-")) {
+        if (currentString.equals("-nc")) {
+          // do the thing
+        }
+        else if (currentString.equals("-h")) {
+          // do the other thing
+        }
+        else {
+          throw new IllegalArgumentException(currentString + "is not a valid flag");
+        }
+      }
+      else if (currentString.startsWith("/") && pathFound == false) {
+        // do some other thing
+        root = new File(currentString);
+      }
 
       
       // else if (startsWith("/") && pathFound false)
@@ -134,7 +144,7 @@ public class TruffulaOptions  {
 
 
 
-    root = null;
+    
     showHidden = false;
     useColor = false;
   }
