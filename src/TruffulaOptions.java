@@ -118,19 +118,14 @@ public class TruffulaOptions {
     File filePath = new File(args[args.length - 1]);
     if (!filePath.exists()) {
       throw new FileNotFoundException("File not found or does not exist");
-    } else if (filePath.isDirectory()) {
-      throw new FileNotFoundException("Path does not leed directory");
+    } else if (!filePath.isDirectory()) {
+      throw new FileNotFoundException("Path does not lead to directory");
     } else {
       root = filePath;
     }
 
     // Check the length of the recieved array
     switch (argLength) {
-      case 1:
-        showHidden = false;
-        useColor = true;
-        // If length is one, we only recieve a path
-        break;
       case 2:
         // check for flags (index 0)
         if (args[0].equals("-h")) {
@@ -155,6 +150,9 @@ public class TruffulaOptions {
         }
         // deal with path
         break;
+      default:
+        showHidden = false;
+        useColor = true;
     }
 
   }
