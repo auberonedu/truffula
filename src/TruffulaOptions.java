@@ -103,33 +103,34 @@ public class TruffulaOptions  {
   public TruffulaOptions(String[] args) throws IllegalArgumentException, FileNotFoundException {
     // TODO: Replace the below lines with your implementation
 
-    /* pseudo code
-     * 
-     * boolean foundPath = false
-     * 
-     * loop through each char in args
-     *    if foundPath = false
-     *      if char[i] is '-'
-     *        i++
-     *        if char[i] is 'n'
-     *         i++
-     *         if char[i] is 'c' && char[i + 1] is ' '
-     *            usecolor = false
-     *         else throw illegalargumentexception
-     *       else if char[i] is 'h' && char[i + 1] is ' '
-     *          showHidden = true;
-     *       else throw illegalargumentexception
-     *    if char[i] is '/' || foundPath
-     *       foundPath = true
-     *       if char[i] = '.'
-     *          throw fileNotFoundException
-     *       root.append(char[i])
-     * 
-     * 
-     * check that path is valid
-     *    if not, throw fileNotFoundException
-     *      
-     */
+
+
+    for (int i = 0; i < args.length; i++){
+      boolean pathFound = false;
+
+      // if startsWith "-" pathFound = false
+        // if -nc
+
+        // if -h
+
+        // else 
+          // throw exception
+
+      
+      // else if (startsWith("/") && pathFound false)
+        // root = args[i]
+        // pathFound = true
+
+      // else if (pathFound = true)
+        // throw exception
+
+    }
+
+    // check valid path
+
+    // if (!root.isDirectory())
+      // throw exception
+
 
 
 
