@@ -129,7 +129,7 @@ public class TruffulaOptions  {
       }
     }
 
-    if (root == null) {
+  if (root == null) {
       throw new IllegalArgumentException("Path argument is missing.");
   }
   if (!root.exists()) {
