@@ -147,16 +147,22 @@ public class TruffulaPrinter {
     // incrementing the depth 
     depth++;
 
+    StringBuilder spacesString = new StringBuilder();
+
     for (int i = 0; i < depth; i++) {
-      out.print("   ");
+      spacesString.append("   ");
+      
     }
+
+    String spaces = spacesString.toString();
+    // out.print(spaces);
 
     // if file is not a directoy, print spaces + file
     if (!root.isDirectory()) {
-      out.println(root.getName());
+      out.println(spaces + root.getName());
       return depth;
     } else {
-      out.println(root.getName() + "/");
+      out.println(spaces + root.getName() + "/");
     }
 
     File[] list = root.listFiles();

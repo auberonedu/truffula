@@ -159,16 +159,17 @@ public class TruffulaPrinterTest {
         String nl = System.lineSeparator();
 
         String white = "\033[0;37m";
+        String reset = "\033[0m";
 
         StringBuilder expected = new StringBuilder();
-        expected.append(white).append("myFolder/").append(nl);
-        expected.append(white).append("   Apple.txt").append(nl);
-        expected.append(white).append("   banana.txt").append(nl);
-        expected.append(white).append("   Documents/").append(nl);
-        expected.append(white).append("      images/").append(nl);
-        expected.append(white).append("         cat.png").append(nl);
-        expected.append(white).append("         Dog.png").append(nl);
-        expected.append(white).append("   zebra.txt").append(nl);
+        expected.append(white).append("myFolder/").append(nl).append(reset);
+        expected.append(white).append("   Apple.txt").append(nl).append(reset);
+        expected.append(white).append("   banana.txt").append(nl).append(reset);
+        expected.append(white).append("   Documents/").append(nl).append(reset);
+        expected.append(white).append("      images/").append(nl).append(reset);
+        expected.append(white).append("         cat.png").append(nl).append(reset);
+        expected.append(white).append("         Dog.png").append(nl).append(reset);
+        expected.append(white).append("   zebra.txt").append(nl).append(reset);
 
         // Assert that the output matches the expected output exactly
         assertEquals(expected.toString(), output);
