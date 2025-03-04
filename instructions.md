@@ -4,7 +4,7 @@ The provided tests are VERY MINIMAL. You are expected to be adding thorough test
 
 You must NOT use the `java.nio` package for any wave! You can only use `java.io`.
 
-## Wave 1: Color Printer
+## Wave 1: Color Printer (Completed)
 In this wave you will implement a class that can print text to the console in color. To achieve this you implement `print(String message, boolean reset)` in `ColorPrinter.java`. You do not need to alter the other methods.
 Hints:
 - You will make use of `ConsoleColor.java`. It is an enum, which we haven't covered in class yet. Look at it with curiosity and do some minor research on what enums are in Java. You do not need to modify this file.
