@@ -87,6 +87,12 @@ public class ColorPrinter {
    */
   public void print(String message, boolean reset) {
     // TODO: Implement this!
+
+    // sudo code? -augy
+    // printStream.append(currentColor + message);
+    // if (reset)
+      // currentColor = ConsoleColor.RESET
+    
   }
 
   /**
@@ -111,7 +117,9 @@ public class ColorPrinter {
   }
 
   public static void main(String[] args) {
-    
+    ColorPrinter printer = new ColorPrinter(System.out);
+    printer.setCurrentColor(ConsoleColor.RED);
+    printer.println("This is red text");
     
   }
 }
