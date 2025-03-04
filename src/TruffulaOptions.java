@@ -103,7 +103,7 @@ public class TruffulaOptions  {
   public TruffulaOptions(String[] args) throws IllegalArgumentException, FileNotFoundException {
     // TODO: Replace the below lines with your implementation
 
-
+    File foundFile = null;
 
     for (int i = 0; i < args.length; i++){
       boolean pathFound = false;
@@ -121,19 +121,14 @@ public class TruffulaOptions  {
           throw new IllegalArgumentException(currentString + "is not a valid flag");
         }
       }
-      else if (currentString.startsWith("/") && pathFound == false) {
+      else if (i == args.length - 1) {
         // do some other thing
-        root = new File(currentString);
+        foundFile = new File(currentString);
+        pathFound = true;
       }
-
-      
-      // else if (startsWith("/") && pathFound false)
-        // root = args[i]
-        // pathFound = true
-
-      // else if (pathFound = true)
-        // throw exception
-
+      else {
+        throw new FileNotFoundException(currentString + " is not found");
+      }
     }
 
     // check valid path
@@ -144,7 +139,7 @@ public class TruffulaOptions  {
 
 
 
-    
+    root = foundFile;
     showHidden = false;
     useColor = false;
   }
