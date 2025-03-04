@@ -29,7 +29,7 @@ public class ColorPrinter {
    */
   private final PrintStream printStream;
 
-  // main args recommended in part one everythign is working fine not sure why teste breaks
+  // main args recommended in part one everythign is working fine not sure why test breaks
   public static void main(String[] args) {
 
     ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -37,7 +37,7 @@ public class ColorPrinter {
     ColorPrinter printer = new ColorPrinter(printStream);
     //ColorPrinter printer = new ColorPrinter(System.out);
 
-    // Test printing in different colors
+    // Test printing in different colors and resets in the console
     printer.setCurrentColor(ConsoleColor.RED);
     printer.println("This is a red message.");
     printer.println("color should have reset on newline");
@@ -123,11 +123,13 @@ public class ColorPrinter {
    */
   public void print(String message, boolean reset) {
     // TODO: Implement this!
-    printStream.print(currentColor + message);
     
+    printStream.print(currentColor + message);
+
     if(reset){
       setCurrentColor(ConsoleColor.RESET);
       }
+      
   }
 
   /**

@@ -79,10 +79,10 @@ class ColorPrinterTest {
     // Act: Print the message
     String message = "I speak for the trees";
     printer.print(message);
+    printer.println("this should not be yellow and a new line after");
 
-
-    String expectedOutput = ConsoleColor.YELLOW + "I speak for the trees" + ConsoleColor.RESET;
-
+    String expectedOutput = ConsoleColor.YELLOW + "I speak for the trees" + ConsoleColor.RESET +
+     "this should not be yellow and a new line after" + System.lineSeparator();
     // Assert: Verify the printed output
     assertEquals(expectedOutput, outputStream.toString());
   }
@@ -139,7 +139,8 @@ class ColorPrinterTest {
     printer.print("Mr. Onceler you are killing the forrest", true);
     printer.println(" with your greed");
 
-    String expectedOutput1 = ConsoleColor.BLUE +  "Mr. Onceler you are killing the forrest" + ConsoleColor.RESET +  " with your greed" + System.lineSeparator();
+    String expectedOutput1 = ConsoleColor.BLUE +  "Mr. Onceler you are killing the forrest" + ConsoleColor.RESET + 
+     " with your greed" + System.lineSeparator();
     assertEquals(expectedOutput1, outputStream.toString());
     
   }
