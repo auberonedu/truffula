@@ -114,21 +114,29 @@ public class TruffulaPrinter {
       return;
     }
 
+    // If root is hidden, showHidden off, return error
     if (showHidden == false && root.isHidden()) {
       out.println("Root is hidden.");
       return;
     }
 
     int depth = 0;
+
+    // Print the root
     out.println(root.getName() + "/");
   
+    // Create an array of files in root, iterate through
     File[] listOfFiles = root.listFiles();
 
+
     for (File file: listOfFiles) {
-        if (!file.isHidden()) {
-          printTreeHelper(file, depth, showHidden);
-        } 
+      if (showHidden == false && file.isHidden()) {
+        continue;
+      } else {
+        printTreeHelper(file, depth, showHidden);
+      } 
     }
+
 
     // Hints:
     // - For Wave 6: Use AlphabeticalFileSorter
@@ -153,7 +161,7 @@ public class TruffulaPrinter {
 
     String spaces = spacesString.toString();
 
-    // if file is not a directoy, print spaces + file
+    // if file is not a directory, print spaces + file
     if (!root.isDirectory()) {
       out.println(spaces + root.getName());
       return depth;
@@ -163,7 +171,9 @@ public class TruffulaPrinter {
 
     File[] list = root.listFiles();
     for (File file: list) {
-      if (file.isDirectory()) {
+      if (showHidden == false && file.isHidden()) {
+        continue;
+      } else if (file.isDirectory()) {
         return depth + printTreeHelper(file, depth, showHidden);
       } else {
         printTreeHelper(file, depth, showHidden);
