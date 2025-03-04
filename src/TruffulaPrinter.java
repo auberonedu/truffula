@@ -106,10 +106,16 @@ public class TruffulaPrinter {
   public void printTree() {
     // REQUIRED: ONLY use java.io, DO NOT use java.nio
     File root = options.getRoot();
+    boolean showHidden = options.isShowHidden();
 
     // base cases 
     if (root == null || !root.isDirectory()) {
       out.println("Invalid/missing directory.");
+      return;
+    }
+
+    if (showHidden == false && root.isHidden()) {
+      out.println("Root is hidden.");
       return;
     }
 
@@ -119,7 +125,9 @@ public class TruffulaPrinter {
     File[] listOfFiles = root.listFiles();
 
     for (File file: listOfFiles) {
-        printTreeHelper(file, depth);
+        if (!file.isHidden()) {
+          printTreeHelper(file, depth, showHidden);
+        } 
     }
 
     // Hints:
@@ -132,7 +140,7 @@ public class TruffulaPrinter {
   }
 
   // private helper to add indentation to the files structure   
-  public int printTreeHelper(File root, int depth) {
+  public int printTreeHelper(File root, int depth, boolean showHidden) {
 
     // incrementing the depth 
     depth++;
@@ -141,7 +149,6 @@ public class TruffulaPrinter {
 
     for (int i = 0; i < depth; i++) {
       spacesString.append("   ");
-      
     }
 
     String spaces = spacesString.toString();
@@ -157,9 +164,9 @@ public class TruffulaPrinter {
     File[] list = root.listFiles();
     for (File file: list) {
       if (file.isDirectory()) {
-        return depth + printTreeHelper(file, depth);
+        return depth + printTreeHelper(file, depth, showHidden);
       } else {
-        printTreeHelper(file, depth);
+        printTreeHelper(file, depth, showHidden);
       }
     }
 
