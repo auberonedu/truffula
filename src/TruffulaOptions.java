@@ -102,10 +102,10 @@ public class TruffulaOptions  {
    */
   public TruffulaOptions(String[] args) throws IllegalArgumentException, FileNotFoundException {
     // TODO: Replace the below lines with your implementation
-    root = null;
-    boolean showHiddenTemp = false;
-    boolean useColorTemp = true;
-    
+      boolean showHidden = false;
+      boolean useColor = true;
+      File root = null;
+      
 
     //for loop for args, 
     //if statements for -nc -h, -path/root
@@ -114,11 +114,11 @@ public class TruffulaOptions  {
       
       // Check for -h (show hidden files)
       if (arg.equals("-h")) {
-          showHiddenTemp = true;
+          showHidden = true;
       }
       
       else if (arg.equals("-nc")) {
-          useColorTemp = false;
+          useColor = false;
       }
      
       else if (i == args.length - 1) {
@@ -138,8 +138,11 @@ public class TruffulaOptions  {
 
   if (!root.isDirectory()) {
     throw new FileNotFoundException("The path is not a directory: " + root);
-    
   }
+
+    this.root = root;
+    this.showHidden = showHidden;
+    this.useColor = useColor;
 }
   /**
    * Constructs a TruffulaOptions object with explicit values.
