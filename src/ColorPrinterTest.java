@@ -81,8 +81,12 @@ class ColorPrinterTest {
     printer.setCurrentColor(ConsoleColor.GREEN);
     printer.println("Green tall grass");
 
+    printer.setCurrentColor(ConsoleColor.YELLOW);
+    printer.println("Burning Yellow Sun");
+    
+
     String expectedOutput = ConsoleColor.GREEN + "Green tall grass" + System.lineSeparator() + ConsoleColor.RESET +
-    ConsoleColor.YELLOW + "Burning Yellow sun" + System.lineSeparator() + ConsoleColor.RESET;
+    ConsoleColor.YELLOW + "Burning Yellow Sun" + System.lineSeparator() + ConsoleColor.RESET;
     
     // Assert verify the printed output
     assertEquals(expectedOutput, outputStream.toString());
@@ -90,11 +94,39 @@ class ColorPrinterTest {
 
   @Test
   void testPrintlnWithEmptyString(){
-    
+    // Arrange: Capture the printed output
+    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    PrintStream printStream = new PrintStream(outputStream);
+
+    ColorPrinter printer = new ColorPrinter(printStream);
+    printer.setCurrentColor(ConsoleColor.CYAN);
+
+    //Act: Printing an empty string
+    String message = "";
+    printer.println(message);
+
+    String expectedOutput = ConsoleColor.CYAN + "" + System.lineSeparator() + ConsoleColor.RESET;
+
+    // Assert: Verify the printed output
+    assertEquals(expectedOutput, outputStream.toString());
   }
 
   @Test
   void testPrintlnWithNoReset(){
-    
+    // Arrange: Capture the printed output
+    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    PrintStream printStream = new PrintStream(outputStream);
+
+    ColorPrinter printer = new ColorPrinter(printStream);
+    printer.setCurrentColor(ConsoleColor.PURPLE);
+
+    // Act: Print the message
+    String message = "Grapes are always purple";
+    printer.println(message, false);
+
+    String expectedOutput = ConsoleColor.PURPLE + "Grapes are always purple" + System.lineSeparator();
+
+    // Assert: Verify the printed output
+    assertEquals(expectedOutput, outputStream.toString());
   }
 }
