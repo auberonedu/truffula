@@ -60,22 +60,27 @@ public class TruffulaOptionsTest {
     TruffulaOptions options = new TruffulaOptions(args);
 
     // Assert
-    assertEquals(tempDir.getAbsolutePath(), options.getRoot().getAbsolutePath());
+    assertEquals(directory.getAbsolutePath(), options.getRoot().getAbsolutePath());
     assertTrue(options.isShowHidden());
     assertFalse(options.isUseColor());
   }
 
   @Test
   void testInvalidDirectory() {
-
+    // is a file :(
     
 
   }
 
   @Test
   void testPathArgumentMissing() {
+    // no path
 
 
+  }
 
+  @Test
+  void testPathIsLast() {
+    
   }
 }
