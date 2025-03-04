@@ -190,6 +190,113 @@ public class TruffulaPrinterTest {
     }
 
     @Test
+    public void Test_Print_Tree_Complex_No_Color(@TempDir File tempDir) throws IOException {
+        // Create "myFolder"
+        File myFolder = new File(tempDir, "myFolder");
+        assertTrue(myFolder.mkdir(), "myFolder should be created");
+
+        // Create visible files in myFolder
+        File apple = new File(myFolder, "Apple.txt");
+        File banana = new File(myFolder, "banana.txt");
+        File zebra = new File(myFolder, "zebra.txt");
+        apple.createNewFile();
+        banana.createNewFile();
+        zebra.createNewFile();
+
+        // Create subdirectory "Documents"
+        File documents = new File(myFolder, "Documents");
+        assertTrue(documents.mkdir(), "Documents directory should be created");
+
+        // Create files in Documents
+        File readme = new File(documents, "README.md");
+        File notes = new File(documents, "notes.txt");
+        readme.createNewFile();
+        notes.createNewFile();
+
+        // Create subdirectory "images" in Documents
+        File images = new File(documents, "images");
+        assertTrue(images.mkdir(), "images directory should be created");
+
+        // Create files in images
+        File cat = new File(images, "cat.png");
+        File dog = new File(images, "Dog.png");
+        cat.createNewFile();
+        dog.createNewFile();
+
+        // Create subdirectory "videos" in Documents
+        File videos = new File(documents, "videos");
+        assertTrue(videos.mkdir(), "videos directory should be created");
+
+        // Create files in videos
+        File holidayVideo = new File(videos, "holiday.mp4");
+        File natureVideo = new File(videos, "nature.mkv");
+        holidayVideo.createNewFile();
+        natureVideo.createNewFile();
+
+        // Create subdirectory "audio" in Documents
+        File audio = new File(documents, "audio");
+        assertTrue(audio.mkdir(), "audio directory should be created");
+
+        // Create files in audio
+        File podcast = new File(audio, "podcast.mp3");
+        File song = new File(audio, "song.wav");
+        podcast.createNewFile();
+        song.createNewFile();
+
+        // Create subdirectory "Archive"
+        File archive = new File(myFolder, "Archive");
+        assertTrue(archive.mkdir(), "Archive directory should be created");
+
+        // Create files in Archive
+        File backupZip = new File(archive, "backup.zip");
+        File oldDataTar = new File(archive, "old_data.tar");
+        backupZip.createNewFile();
+        oldDataTar.createNewFile();
+
+        // Set up options with showHidden = false
+        TruffulaOptions options = new TruffulaOptions(myFolder, false, false); // showHidden = false
+
+        // Capture output
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(baos);
+
+        // Create printer
+        TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
+
+        // Print tree
+        printer.printTree();
+
+        // Retrieve printed output
+        String output = baos.toString();
+        String nl = System.lineSeparator();
+
+        // Adjust Expected Output (alphabetized):
+        StringBuilder expected = new StringBuilder();
+        expected.append("myFolder/").append(nl);
+        expected.append("   Apple.txt").append(nl);
+        expected.append("   Archive/").append(nl); // Archive comes after Apple.txt and banana.txt
+        expected.append("      backup.zip").append(nl);
+        expected.append("      old_data.tar").append(nl);
+        expected.append("   banana.txt").append(nl);
+        expected.append("   Documents/").append(nl);
+        expected.append("      audio/").append(nl);
+        expected.append("         podcast.mp3").append(nl);
+        expected.append("         song.wav").append(nl);
+        expected.append("      images/").append(nl);
+        expected.append("         cat.png").append(nl);
+        expected.append("         Dog.png").append(nl);
+        expected.append("      notes.txt").append(nl);
+        expected.append("      README.md").append(nl);
+        expected.append("      videos/").append(nl);
+        expected.append("         holiday.mp4").append(nl);
+        expected.append("         nature.mkv").append(nl);
+        expected.append("   zebra.txt").append(nl);
+
+        // Assert that the output matches the expected output exactly
+        assertEquals(expected.toString().trim(), output.replaceAll("\u001B\\[[;\\d]*m", "").trim());
+    }
+
+    @Test
     public void testPrintTree_BasicDirectoryStructure(@TempDir File tempDir) throws IOException {
         // Create directory structure:
         // rootFolder/
