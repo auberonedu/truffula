@@ -58,5 +58,20 @@ public class TruffulaOptionsTest {
 
     Assertions.assertEquals("Directory not found or does not exist", exception.getMessage());
   }
+
   // Test that IllegalArgumentException is thrown correctly
+  @Test
+  void testIllegalArgumentException(@TempDir File tempDir) {
+    File directory = new File(tempDir, "subfolder");
+    directory.mkdir();
+
+    String directoryPath = directory.getAbsolutePath();
+    String[] args = { "", "7", directoryPath };
+
+    IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {
+      TruffulaOptions options = new TruffulaOptions(args);
+    });
+
+    Assertions.assertEquals("Invalid flags", exception.getMessage());
+  }
 }
