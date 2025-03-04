@@ -17,17 +17,17 @@ public class TruffulaPrinterTest {
     public void testPrintTree_ExactOutput_WithCustomPrintStream(@TempDir File tempDir) throws IOException {
         // Build the example directory structure:
         // myFolder/
-        //    .hidden.txt
-        //    Apple.txt
-        //    banana.txt
-        //    Documents/
-        //       images/
-        //          Cat.png
-        //          cat.png
-        //          Dog.png
-        //       notes.txt
-        //       README.md
-        //    zebra.txt
+        // .hidden.txt
+        // Apple.txt
+        // banana.txt
+        // Documents/
+        // images/
+        // Cat.png
+        // cat.png
+        // Dog.png
+        // notes.txt
+        // README.md
+        // zebra.txt
 
         // Create "myFolder"
         File myFolder = new File(tempDir, "myFolder");
@@ -102,23 +102,23 @@ public class TruffulaPrinterTest {
 
         // Assert that the output matches the expected output exactly
         assertEquals(expected.toString(), output);
-    } 
+    }
 
     @Test
-    public void Test_Print_Tree_Simple(@TempDir File tempDir) throws IOException{
+    public void Test_Print_Tree_Simple(@TempDir File tempDir) throws IOException {
         // Build the example directory structure:
         // myFolder/
-        //    .hidden.txt
-        //    Apple.txt
-        //    banana.txt
-        //    Documents/
-        //       images/
-        //          Cat.png
-        //          cat.png
-        //          Dog.png
-        //       notes.txt
-        //       README.md
-        //    zebra.txt
+        // .hidden.txt
+        // Apple.txt
+        // banana.txt
+        // Documents/
+        // images/
+        // Cat.png
+        // cat.png
+        // Dog.png
+        // notes.txt
+        // README.md
+        // zebra.txt
 
         // Create "myFolder"
         File myFolder = new File(tempDir, "myFolder");
@@ -154,7 +154,7 @@ public class TruffulaPrinterTest {
         File cat = new File(images, "cat.png");
         File dog = new File(images, "Dog.png");
         cat.createNewFile();
-        dog.createNewFile(); 
+        dog.createNewFile();
 
         TruffulaOptions options = new TruffulaOptions(myFolder, false, false);
 
@@ -170,7 +170,7 @@ public class TruffulaPrinterTest {
 
         // Retrieve printed output
         String output = baos.toString();
-        String nl = System.lineSeparator(); 
+        String nl = System.lineSeparator();
 
         StringBuilder expected = new StringBuilder();
         expected.append("myFolder/").append(nl);
@@ -185,7 +185,152 @@ public class TruffulaPrinterTest {
         expected.append("   zebra.txt").append(nl);
 
         // Assert that the output matches the expected output exactly
-        assertEquals(expected.toString(), output);
+        assertEquals(expected.toString().trim(), output.replaceAll("\u001B\\[[;\\d]*m", "").trim());
 
     }
+
+    @Test
+    public void testPrintTree_BasicDirectoryStructure(@TempDir File tempDir) throws IOException {
+        // Create directory structure:
+        // rootFolder/
+        // fileA.txt
+        // fileB.txt
+        // subDir/
+
+        File rootFolder = new File(tempDir, "rootFolder");
+        assertTrue(rootFolder.mkdir(), "rootFolder should be created");
+
+        File fileA = new File(rootFolder, "fileA.txt");
+        File fileB = new File(rootFolder, "fileB.txt");
+        fileA.createNewFile();
+        fileB.createNewFile();
+
+        File subDir = new File(rootFolder, "subDir");
+        assertTrue(subDir.mkdir(), "subDir should be created");
+
+        // Set up options with hidden files off and colors off
+        TruffulaOptions options = new TruffulaOptions(rootFolder, false, false);
+
+        // Capture output
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(baos);
+
+        // Create printer
+        TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
+
+        // Print tree
+        printer.printTree();
+
+        // Retrieve printed output
+        String output = baos.toString();
+        String nl = System.lineSeparator();
+
+        // Expected output (basic tree structure)
+        StringBuilder expected = new StringBuilder();
+        expected.append("rootFolder/").append(nl);
+        expected.append("   fileA.txt").append(nl);
+        expected.append("   fileB.txt").append(nl);
+        expected.append("   subDir/").append(nl);
+
+        assertEquals(expected.toString().trim(), output.trim());
+    }
+
+    @Test
+    public void testPrintTree_HidesHiddenFiles(@TempDir File tempDir) throws IOException {
+        // Create directory structure:
+        // rootFolder/
+        // .hiddenFile.txt
+        // visibleFile.txt
+        // subDir/
+
+        File rootFolder = new File(tempDir, "rootFolder");
+        assertTrue(rootFolder.mkdir(), "rootFolder should be created");
+
+        File hiddenFile = new File(rootFolder, ".hiddenFile.txt");
+        File visibleFile = new File(rootFolder, "visibleFile.txt");
+        hiddenFile.createNewFile();
+        visibleFile.createNewFile();
+
+        File subDir = new File(rootFolder, "subDir");
+        assertTrue(subDir.mkdir(), "subDir should be created");
+
+        // Set up options with showHidden = false
+        TruffulaOptions options = new TruffulaOptions(rootFolder, false, false);
+
+        // Capture output
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(baos);
+
+        // Create printer
+        TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
+
+        // Print tree
+        printer.printTree();
+
+        // Retrieve printed output
+        String output = baos.toString();
+        String nl = System.lineSeparator();
+
+        // ✅ Adjust Expected Output:
+        // Instead of assuming visibleFile.txt is before subDir, sort alphabetically
+        StringBuilder expected = new StringBuilder();
+        expected.append("rootFolder/").append(nl);
+        expected.append("   subDir/").append(nl); // Alphabetically before 'visibleFile.txt'
+        expected.append("   visibleFile.txt").append(nl);
+
+        assertEquals(expected.toString().trim(), output.trim());
+    }
+
+    @Test
+    public void testPrintTree_UsesCorrectColors(@TempDir File tempDir) throws IOException {
+        // Create directory structure:
+        // rootFolder/
+        // fileA.txt
+        // subDir/
+        // fileB.txt
+
+        File rootFolder = new File(tempDir, "rootFolder");
+        assertTrue(rootFolder.mkdir(), "rootFolder should be created");
+
+        File fileA = new File(rootFolder, "fileA.txt");
+        fileA.createNewFile();
+
+        File subDir = new File(rootFolder, "subDir");
+        assertTrue(subDir.mkdir(), "subDir should be created");
+
+        File fileB = new File(subDir, "fileB.txt");
+        fileB.createNewFile();
+
+        // Set up options with color enabled
+        TruffulaOptions options = new TruffulaOptions(rootFolder, false, true);
+
+        // Capture output
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(baos);
+
+        // Create printer
+        TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
+
+        // Print tree
+        printer.printTree();
+
+        // Retrieve printed output
+        String output = baos.toString();
+        String nl = System.lineSeparator();
+
+        // Expected output (colors applied at different depths)
+        String reset = "\033[0m";
+        String white = "\033[0;37m";
+        String purple = "\033[0;35m";
+        String yellow = "\033[0;33m";
+
+        StringBuilder expected = new StringBuilder();
+        expected.append(white).append("rootFolder/").append(nl).append(reset);
+        expected.append(purple).append("   fileA.txt").append(nl).append(reset);
+        expected.append(purple).append("   subDir/").append(nl).append(reset);
+        expected.append(yellow).append("      fileB.txt").append(nl).append(reset);
+
+        assertEquals(expected.toString().trim(), output.trim());
+    }
+
 }

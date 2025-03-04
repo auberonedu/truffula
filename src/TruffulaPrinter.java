@@ -110,40 +110,53 @@ public class TruffulaPrinter {
   public void printTree() {
     // TODO: Implement this!
     // REQUIRED: ONLY use java.io, DO NOT use java.nio
-
-    // Hints:
-    // - Add a recursive helper method
-    // - For Wave 6: Use AlphabeticalFileSorter
     // DO NOT USE SYSTEM.OUT.PRINTLN
     // USE out.println instead (will use your ColorPrinter)
 
-    out.println("printTree was called!");
-    out.println("My options are: " + options);
+    // out.println("printTree was called!");
+    // out.println("My options are: " + options);
+
+    // Disable color in ColorPrinter if -nc was passed
+    if (!options.isUseColor()) {
+      out.disableColor(); // Ensure no ANSI codes are printed
+    }
 
     File rootDir = options.getRoot();
     if (rootDir.exists() && rootDir.isDirectory()) {
-      printDirectoryTree(rootDir, 1);
+      printDirectoryTree(rootDir, 0);
     } else {
       out.println("Invalid root directory.");
     }
   }
 
   private void printDirectoryTree(File dir, int depth) {
-    String indent = "   ".repeat(depth); // Indentation per depth level
+    String indent = "   ".repeat(depth); // indentation per depth level
 
-    // Print directory or file name
-    if (dir.isDirectory()) {
-      out.println(indent + dir.getName() + "/");
-      depth++;
-    } else {
-      out.println(indent + dir.getName());
+    // Skip hidden files/directories if showHidden is false
+    if (!options.isShowHidden() && dir.isHidden()) {
+      return;
     }
- 
+
+    // Determine the color based on depth
+    boolean useColor = options.isUseColor();
+    ConsoleColor color = useColor ? colorSequence.get(depth % colorSequence.size()) : null;
+
+    // Apply color only if enabled
+    if (useColor) {
+      out.setCurrentColor(color);
+      out.println(indent + dir.getName() + (dir.isDirectory() ? "/" : ""), true); // Reset after printing
+    } else {
+      out.println(indent + dir.getName() + (dir.isDirectory() ? "/" : "")); // No ANSI codes
+    }
+
     // Get contents of directory
     File[] contents = dir.listFiles();
     if (contents != null) {
+      // Sort alphabetically
+      contents = AlphabeticalFileSorter.sort(contents);
       for (File file : contents) {
-        printDirectoryTree(file, depth);
+        // Recurse deeper
+        printDirectoryTree(file, depth + 1);
       }
     }
   }

@@ -140,13 +140,14 @@ public class TruffulaOptions {
     }
 
     //ensure root is set to expected parent directory if needed
-    File parent = directory.getParentFile();
-    if (parent != null && parent.exists()) {
-      this.root = parent; // Move up one level if necessary
-    } else {
-      this.root = directory; // Otherwise, keep as-is
-    }
+    // File parent = directory.getParentFile();
+    // if (parent != null && parent.exists()) {
+    //   this.root = parent; // Move up one level if necessary
+    // } else {
+    //   this.root = directory; // Otherwise, keep as-is
+    // }
 
+    this.root = directory;
     this.showHidden = showHiddenFlag;
     this.useColor = useColorFlag;
   }
