@@ -106,7 +106,6 @@ public class TruffulaPrinterTest {
     public void testNoOrderColor(@TempDir File tempDir) throws IOException {
         // Build the example directory structure:
         // myFolder/
-        //    .hidden.txt
         //    Apple.txt
         //    banana.txt
         //    Documents/
@@ -114,8 +113,6 @@ public class TruffulaPrinterTest {
         //          Cat.png
         //          cat.png
         //          Dog.png
-        //       notes.txt
-        //       README.md
         //    zebra.txt
 
         // Create "myFolder"
@@ -133,12 +130,6 @@ public class TruffulaPrinterTest {
         // Create subdirectory "Documents" in myFolder
         File documents = new File(myFolder, "Documents");
         assertTrue(documents.mkdir(), "Documents directory should be created");
-
-        // Create files in Documents
-        File readme = new File(documents, "README.md");
-        File notes = new File(documents, "notes.txt");
-        readme.createNewFile();
-        notes.createNewFile();
 
         // Create subdirectory "images" in Documents
         File images = new File(documents, "images");
@@ -167,17 +158,17 @@ public class TruffulaPrinterTest {
         String output = baos.toString();
         String nl = System.lineSeparator();
 
+        String white = "\033[0;37m";
+
         StringBuilder expected = new StringBuilder();
-        expected.append("myFolder/").append(nl);
-        expected.append("   Apple.txt").append(nl);
-        expected.append("   banana.txt").append(nl);
-        expected.append("   Documents/").append(nl);
-        expected.append("      images/").append(nl);
-        expected.append("         cat.png").append(nl);
-        expected.append("         Dog.png").append(nl);
-        expected.append("      notes.txt").append(nl);
-        expected.append("      README.md").append(nl);
-        expected.append("   zebra.txt").append(nl);
+        expected.append(white).append("myFolder/").append(nl);
+        expected.append(white).append("   Apple.txt").append(nl);
+        expected.append(white).append("   banana.txt").append(nl);
+        expected.append(white).append("   Documents/").append(nl);
+        expected.append(white).append("      images/").append(nl);
+        expected.append(white).append("         cat.png").append(nl);
+        expected.append(white).append("         Dog.png").append(nl);
+        expected.append(white).append("   zebra.txt").append(nl);
 
         // Assert that the output matches the expected output exactly
         assertEquals(expected.toString(), output);

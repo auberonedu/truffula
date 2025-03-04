@@ -114,16 +114,22 @@ public class TruffulaPrinter {
     }
 
     int depth = 0;
+    out.println(root.getName() + "/");
   
     File[] listOfFiles = root.listFiles();
     // out.println("Number of files: " + String.valueOf(listOfFiles.length));
+    // for (File file: listOfFiles) {
+    //   if (file.isDirectory()) {
+    //     out.println(file.getName() + "/");
+    //     printTreeHelper(file, depth);
+    //   } else {
+    //     out.println(file.getName());
+    //   }
+    // }
+
+
     for (File file: listOfFiles) {
-      if (file.isDirectory()) {
-        out.println(file.getName() + "/");
         printTreeHelper(file, depth);
-      } else {
-        out.println(file.getName());
-      }
     }
 
     // Hints:
@@ -131,28 +137,34 @@ public class TruffulaPrinter {
     // DO NOT USE SYSTEM.OUT.PRINTLN
     // USE out.println instead (will use your ColorPrinter)
 
-    out.println("printTree was called!");
-    out.println("My options are: " + options);
+    // out.println("printTree was called!");
+    // out.println("My options are: " + options);
   }
 
   // private helper to add indentation to the files structure   
   public int printTreeHelper(File root, int depth) {
+
     // incrementing the depth 
     depth++;
-    
+
+    for (int i = 0; i < depth; i++) {
+      out.print("   ");
+    }
+
+    // if file is not a directoy, print spaces + file
+    if (!root.isDirectory()) {
+      out.println(root.getName());
+      return depth;
+    } else {
+      out.println(root.getName() + "/");
+    }
+
     File[] list = root.listFiles();
     for (File file: list) {
-      // if is directory
-      // feed the depth into recursive helper
-      for (int i = 0; i < depth; i++) {
-        out.print("   ");
-      }
-      
       if (file.isDirectory()) {
-        out.println(file.getName() + "/");
         return depth + printTreeHelper(file, depth);
       } else {
-        out.println(file.getName());
+        printTreeHelper(file, depth);
       }
     }
 
