@@ -116,10 +116,8 @@ public class TruffulaOptions {
 
     // Initialize a String variable to hold the path
     File filePath = new File(args[args.length - 1]);
-    if (!filePath.exists()) {
-      throw new FileNotFoundException("File not found or does not exist");
-    } else if (!filePath.isDirectory()) {
-      throw new FileNotFoundException("Path does not lead to directory");
+    if (!filePath.exists() || !filePath.isDirectory()) {
+      throw new FileNotFoundException("Directory not found or does not exist");
     } else {
       root = filePath;
     }

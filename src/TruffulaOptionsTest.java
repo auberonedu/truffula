@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.io.File;
 import java.io.FileNotFoundException;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -45,5 +46,17 @@ public class TruffulaOptionsTest {
   }
 
   // Test that FileNotFoundException is thrown correctly
+  @Test
+  void testFileNotFoundExceptionisThrown(@TempDir File tempDir) {
+    File directory = new File(tempDir, "subfolder");
+    String directoryPath = directory.getAbsolutePath();
+    String[] args = { directoryPath };
+
+    FileNotFoundException exception = Assertions.assertThrows(FileNotFoundException.class, () -> {
+      TruffulaOptions options = new TruffulaOptions(args);
+    });
+
+    Assertions.assertEquals("Directory not found or does not exist", exception.getMessage());
+  }
   // Test that IllegalArgumentException is thrown correctly
 }
