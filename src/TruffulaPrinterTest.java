@@ -440,4 +440,149 @@ public class TruffulaPrinterTest {
         assertEquals(expected.toString().trim(), output.trim());
     }
 
+    @Test
+public void testPrintTree_EmptyDirectory(@TempDir File tempDir) throws IOException {
+    // Create an empty directory
+    File emptyDir = new File(tempDir, "emptyFolder");
+    assertTrue(emptyDir.mkdir(), "emptyFolder should be created");
+
+    // Set up TruffulaOptions
+    TruffulaOptions options = new TruffulaOptions(emptyDir, false, false);
+
+    // Capture output
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    PrintStream printStream = new PrintStream(baos);
+    TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
+
+    // Print tree
+    printer.printTree();
+    String output = baos.toString();
+    String nl = System.lineSeparator();
+
+    // Expected output: Just the root folder
+    StringBuilder expected = new StringBuilder();
+    expected.append("emptyFolder/").append(nl);
+
+    assertEquals(expected.toString(), output);
+}
+
+@Test
+public void testPrintTree_NestedDirectories(@TempDir File tempDir) throws IOException {
+    // Create nested directories: root/sub1/sub2/sub3/
+    File root = new File(tempDir, "rootFolder");
+    assertTrue(root.mkdir(), "rootFolder should be created");
+
+    File sub1 = new File(root, "sub1");
+    assertTrue(sub1.mkdir(), "sub1 should be created");
+
+    File sub2 = new File(sub1, "sub2");
+    assertTrue(sub2.mkdir(), "sub2 should be created");
+
+    File sub3 = new File(sub2, "sub3");
+    assertTrue(sub3.mkdir(), "sub3 should be created");
+
+    // Set up TruffulaOptions
+    TruffulaOptions options = new TruffulaOptions(root, false, false);
+
+    // Capture output
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    PrintStream printStream = new PrintStream(baos);
+    TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
+
+    // Print tree
+    printer.printTree();
+    String output = baos.toString();
+    String nl = System.lineSeparator();
+
+    // Expected output: Only directories, no files
+    StringBuilder expected = new StringBuilder();
+    expected.append("rootFolder/").append(nl);
+    expected.append("   sub1/").append(nl);
+    expected.append("      sub2/").append(nl);
+    expected.append("         sub3/").append(nl);
+
+    assertEquals(expected.toString().trim(), output.trim());
+}
+
+@Test
+public void testPrintTree_MixedFilesAndDirectories(@TempDir File tempDir) throws IOException {
+    // Create root folder
+    File root = new File(tempDir, "rootFolder");
+    assertTrue(root.mkdir(), "rootFolder should be created");
+
+    // Create files in root
+    File fileA = new File(root, "fileA.txt");
+    File fileB = new File(root, "fileB.txt");
+    fileA.createNewFile();
+    fileB.createNewFile();
+
+    // Create subdirectory in root
+    File subDir = new File(root, "subDir");
+    assertTrue(subDir.mkdir(), "subDir should be created");
+
+    // Create files in subDir
+    File subFile1 = new File(subDir, "subFile1.txt");
+    File subFile2 = new File(subDir, "subFile2.txt");
+    subFile1.createNewFile();
+    subFile2.createNewFile();
+
+    // Set up TruffulaOptions
+    TruffulaOptions options = new TruffulaOptions(root, false, false);
+
+    // Capture output
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    PrintStream printStream = new PrintStream(baos);
+    TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
+
+    // Print tree
+    printer.printTree();
+    String output = baos.toString();
+    String nl = System.lineSeparator();
+
+    // Expected output: Root with files and subdirectory
+    StringBuilder expected = new StringBuilder();
+    expected.append("rootFolder/").append(nl);
+    expected.append("   fileA.txt").append(nl);
+    expected.append("   fileB.txt").append(nl);
+    expected.append("   subDir/").append(nl);
+    expected.append("      subFile1.txt").append(nl);
+    expected.append("      subFile2.txt").append(nl);
+
+    assertEquals(expected.toString().trim(), output.trim());
+}
+
+@Test
+public void testPrintTree_ShowsHiddenFiles(@TempDir File tempDir) throws IOException {
+    // Create root folder
+    File root = new File(tempDir, "rootFolder");
+    assertTrue(root.mkdir(), "rootFolder should be created");
+
+    // Create visible and hidden files
+    File visibleFile = new File(root, "visible.txt");
+    File hiddenFile = new File(root, ".hidden.txt");
+    visibleFile.createNewFile();
+    hiddenFile.createNewFile();
+
+    // Set up TruffulaOptions (showHidden = true)
+    TruffulaOptions options = new TruffulaOptions(root, true, false);
+
+    // Capture output
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    PrintStream printStream = new PrintStream(baos);
+    TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
+
+    // Print tree
+    printer.printTree();
+    String output = baos.toString();
+    String nl = System.lineSeparator();
+
+    // Expected output: Both hidden and visible files appear
+    StringBuilder expected = new StringBuilder();
+    expected.append("rootFolder/").append(nl);
+    expected.append("   .hidden.txt").append(nl);
+    expected.append("   visible.txt").append(nl);
+
+    assertEquals(expected.toString().trim(), output.trim());
+}
+
 }
