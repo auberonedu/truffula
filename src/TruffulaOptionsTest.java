@@ -45,6 +45,40 @@ public class TruffulaOptionsTest {
     assertTrue(options.isUseColor());
   }
 
+  @Test
+    void testOnlyNoColorFlag(@TempDir File tempDir) throws FileNotFoundException {
+    // Arrange: Prepare the arguments with the temp directory
+    File directory = new File(tempDir, "subfolder");
+    directory.mkdir();
+    String directoryPath = directory.getAbsolutePath();
+    String[] args = { "-nc", directoryPath };
+
+    // Act: Create TruffulaOptions instance
+    TruffulaOptions options = new TruffulaOptions(args);
+
+    // Assert: Check that useColor is false 
+    assertEquals(directory.getAbsolutePath(), options.getRoot().getAbsolutePath());
+    assertFalse(options.isShowHidden());
+    assertFalse(options.isUseColor());
+  }
+
+  @Test
+  void testOnlyShowHiddenFlag(@TempDir File tempDir) throws FileNotFoundException {
+    // Arrange: Prepare the arguments with the temp directory
+    File directory = new File(tempDir, "subfolder");
+    directory.mkdir();
+    String directoryPath = directory.getAbsolutePath();
+    String[] args = {"-h", directoryPath };
+
+    // Act: Create TruffulaOptions instance
+    TruffulaOptions options = new TruffulaOptions(args);
+
+    // Assert: Check that showHidden is true
+    assertEquals(directory.getAbsolutePath(), options.getRoot().getAbsolutePath());
+    assertTrue(options.isShowHidden());
+    assertTrue(options.isUseColor());
+  }
+
   // Test that FileNotFoundException is thrown correctly
   @Test
   void testFileNotFoundExceptionisThrown(@TempDir File tempDir) {
