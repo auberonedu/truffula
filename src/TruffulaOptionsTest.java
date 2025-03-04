@@ -23,13 +23,13 @@ public class TruffulaOptionsTest {
     TruffulaOptions options = new TruffulaOptions(args);
 
     // Assert: Check that the root directory is set correctly
-    assertEquals(tempDir.getAbsolutePath(), options.getRoot().getAbsolutePath());
+    assertEquals(directory.getAbsolutePath(), options.getRoot().getAbsolutePath());
     assertTrue(options.isShowHidden());
     assertFalse(options.isUseColor());
   }
 
   @Test
-  void testInvalidFlag(@TempDir File tempDir) {
+  void testInvalidArguments(@TempDir File tempDir) {
     // Arrange: Prepare the arguments with an invalid flag
     String directoryPath = tempDir.getAbsolutePath();
     String[] args = {"-invalid", directoryPath};
@@ -39,7 +39,7 @@ public class TruffulaOptionsTest {
       new TruffulaOptions(args);
     });
     
-    assertEquals("Unknown flag: -invalid", exception.getMessage());
+    assertEquals("Unknown argument: -invalid", exception.getMessage());
   }
 
   @Test
