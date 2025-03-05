@@ -195,6 +195,8 @@ class ColorPrinterTest {
 
     String expectedOutput = ConsoleColor.GREEN + "This is green text" + System.lineSeparator() + ConsoleColor.RESET +
                             ConsoleColor.YELLOW + "This is yellow text" + System.lineSeparator() + ConsoleColor.RESET;
+    assertEquals(expectedOutput, outputStream.toString());
+    
   }
 
   @Test
