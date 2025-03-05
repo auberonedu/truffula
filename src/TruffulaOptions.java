@@ -107,10 +107,10 @@ public class TruffulaOptions  {
 
     String path = null;
     boolean hiddenFlag = false;
-    boolean colorFlag = false;
+    boolean colorFlag = true;
 
-    for (String arg : args) {
-      switch (arg) {
+    for (int i = 0; i < args.length - 1; i++) {
+      switch (args[i]) {
         case "-h":
           hiddenFlag = true;
           break;
@@ -118,16 +118,11 @@ public class TruffulaOptions  {
           colorFlag = false;
           break;
         default:
-          if (path == null) {
-            path = arg;
-          } else {
-            throw new IllegalArgumentException("Error: " + arg);
-          }    
+            throw new IllegalArgumentException("Error: " + args[i]);  
       }
     }
-    if (path == null) {
-      throw new IllegalArgumentException("No path provided.");
-    }
+    
+    path = args[args.length - 1];
 
     File file = new File(path);
     if (!file.exists()) {
