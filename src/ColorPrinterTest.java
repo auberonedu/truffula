@@ -28,6 +28,102 @@ class ColorPrinterTest {
   }
 
   @Test
+  void testPrintlnWithWhiteColorAndReset() {
+    // Arrange: Capture the printed output
+    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    PrintStream printStream = new PrintStream(outputStream);
+
+    ColorPrinter printer = new ColorPrinter(printStream);
+    printer.setCurrentColor(ConsoleColor.WHITE);
+
+    // Act: Print the message
+    String message = "I have a white coat";
+    printer.println(message);
+
+
+    String expectedOutput = ConsoleColor.WHITE + "I have a white coat" + System.lineSeparator() + ConsoleColor.RESET;
+
+    // Assert: Verify the printed output
+    assertEquals(expectedOutput, outputStream.toString());
+  }
+
+  @Test
+  void testPrintlnWithBlackColorAndReset() {
+    // Arrange: Capture the printed output
+    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    PrintStream printStream = new PrintStream(outputStream);
+
+    ColorPrinter printer = new ColorPrinter(printStream);
+    printer.setCurrentColor(ConsoleColor.BLACK);
+
+    // Act: Print the message
+    String message = "Displays a black text";
+    printer.println(message);
+
+    String expectedOutput = ConsoleColor.BLACK + "Displays a black text" + System.lineSeparator() + ConsoleColor.RESET;
+
+    // Assert: Verify the printed output
+    assertEquals(expectedOutput, outputStream.toString());
+  }
+
+  @Test
+  void testPrintlnWithYellowColorAndReset() {
+    // Arrange: Capture the printed output
+    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    PrintStream printStream = new PrintStream(outputStream);
+
+    ColorPrinter printer = new ColorPrinter(printStream);
+    printer.setCurrentColor(ConsoleColor.YELLOW);
+
+    // Act: Print the message
+    String message = "A yellow flower";
+    printer.println(message);
+
+    String expectedOutput = ConsoleColor.YELLOW + "A yellow flower" + System.lineSeparator() + ConsoleColor.RESET;
+
+    // Assert: Verify the printed output
+    assertEquals(expectedOutput, outputStream.toString());
+  }
+
+  @Test
+  void testPrintlnWithBlueColorAndReset() {
+    // Arrange: Capture the printed output
+    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    PrintStream printStream = new PrintStream(outputStream);
+
+    ColorPrinter printer = new ColorPrinter(printStream);
+    printer.setCurrentColor(ConsoleColor.BLUE);
+
+    // Act: Print the message
+    String message = "Blue sky";
+    printer.println(message);
+
+    String expectedOutput = ConsoleColor.BLUE + "Blue sky" + System.lineSeparator() + ConsoleColor.RESET;
+
+    // Assert: Verify the printed output
+    assertEquals(expectedOutput, outputStream.toString());
+  }
+
+  @Test
+  void testPrintlnWithPurpleColorAndReset() {
+    // Arrange: Capture the printed output
+    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    PrintStream printStream = new PrintStream(outputStream);
+
+    ColorPrinter printer = new ColorPrinter(printStream);
+    printer.setCurrentColor(ConsoleColor.PURPLE);
+
+    // Act: Print the message
+    String message = "Displays a purple text";
+    printer.println(message);
+
+    String expectedOutput = ConsoleColor.PURPLE + "Displays a purple text" + System.lineSeparator() + ConsoleColor.RESET;
+
+    // Assert: Verify the printed output
+    assertEquals(expectedOutput, outputStream.toString());
+  }
+
+  @Test
   void testPrintlnWithCyanColorAndReset() {
     // Arrange: Capture the printed output
     ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
