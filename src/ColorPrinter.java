@@ -98,14 +98,6 @@ public class ColorPrinter {
     
   }
 
-  public static void main(String[] args) {
-    ColorPrinter printer = new ColorPrinter(System.out);
-    printer.setCurrentColor(ConsoleColor.RED);
-    printer.print("This is red text", false);
-    printer.print(" Another message", true);
-
-  }
-
   /**
    * Constructs a ColorPrinter with the specified PrintStream.
    * The default color is set to ConsoleColor.WHITE.
