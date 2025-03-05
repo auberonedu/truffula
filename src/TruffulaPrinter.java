@@ -1,5 +1,7 @@
+import java.io.File;
 import java.io.PrintStream;
 import java.util.List;
+import java.util.*;
 
 /**
  * TruffulaPrinter is responsible for printing a directory tree structure
@@ -104,15 +106,34 @@ public class TruffulaPrinter {
    */
   public void printTree() {
     // TODO: Implement this!
-    // REQUIRED: ONLY use java.io, DO NOT use java.nio
     
     // Hints:
     // - Add a recursive helper method
     // - For Wave 6: Use AlphabeticalFileSorter
     // DO NOT USE SYSTEM.OUT.PRINTLN
     // USE out.println instead (will use your ColorPrinter)
+    // getName() ==> returns the name of the file or directory denoted by this abstract path name
+    // isDirectory() ==> Tests whether the file denoted by this abstract pathname is a directory.
+    // isHidden() ==> Tests whether the file named by this abstract pathname is a hidden file.
+
+    printTree(options.getRoot(), 0);
 
     out.println("printTree was called!");
     out.println("My options are: " + options);
+  }
+
+  private void printTree(File directory, int level){
+    if(directory == null || !directory.isDirectory()) return;
+
+    for(int i=0; i<level; i++){
+      out.println("   ");
+    }
+
+    out.println(directory.getName());
+
+    File[] files = directory.listFiles();
+    for(File file : files){
+      printTree(file, level +1);
+    }
   }
 }
