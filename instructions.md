@@ -99,6 +99,8 @@ Make sure you are in the root of the repository, then compile your code:
 ```
 javac -d target src/App.java src/ColorPrinter.java src/ConsoleColor.java src/TruffulaOptions.java src/TruffulaPrinter.java 
 ```
+run the code: java -cp target App
+run the code with your args: example: java -cp target App src or  java -cp target App -nc -h src
 
 This places the compiled files in a new directory called `target`. You should see `target` directory be created with a bunch of `.class` files. `.class` files are compiled Java files. The `-d target` is responsible for specifying the name of the directory where you want the compiled files.
 

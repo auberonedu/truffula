@@ -103,6 +103,25 @@ public class TruffulaPrinter {
    *    zebra.txt
    */
   public void printTree() {
+    /*
+truffula/
+   lib/
+   src/
+      folder1/
+         file1.java
+         file2.java
+         file3.java
+      alphabeicalFileSorter.java
+      App.java
+      ColorPrinter.java
+      ...
+    .gitignore
+    instructions.md
+    LISENCE
+    README.md
+
+    */
+
     // TODO: Implement this!
     // REQUIRED: ONLY use java.io, DO NOT use java.nio
     
@@ -111,9 +130,9 @@ public class TruffulaPrinter {
     // - For Wave 6: Use AlphabeticalFileSorter
     // DO NOT USE SYSTEM.OUT.PRINTLN
     // USE out.println instead (will use your ColorPrinter)
-
+     
     printTreeMethodHelper();
-
+    
 
     out.println("printTree was called!");
     out.println("My options are: " + options);
