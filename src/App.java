@@ -1,3 +1,7 @@
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.PrintStream;
+import org.junit.jupiter.api.Test;
 public class App {
   
   /**
@@ -45,11 +49,15 @@ public class App {
     // You should create a TruffulaOptions object using the args and
     // pass it to a new TruffulaPrinter that uses System.out
     // Then, call printTree on the TruffulaPrinter
-      TruffulaOptions options = new TruffulaOptions(args);
 
-      TruffulaPrinter prints = new TruffulaPrinter(options);
+    // Create a TruffulaOptions object using the arguments passed
+    TruffulaOptions options = new TruffulaOptions(args);
+    
+    PrintStream printStream = System.out;
+    
+    TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
 
-      prints.printTree();
+    printer.printTree();
     
   }
 }
