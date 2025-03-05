@@ -117,9 +117,13 @@ public class TruffulaOptionsTest {
   @Test
   void testsForAFile(@TempDir File tempDir) throws FileNotFoundException {
     // Arrange:
+    File directory = new File("/src/test.java");
 
+    String directoryPath = directory.getAbsolutePath();
+    String[] args = {"-hm", "-y",directoryPath};
     // Act:
 
     // Assert:
+    assertThrows(IllegalArgumentException.class, () -> new TruffulaOptions(args) );
   }
 }
