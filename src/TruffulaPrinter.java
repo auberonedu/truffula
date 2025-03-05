@@ -102,7 +102,7 @@ public class TruffulaPrinter {
    *       README.md
    *    zebra.txt
    */
-  public void printTree() {
+  public void printTree(File root) {
     // TODO: Implement this!
     // REQUIRED: ONLY use java.io, DO NOT use java.nio
     
@@ -112,14 +112,33 @@ public class TruffulaPrinter {
     // DO NOT USE SYSTEM.OUT.PRINTLN
     // USE out.println instead (will use your ColorPrinter)
 
-    printTreeMethodHelper();
+    if (root == null  || !root.exists()) {
+      out.println("Invalid root");
+      return;
+    }
+
+    printTreeMethodHelper(root, 0);
 
 
     out.println("printTree was called!");
     out.println("My options are: " + options);
   }
 
-  public static void printTreeMethodHelper() {
-    
+  public static void printTreeMethodHelper(File file, int level) {
+    String indent = "   ".repeat(level);
+
+    out.println(indent + file.getName());
+
+    if (file.isDirectory()) {
+      File[] files = file.listFiles();
+      if (files != null) {
+
+          
+          
+          for (File f : files) {
+              printTreeHelper(f, level + 1);
+        }
+      }
+    }
   }
 }
