@@ -55,7 +55,7 @@ public class TruffulaOptionsTest {
     Exception exception = assertThrows(IllegalArgumentException.class, () -> {
       new TruffulaOptions(args);
     });
-    assertEquals("Unknown flag: -invalid", exception.getMessage());
+    assertEquals("Unknown flag: " + args[0], exception.getMessage());
   }
 
   @Test
