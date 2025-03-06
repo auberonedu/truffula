@@ -83,4 +83,21 @@ class ColorPrinterTest {
 
   }
 
+  @Test
+  void testPrintWithBlackAndNoReset() {
+    //Arrange
+    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    PrintStream printStream = new PrintStream(outputStream);
+
+    ColorPrinter printer = new ColorPrinter(printStream);
+    printer.setCurrentColor(ConsoleColor.BLACK);
+
+    String message = "This Message will be the color black";
+    printer.print(message, false);
+
+    // Assert
+    String expectedOutput = ConsoleColor.BLACK.getCode() + message;
+    assertEquals(expectedOutput, outputStream.toString());
+  }
+
 }
