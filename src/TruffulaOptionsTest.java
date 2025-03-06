@@ -1,3 +1,5 @@
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -66,11 +68,20 @@ public class TruffulaOptionsTest {
   }
 
   @Test
-  void testInvalidDirectory() {
+  void testInvalidDirectory(@TempDir File tempDir) {
     // is a file :(
-    
+      File directory = new File(tempDir, "subfolder");
+      directory.mkdir();
+      String directoryPath = directory.getAbsolutePath();
+      
+      String[] args = {directoryPath};
 
+      directory.delete();
+
+      assertThrows(FileNotFoundException.class, () -> {TruffulaOptions options = new TruffulaOptions(args)});
   }
+    
+  
 
   @Test
   void testPathArgumentMissing() {
