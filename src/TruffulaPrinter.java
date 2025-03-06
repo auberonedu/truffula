@@ -142,11 +142,11 @@ truffula/
      */
 
   
-    printTreeMethodHelper(root,0);
+    printTreeMethodHelper(options.getRoot(),0);
   }
 
 
-  public static void printTreeMethodHelper(File currentDirectory, int indentLevel) {
+  public void printTreeMethodHelper(File currentDirectory, int indentLevel) {
     /*
     in this directory we're going to pass in the directory and the indentLevel
     Consider the base case
@@ -169,17 +169,17 @@ truffula/
      */
 
     if(currentDirectory.isDirectory()) {
-      currentDirectory.getName();
+      out.println(currentDirectory.getName());
     }
 
     File[] files = currentDirectory.listFiles();
 
     for(File file : files) {
-      if(file.isHidden() && !options.isShowHidden()) {
-        continue;
-      }
+      // if(file.isHidden() && !options.isShowHidden()) {
+      //   continue;
+      // }
       printTreeMethodHelper(file, indentLevel + 1);
-      else {
+            else {
         printIndentedSpaces(currentDirectory.getName(), indentLevel);
       }
     }
