@@ -1,3 +1,4 @@
+import java.io.File;
 import java.io.PrintStream;
 import java.util.List;
 
@@ -96,16 +97,16 @@ public class TruffulaPrinter {
    * Example Output:
    *
    * myFolder/
-   * Apple.txt
-   * banana.txt
-   * Documents/
-   * images/
-   * Cat.png
-   * cat.png
-   * Dog.png
-   * notes.txt
-   * README.md
-   * zebra.txt
+   *    Apple.txt
+   *    banana.txt
+   *    Documents/
+   *       images/
+   *          Cat.png
+   *          cat.png
+   *          Dog.png
+   *       notes.txt
+   *       README.md
+   *    zebra.txt
    */
   public void printTree() {
     // TODO: Implement this!
@@ -123,8 +124,23 @@ public class TruffulaPrinter {
     // On the root the we first grab, use root.ListFiles() - should return an array
     // of file objects
     // For each file call getName() to print the String of its name
+    int level = 0;
+    File root = options.getRoot();
+    printTreeHelper(root, level);
+  }
 
-    out.println("printTree was called!");
-    out.println("My options are: " + options);
+  private void printTreeHelper(File root, int lvl){
+    int spaces = lvl * 3;
+    String rootName = "";
+    for (int i = 0; i < spaces; i++){
+      rootName += " ";
+    }
+    rootName += root.getName();
+    out.println(rootName);
+    File[] childFiles = root.listFiles();
+    if (childFiles == null) return;
+    for(File child : childFiles){
+      printTreeHelper(child, lvl++);
+    }
   }
 }

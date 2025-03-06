@@ -176,16 +176,16 @@ public class TruffulaPrinterTest {
 
         StringBuilder expected = new StringBuilder();
         expected.append(white).append("myFolder/").append(nl).append(reset);
-        expected.append(white).append("   Apple.txt").append(nl).append(reset);
-        expected.append(white).append("   banana.txt").append(nl).append(reset);
         expected.append(white).append("   zebra.txt").append(nl).append(reset);
+        expected.append(white).append("   banana.txt").append(nl).append(reset);
+        expected.append(white).append("   Apple.txt").append(nl).append(reset);
+        expected.append(white).append("   .hidden.txt").append(nl).append(reset);
         expected.append(white).append("   Documents/").append(nl).append(reset);
-        expected.append(white).append("      README.md").append(nl).append(reset);
         expected.append(white).append("      notes.txt").append(nl).append(reset);
         expected.append(white).append("      images/").append(nl).append(reset);
         expected.append(white).append("         cat.png").append(nl).append(reset);
         expected.append(white).append("         Dog.png").append(nl).append(reset);
-        
+        expected.append(white).append("      README.md").append(nl).append(reset);
         
         
 
