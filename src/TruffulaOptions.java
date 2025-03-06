@@ -131,11 +131,11 @@ public class TruffulaOptions  {
       }
     }
 
-    // assign the root to the directory
-    root = directory;
-    //assign local variables to the final fields listed in the class
-    useColor = localUseColor;
-    showHidden = localShowHidden;
+  // assign the root to the directory
+  root = directory;
+  //assign local variables to the final fields listed in the class
+  useColor = localUseColor;
+  showHidden = localShowHidden;
   }
 
   /**
