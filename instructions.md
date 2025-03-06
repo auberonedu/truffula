@@ -89,3 +89,8 @@ Update your `printTree()` so that the files/folders are sorted alphabetically. U
 It should now finally pass the provided test! Congrats!
 
 There is one more small wave that will be added in a future class~
+
+### ASK AUBERON
+- Hidden files??
+- Default color print white??
+- How to pull from upstream
