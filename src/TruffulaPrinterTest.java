@@ -326,8 +326,7 @@ public class TruffulaPrinterTest {
         String yellow = "\033[0;33m";
 
         StringBuilder expected = new StringBuilder();
-        /* Default color is white, which is why every line currently starts with white */
-        // TODO: fix this!
+       
         expected.append(white).append("myFolder/").append(nl).append(reset);
         expected.append(purple).append("   Apple.txt").append(nl).append(reset);
         expected.append(purple).append("   banana.txt").append(nl).append(reset);
