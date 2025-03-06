@@ -133,29 +133,36 @@ truffula/
     out.println("printTree was called!");
     out.println("My options are: " + options);
 
-  //   if (root == null  || !root.exists()) {
-  //     out.println("Invalid root");
-  //     return;
-  //   }
-
-  //   printTreeMethodHelper(root, 0);
+    /*
+    PRINT TREE METHOD
+      get the root directory  
+      then call recursively to the printTreeMethodHelper
+     */
+  
+    printTreeMethodHelper();
   }
-  // }
 
-  // public static void printTreeMethodHelper(File file, int level) {
-  //   String indent = "   ".repeat(level);
 
-  //   out.println(indent + file.getName());
+  public static void printTreeMethodHelper() {
+    /*
+    in this directory we're going to pass in the directory and the indentLevel
+    Consider the base case
+      if directory is null or if the directory isn't a directory or doesn't exists
+        simply return 
+    Logic
+      Create concactnation of indent sn string based on the level
+        something like, indent = "   " repeated indentLevel times
+    
+      then print the directory with the proper indentation => directory + "/"
+      
+      after that get the list of files and directories
 
-  //   if (file.isDirectory()) {
-  //     File[] files = file.listFiles();
-  //     if (files != null) {
+      loop
+        
+      loop 
 
-          
-          
-  //         for (File f : files) {
-  //             printTreeHelper(f, level + 1);
-  //       }
-  //     }
-  //   }
+      print the file name with the proper intentations
+
+     */
+  }
 }
