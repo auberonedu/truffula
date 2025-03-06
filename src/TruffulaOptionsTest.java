@@ -109,6 +109,7 @@ public class TruffulaOptionsTest {
 
   @Test
   void testThrowsForFile() {
+    // create only a file object, not a directory
     File file = new File("test/testFile");
     String filePath = file.getAbsolutePath();
     String[] args = { "-nc", filePath };
@@ -117,6 +118,19 @@ public class TruffulaOptionsTest {
     assertThrows(FileNotFoundException.class, () -> {
       new TruffulaOptions(args);
     });
+  }
+
+  @Test
+  void testArgsWithOnlyFilePath(@TempDir File testFile) throws FileNotFoundException{
+    File directory = new File(testFile, "folder");
+    directory.mkdir();
+    String directoryPath = directory.getAbsolutePath();
+    String[] args = {directoryPath };
+
+    TruffulaOptions options = new TruffulaOptions(args);
+
+    assertEquals(directory.getAbsolutePath(), options.getRoot().getAbsolutePath());
+
   }
 
 }
