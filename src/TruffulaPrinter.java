@@ -164,43 +164,35 @@ public class TruffulaPrinter {
     int colorPicker = depth % 3;
     ConsoleColor levelColor = DEFAULT_COLOR_SEQUENCE.get(colorPicker);
     
-
-    // if file is not a directory, print spaces + file
-    if (!(showHidden == false && root.isHidden())) {
-      // Handles files that are NOT folders
-      if (!root.isDirectory()) {
-        // COLORS: if showColor == true, add color, else:
-        if (showColor == true) {
-          out.setCurrentColor(levelColor);
-        } 
-        printedFile = spaces + root.getName();
-        
-        out.println(printedFile);
-        return depth;
-
-      // Handles folders
-      } else {
-        // COLORS: if showColor == true, add color, else:
-        if (showColor == true) {
-          out.setCurrentColor(levelColor);
-        } 
-        printedFile = spaces + root.getName() + "/";
-        
-        out.println(printedFile);
-      }
+    // Handles files that are NOT folders
+    if (!root.isDirectory()) {
+      // COLORS: if showColor == true, add color, else:
+      if (showColor == true) {
+        out.setCurrentColor(levelColor);
+      } 
+      printedFile = spaces + root.getName();
+      
+      out.println(printedFile);
+      return depth;
     }
-    // this line hits regardless of hidden status
+
+    // Handles folders
+
+    // COLORS: if showColor == true, add color, else:
+    if (showColor == true) {
+      out.setCurrentColor(levelColor);
+    } 
+    printedFile = spaces + root.getName() + "/";
+    out.println(printedFile);
+
     File[] list = root.listFiles();
     for (File file: list) {
-      if (showHidden == false && file.isHidden()) {
-        continue;
-      } else if (file.isDirectory()) {
+      if (file.isDirectory()) {
         return depth + printTreeHelper(file, depth, showHidden, showColor);
       } else {
         printTreeHelper(file, depth, showHidden, showColor);
       }
     }
-
     return depth;
   }
 }
