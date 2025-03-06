@@ -1,3 +1,4 @@
+import java.io.File;
 import java.io.PrintStream;
 import java.util.List;
 
@@ -118,9 +119,24 @@ public class TruffulaPrinter {
     //     check if they are also a directory
     //     rinse repeat until there are no more directories
 
+    // base case
+    printTree(options.getRoot());
+
     
 
     out.println("printTree was called!");
     out.println("My options are: " + options);
   }
+
+  private void printTree(File root){
+    // print
+    out.println(root.getName());
+
+    // traverse
+    for (var file : root.listFiles()){
+      printTree(file);
+    }
+  }
+
+  
 }
