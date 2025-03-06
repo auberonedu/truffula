@@ -104,7 +104,27 @@ public class TruffulaOptions  {
     // TODO: Replace the below lines with your implementation
     root = null;
     showHidden = false;
-    useColor = false;
+    // defualt option is to use colors for text output
+    useColor = true;
+
+    //construct new file object to get file path
+    File file = new File (args[args.length - 1]);
+
+    if(args.length == 0 || !file.exists()){
+      throw new IllegalArgumentException("Unknown Arguments Provided or invalid file path");
+    }
+
+    for(int i = 0; i < args.length - 2; i++){
+      if(args[i].equals("-h")){
+        showHidden = true;
+      }
+
+      if(args[i].equals("-nc")){
+        useColor = false;
+      }
+    }
+
+
   }
 
   /**
