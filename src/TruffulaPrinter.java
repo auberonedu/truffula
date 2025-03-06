@@ -115,25 +115,29 @@ public class TruffulaPrinter {
     // getName() ==> returns the name of the file or directory denoted by this abstract path name
     // isDirectory() ==> Tests whether the file denoted by this abstract pathname is a directory.
     // isHidden() ==> Tests whether the file named by this abstract pathname is a hidden file.
+    out.println(options.getRoot().getName()+ "/");
+    printTreeHelper(options.getRoot(), 1);
 
-    printTree(options.getRoot(), 0);
-
-    out.println("printTree was called!");
-    out.println("My options are: " + options);
+    //out.println("printTree was called!");
+    //out.println("My options are: " + options);
   }
 
-  private void printTree(File directory, int level){
+  private void printTreeHelper(File directory, int level){
     if(directory == null || !directory.isDirectory()) return;
 
-    for(int i=0; i<level; i++){
-      out.println("   ");
-    }
-
-    out.println(directory.getName());
-
     File[] files = directory.listFiles();
-    for(File file : files){
-      printTree(file, level +1);
+    if(files != null){
+      for(File file : files){
+        StringBuilder str = new StringBuilder();
+        str.append("   ".repeat(level));
+        str.append(file.getName());
+          if(file.isDirectory()){
+            str.append("/");
+          }
+        out.println(str.toString());
+      printTreeHelper(file, level +1);
     }
+    }
+    
   }
 }
