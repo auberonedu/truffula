@@ -129,7 +129,7 @@ public class TruffulaOptionsTest {
 
     TruffulaOptions options = new TruffulaOptions(args);
 
-    assertEquals(directory.getAbsolutePath(), options.getRoot().getAbsolutePath());
+    assertEquals(directoryPath, options.getRoot().getAbsolutePath());
 
   }
 
