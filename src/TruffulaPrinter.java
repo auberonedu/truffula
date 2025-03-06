@@ -1,3 +1,4 @@
+import java.io.File;
 import java.io.PrintStream;
 import java.util.List;
 
@@ -111,8 +112,28 @@ public class TruffulaPrinter {
     // - For Wave 6: Use AlphabeticalFileSorter
     // DO NOT USE SYSTEM.OUT.PRINTLN
     // USE out.println instead (will use your ColorPrinter)
+  
 
     out.println("printTree was called!");
     out.println("My options are: " + options);
+  }
+
+  public void printTreeHelper(File directory, int depth){
+    // base case
+    if(directory == null || !directory.exists()){
+      return;
+    }
+
+    File[] files = directory.listFiles();
+
+    // check if hidden files should be shown or not
+    for(File file : files){
+      if(!options.isShowHidden() && file.isHidden()){
+        continue;
+      }
+    
+    }
+
+
   }
 }
