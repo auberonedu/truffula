@@ -139,8 +139,9 @@ public class TruffulaPrinter {
     out.println(rootName);
     File[] childFiles = root.listFiles();
     if (childFiles == null) return;
+    lvl++;
     for(File child : childFiles){
-      printTreeHelper(child, lvl++);
+      printTreeHelper(child, lvl);
     }
   }
 }

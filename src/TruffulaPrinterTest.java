@@ -183,8 +183,9 @@ public class TruffulaPrinterTest {
         expected.append(white).append("   Documents/").append(nl).append(reset);
         expected.append(white).append("      notes.txt").append(nl).append(reset);
         expected.append(white).append("      images/").append(nl).append(reset);
-        expected.append(white).append("         cat.png").append(nl).append(reset);
         expected.append(white).append("         Dog.png").append(nl).append(reset);
+        expected.append(white).append("         cat.png").append(nl).append(reset);
+        
         expected.append(white).append("      README.md").append(nl).append(reset);
         
         
