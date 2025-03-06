@@ -93,4 +93,16 @@ public class TruffulaOptionsTest {
     assertFalse(options.isShowHidden());
   }
 
+  @Test 
+  void testShowHiddenSetTrue(@TempDir File testFile)throws FileNotFoundException {
+    File directory = new File(testFile, "folder");
+    directory.mkdir();
+    String directoryPath = directory.getAbsolutePath();
+    String[] args = {"-h", directoryPath};
+
+    TruffulaOptions options = new TruffulaOptions(args);
+
+    assertTrue(options.isShowHidden());
+  }
+
 }
