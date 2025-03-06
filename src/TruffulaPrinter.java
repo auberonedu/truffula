@@ -1,3 +1,4 @@
+import java.io.File;
 import java.io.PrintStream;
 import java.util.List;
 
@@ -138,12 +139,13 @@ truffula/
       get the root directory  
       then call recursively to the printTreeMethodHelper
      */
+
   
-    printTreeMethodHelper();
+    printTreeMethodHelper(root,0);
   }
 
 
-  public static void printTreeMethodHelper() {
+  public static void printTreeMethodHelper(File currentDirectory, int indentLevel) {
     /*
     in this directory we're going to pass in the directory and the indentLevel
     Consider the base case
@@ -164,5 +166,17 @@ truffula/
       print the file name with the proper intentations
 
      */
+
+    if(currentDirectory.isDirectory()) {
+      currentDirectory.getName();
+    }
+  }
+
+  public static String printIndentedSpaces(String name, int indentLevel){
+    String indent = "   ";
+    for (int i = 1; i < indentLevel; i++) {
+      indent += "   ";
+    }
+    return indent + name;
   }
 }
