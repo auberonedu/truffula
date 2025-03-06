@@ -26,4 +26,11 @@ class ColorPrinterTest {
     // Assert: Verify the printed output
     assertEquals(expectedOutput, outputStream.toString());
   }
+
+  // test no reset
+  // test empty string
+  // test null
+  // test default color
+  // test multiple strings
+  // test multiple resets
 }

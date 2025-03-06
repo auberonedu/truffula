@@ -26,4 +26,9 @@ public class TruffulaOptionsTest {
     assertTrue(options.isShowHidden());
     assertFalse(options.isUseColor());
   }
+
+  // test if empty
+  // test if null
+  // test if path (put a file)
+  // test invalid command
 }
