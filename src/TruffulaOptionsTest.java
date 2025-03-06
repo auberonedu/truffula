@@ -41,24 +41,25 @@ public class TruffulaOptionsTest {
 
   @Test
   void testInValidDirectory() {
-    //Arrange
+    // Arrange
     String invalidPath = "invalid/directory";
-    String[] args = {"-nc", "-h", invalidPath};
+    String[] args = { "-nc", "-h", invalidPath };
 
-    //Act and assert: Invalid file directory  *+
+    // Act and assert: Invalid file directory *+
     assertThrows(FileNotFoundException.class, () -> {
       new TruffulaOptions(args);
-  });
+    });
   }
 
-  // support in JUNIT TempDir : https://www.baeldung.com/junit-5-temporary-directory
-  @Test 
+  // support in JUNIT TempDir :
+  // https://www.baeldung.com/junit-5-temporary-directory
+  @Test
   void testInvalidArgs(@TempDir File testDir) {
-    //Arrange
+    // Arrange
     File directory = new File(testDir, "folder");
     directory.mkdir();
     String directoryPath = directory.getAbsolutePath();
-    String[] args = {"nq", "-c", directoryPath};
+    String[] args = { "nq", "-c", directoryPath };
 
     // Act and assert
     assertThrows(IllegalArgumentException.class, () -> {
@@ -71,12 +72,13 @@ public class TruffulaOptionsTest {
     File directory = new File(testFile, "folder");
     directory.mkdir();
     String directoryPath = directory.getAbsolutePath();
-    String[] args = {"-h", directoryPath};
+    String[] args = { "-h", directoryPath };
 
     TruffulaOptions options = new TruffulaOptions(args);
 
     assertEquals(true, options.isUseColor());
     assertTrue(options.isUseColor());
+    assertTrue(options.isShowHidden());
 
   }
 
@@ -85,7 +87,7 @@ public class TruffulaOptionsTest {
     File directory = new File(testFile, "folder");
     directory.mkdir();
     String directoryPath = directory.getAbsolutePath();
-    String[] args = {"-nc", directoryPath};
+    String[] args = { "-nc", directoryPath };
 
     TruffulaOptions options = new TruffulaOptions(args);
 
@@ -93,16 +95,28 @@ public class TruffulaOptionsTest {
     assertFalse(options.isShowHidden());
   }
 
-  @Test 
-  void testShowHiddenSetTrue(@TempDir File testFile)throws FileNotFoundException {
+  @Test
+  void testShowHiddenSetTrue(@TempDir File testFile) throws FileNotFoundException {
     File directory = new File(testFile, "folder");
     directory.mkdir();
     String directoryPath = directory.getAbsolutePath();
-    String[] args = {"-h", directoryPath};
+    String[] args = { "-h", directoryPath };
 
     TruffulaOptions options = new TruffulaOptions(args);
 
     assertTrue(options.isShowHidden());
+  }
+
+  @Test
+  void testThrowsForFile() {
+    File file = new File("test/testFile");
+    String filePath = file.getAbsolutePath();
+    String[] args = { "-nc", filePath };
+
+    // Act and assert
+    assertThrows(FileNotFoundException.class, () -> {
+      new TruffulaOptions(args);
+    });
   }
 
 }
