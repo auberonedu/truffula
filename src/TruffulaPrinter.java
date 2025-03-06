@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.PrintStream;
 import java.util.List;
+import javax.management.OperationsException;
 
 /**
  * TruffulaPrinter is responsible for printing a directory tree structure
@@ -170,6 +171,19 @@ truffula/
     if(currentDirectory.isDirectory()) {
       currentDirectory.getName();
     }
+
+    File[] files = currentDirectory.listFiles();
+
+    for(File file : files) {
+      if(file.isHidden() && !options.isShowHidden()) {
+        continue;
+      }
+      printTreeMethodHelper(file, indentLevel + 1);
+      else {
+        printIndentedSpaces(currentDirectory.getName(), indentLevel);
+      }
+    }
+
   }
 
   public static String printIndentedSpaces(String name, int indentLevel){
