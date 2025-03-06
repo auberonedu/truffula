@@ -33,8 +33,12 @@ public class TruffulaPrinterTest {
         String output = baos.toString();
         String nl = System.lineSeparator();
 
+        // Build expected output with exact colors and indentation
+        String reset = "\033[0m";
+        String white = "\033[0;37m";
+
         StringBuilder expected = new StringBuilder();
-        expected.append("myFolder/").append(nl);
+        expected.append(white).append("myFolder/").append(nl).append(reset);
 
         assertEquals(expected.toString(), output);
     }

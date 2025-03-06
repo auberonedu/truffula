@@ -122,15 +122,11 @@ public class TruffulaPrinter {
     // base case
     printTree(options.getRoot());
 
-    
-
-    out.println("printTree was called!");
-    out.println("My options are: " + options);
   }
 
   private void printTree(File root){
     // print
-    out.println(root.getName());
+    out.println(root.getName() + "/");
 
     // traverse
     for (var file : root.listFiles()){
