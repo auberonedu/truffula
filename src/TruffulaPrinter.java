@@ -163,6 +163,8 @@ public class TruffulaPrinter {
 
     String spaces = spacesString.toString();
     String printedFile = "";
+    int colorPicker = depth % 3;
+    ConsoleColor levelColor = DEFAULT_COLOR_SEQUENCE.get(colorPicker);
 
     // if file is not a directory, print spaces + file
     if (!(showHidden == false && root.isHidden())) {
@@ -170,7 +172,7 @@ public class TruffulaPrinter {
       if (!root.isDirectory()) {
         // COLORS: if showColor == true, add color, else:
         if (showColor == true) {
-          printedFile = ConsoleColor.PURPLE + spaces + root.getName();
+          printedFile = levelColor + spaces + root.getName();
         } else {
           printedFile = spaces + root.getName();
         }
@@ -181,7 +183,7 @@ public class TruffulaPrinter {
       } else {
         // COLORS: if showColor == true, add color, else:
         if (showColor == true) {
-          printedFile = ConsoleColor.PURPLE + spaces + root.getName() + "/" + ConsoleColor.RESET;
+          printedFile = levelColor + spaces + root.getName() + "/" + ConsoleColor.RESET;
         } else {
           printedFile = spaces + root.getName() + "/";
         }
