@@ -120,7 +120,22 @@ public class TruffulaOptions  {
       throw new FileNotFoundException("Invalid File Path : " + directory.toString());
     }
 
+    //loop through all args. check for flags 
+    for(int i = 0; i < args.length - 1; i++){
+      if(args[i].equals("-h")){
+        localShowHidden = true;
+      }
 
+      if(args[i].equals("-nc")){
+        localUseColor = false;
+      }
+    }
+
+    // assign the root to the directory
+    root = directory;
+    //assign local variables to the final fields listed in the class
+    useColor = localUseColor;
+    showHidden = localShowHidden;
   }
 
   /**
