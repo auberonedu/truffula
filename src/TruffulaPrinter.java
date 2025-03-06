@@ -107,6 +107,7 @@ public class TruffulaPrinter {
     // REQUIRED: ONLY use java.io, DO NOT use java.nio
     File root = options.getRoot();
     boolean showHidden = options.isShowHidden();
+    boolean showColor = options.isUseColor();
 
     // base cases 
     if (root == null || !root.isDirectory()) {
@@ -134,7 +135,7 @@ public class TruffulaPrinter {
       if (showHidden == false && file.isHidden()) {
         continue;
       } else {
-        printTreeHelper(file, depth, showHidden);
+        printTreeHelper(file, depth, showHidden, showColor);
       } 
     }
 
@@ -149,7 +150,7 @@ public class TruffulaPrinter {
   }
 
   // private helper to add indentation to the files structure   
-  public int printTreeHelper(File root, int depth, boolean showHidden) {
+  public int printTreeHelper(File root, int depth, boolean showHidden, boolean showColor) {
 
     // incrementing the depth 
     depth++;
@@ -161,14 +162,30 @@ public class TruffulaPrinter {
     }
 
     String spaces = spacesString.toString();
+    String printedFile = "";
 
     // if file is not a directory, print spaces + file
     if (!(showHidden == false && root.isHidden())) {
+      // Handles files that are NOT folders
       if (!root.isDirectory()) {
-        out.println(spaces + root.getName());
+        // COLORS: if showColor == true, add color, else:
+        if (showColor == true) {
+          printedFile = ConsoleColor.PURPLE + spaces + root.getName();
+        } else {
+          printedFile = spaces + root.getName();
+        }
+        out.println(printedFile);
         return depth;
+
+      // Handles folders
       } else {
-        out.println(spaces + root.getName() + "/");
+        // COLORS: if showColor == true, add color, else:
+        if (showColor == true) {
+          printedFile = ConsoleColor.PURPLE + spaces + root.getName() + "/" + ConsoleColor.RESET;
+        } else {
+          printedFile = spaces + root.getName() + "/";
+        }
+        out.println(printedFile);
       }
     }
 
@@ -177,9 +194,9 @@ public class TruffulaPrinter {
       if (showHidden == false && file.isHidden()) {
         continue;
       } else if (file.isDirectory()) {
-        return depth + printTreeHelper(file, depth, showHidden);
+        return depth + printTreeHelper(file, depth, showHidden, showColor);
       } else {
-        printTreeHelper(file, depth, showHidden);
+        printTreeHelper(file, depth, showHidden, showColor);
       }
     }
 
