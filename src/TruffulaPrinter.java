@@ -183,7 +183,7 @@ public class TruffulaPrinter {
       } else {
         // COLORS: if showColor == true, add color, else:
         if (showColor == true) {
-          printedFile = levelColor + spaces + root.getName() + "/" + ConsoleColor.RESET;
+          printedFile = levelColor + spaces + root.getName() + "/";
         } else {
           printedFile = spaces + root.getName() + "/";
         }
