@@ -1,7 +1,3 @@
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.PrintStream;
-import org.junit.jupiter.api.Test;
 public class App {
   
   /**
@@ -52,12 +48,10 @@ public class App {
 
     // Create a TruffulaOptions object using the arguments passed
     TruffulaOptions options = new TruffulaOptions(args);
-    
-    PrintStream printStream = System.out;
-    
-    TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
+        
+    TruffulaPrinter prints = new TruffulaPrinter(options);
 
-    printer.printTree();
+    prints.printTree();
     
   }
 }

@@ -104,7 +104,7 @@ public class TruffulaOptions  {
     // TODO: Replace the below lines with your implementation
     File root = null;
     boolean showHidden = false;
-    boolean useColor = false;
+    boolean useColor = true; //Change to true, default to the color being used
 
     // Checks if the arguments are empty
     if (args == null || args.length == 0) {

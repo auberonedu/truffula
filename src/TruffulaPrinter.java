@@ -121,43 +121,41 @@ truffula/
 
     */
 
-  public void printTree(File root) {
-    // TODO: Implement this!
-    // REQUIRED: ONLY use java.io, DO NOT use java.nio
+  public void printTree() {
+  //   // TODO: Implement this!
+  //   // REQUIRED: ONLY use java.io, DO NOT use java.nio
     
-    // Hints:
-    // - Add a recursive helper method
-    // - For Wave 6: Use AlphabeticalFileSorter
-    // DO NOT USE SYSTEM.OUT.PRINTLN
-    // USE out.println instead (will use your ColorPrinter)
-
-    if (root == null  || !root.exists()) {
-      out.println("Invalid root");
-      return;
-    }
-
-    printTreeMethodHelper(root, 0);
-
-
+  //   // Hints:
+  //   // - Add a recursive helper method
+  //   // - For Wave 6: Use AlphabeticalFileSorter
+  //   // DO NOT USE SYSTEM.OUT.PRINTLN
+  //   // USE out.println instead (will use your ColorPrinter)
     out.println("printTree was called!");
     out.println("My options are: " + options);
+
+  //   if (root == null  || !root.exists()) {
+  //     out.println("Invalid root");
+  //     return;
+  //   }
+
+  //   printTreeMethodHelper(root, 0);
   }
+  // }
 
-  public static void printTreeMethodHelper(File file, int level) {
-    String indent = "   ".repeat(level);
+  // public static void printTreeMethodHelper(File file, int level) {
+  //   String indent = "   ".repeat(level);
 
-    out.println(indent + file.getName());
+  //   out.println(indent + file.getName());
 
-    if (file.isDirectory()) {
-      File[] files = file.listFiles();
-      if (files != null) {
+  //   if (file.isDirectory()) {
+  //     File[] files = file.listFiles();
+  //     if (files != null) {
 
           
           
-          for (File f : files) {
-              printTreeHelper(f, level + 1);
-        }
-      }
-    }
-  }
+  //         for (File f : files) {
+  //             printTreeHelper(f, level + 1);
+  //       }
+  //     }
+  //   }
 }
