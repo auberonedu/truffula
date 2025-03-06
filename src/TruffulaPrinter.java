@@ -136,6 +136,9 @@ public class TruffulaPrinter {
       rootName += " ";
     }
     rootName += root.getName();
+    if (root.isDirectory()){
+      rootName += "/";
+    }
     out.println(rootName);
     File[] childFiles = root.listFiles();
     if (childFiles == null) return;
