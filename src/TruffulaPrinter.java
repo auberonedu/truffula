@@ -130,11 +130,9 @@ public class TruffulaPrinter {
     // Create an array of files in root, iterate through
     File[] listOfFiles = root.listFiles();
 
-
     for (File file: listOfFiles) {
       printTreeHelper(file, depth, showHidden, showColor);
     }
-
 
     // Hints:
     // - For Wave 6: Use AlphabeticalFileSorter
@@ -175,8 +173,6 @@ public class TruffulaPrinter {
       out.println(printedFile);
       return depth;
     }
-
-    // Handles folders
 
     // COLORS: if showColor == true, add color, else:
     if (showColor == true) {
