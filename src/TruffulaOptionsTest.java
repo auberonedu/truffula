@@ -1,3 +1,4 @@
+import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -26,4 +27,17 @@ public class TruffulaOptionsTest {
     assertTrue(options.isShowHidden());
     assertFalse(options.isUseColor());
   }
+
+  @Test
+  void testEmptyArgs() {
+    // Arrange : Empty args
+    String[] args = {};
+
+    //Act and Assert : throw an excpetion for an empty args
+    assertThrows(IllegalArgumentException.class, () -> {
+      new TruffulaOptions(args);
+  });
+  }
+
+
 }
