@@ -112,6 +112,14 @@ public class TruffulaPrinter {
     // DO NOT USE SYSTEM.OUT.PRINTLN
     // USE out.println instead (will use your ColorPrinter)
 
+    // if it's a directory
+    //     list all files in the directory as a children
+    //     for each child
+    //     check if they are also a directory
+    //     rinse repeat until there are no more directories
+
+    
+
     out.println("printTree was called!");
     out.println("My options are: " + options);
   }
