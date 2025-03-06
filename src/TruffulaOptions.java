@@ -115,8 +115,8 @@ public class TruffulaOptions  {
     File directory = new File (args[args.length - 1]);
 
 
-    //verify the path is to a directory
-    if(!directory.isDirectory()){
+    //verify the path is to a directory and exists
+    if(!directory.isDirectory() || !directory.exists()){
       throw new FileNotFoundException("Invalid File Path : " + directory.toString());
     }
 
@@ -124,10 +124,10 @@ public class TruffulaOptions  {
     for(int i = 0; i < args.length - 1; i++){
       if(args[i].equals("-h")){
         localShowHidden = true;
-      }
-
-      if(args[i].equals("-nc")){
+      } else if (args[i].equals("-nc")){
         localUseColor = false;
+      } else {
+        throw new IllegalArgumentException("Invalid Flags");
       }
     }
 
