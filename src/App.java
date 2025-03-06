@@ -43,6 +43,9 @@ public class App {
   public static void main(String[] args) throws Exception {
     System.out.println("main called");
     System.out.println(ConsoleColor.RED + "Printing in red?" + ConsoleColor.RESET);
+    if(args.length == 0) {
+      throw new IllegalArgumentException("Oh no!");
+    }
     // TODO: Implement this
     // You should create a TruffulaOptions object using the args and
     // pass it to a new TruffulaPrinter that uses System.out
