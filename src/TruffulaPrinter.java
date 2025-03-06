@@ -132,11 +132,7 @@ public class TruffulaPrinter {
 
 
     for (File file: listOfFiles) {
-      if (showHidden == false && file.isHidden()) {
-        continue;
-      } else {
-        printTreeHelper(file, depth, showHidden, showColor);
-      } 
+      printTreeHelper(file, depth, showHidden, showColor);
     }
 
 
@@ -151,6 +147,8 @@ public class TruffulaPrinter {
 
   // private helper to add indentation to the files structure   
   public int printTreeHelper(File root, int depth, boolean showHidden, boolean showColor) {
+    // BASE CASE - FILE HIDDEN && !SHOWHIDDEN
+    if (root.isHidden() && !showHidden) return depth;
 
     // incrementing the depth 
     depth++;
@@ -191,7 +189,7 @@ public class TruffulaPrinter {
         out.println(printedFile);
       }
     }
-
+    // this line hits regardless of hidden status
     File[] list = root.listFiles();
     for (File file: list) {
       if (showHidden == false && file.isHidden()) {
