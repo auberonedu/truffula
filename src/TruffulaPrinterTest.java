@@ -307,4 +307,79 @@ public class TruffulaPrinterTest {
         // Assert that the output matches the expected output exactly
         assertEquals(expected.toString(), output);
     }
+
+    @Test
+    public void testNoColorSortedAlphabetically(@TempDir File tempDir) throws IOException {
+        // Build the example directory structure:
+        // Alphabet/
+        //    a.txt
+        //    b.txt
+        //    c/
+        //      d.txt
+        //      e.txt
+        //    zebra.txt
+
+        // Create "Alphabet"
+        File alphabet = new File(tempDir, "Alphabet");
+        assertTrue(alphabet.mkdir(), "myFolder should be created");
+
+        // Create files in Alphabet
+        File zebra = new File(alphabet, "zebra.txt");
+        File b = new File(alphabet, "b.txt");
+        File a = new File(alphabet, "a.txt");
+        zebra.createNewFile();
+        b.createNewFile();
+        a.createNewFile();
+        
+        // Create subdirectory "c" in myFolder
+        File c = new File(alphabet, "c");
+        assertTrue(c.mkdir(), "Documents directory should be created");
+
+        // Create files in myFolder
+        File e = new File(c, "e.txt");
+        File d = new File(c, "d.txt");
+        e.createNewFile();
+        d.createNewFile();
+
+        // Set up TruffulaOptions with showHidden = false and useColor = true
+        TruffulaOptions options = new TruffulaOptions(alphabet, false, false);
+
+        // Capture output using a custom PrintStream
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(baos);
+
+        // Instantiate TruffulaPrinter with custom PrintStream
+        TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
+
+        // Call printTree (output goes to printStream)
+        printer.printTree();
+
+        // Retrieve printed output
+        String output = baos.toString();
+        String nl = System.lineSeparator();
+
+        String reset = "\033[0m";
+        String white = "\033[0;37m";
+
+        StringBuilder expected = new StringBuilder();
+
+        // Alphabet/
+        //    a.txt
+        //    b.txt
+        //    c/
+        //      d.txt
+        //      e.txt
+        //    zebra.txt
+       
+        expected.append(white).append("Alphabet/").append(nl).append(reset);
+        expected.append(white).append("   a.txt").append(nl).append(reset);
+        expected.append(white).append("   b.txt").append(nl).append(reset);
+        expected.append(white).append("   c/").append(nl).append(reset);
+        expected.append(white).append("      d.txt").append(nl).append(reset);
+        expected.append(white).append("      e.txt").append(nl).append(reset);
+        expected.append(white).append("   zebra.txt").append(nl).append(reset);
+
+        // Assert that the output matches the expected output exactly
+        assertEquals(expected.toString(), output);
+    }
 }
