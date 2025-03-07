@@ -81,9 +81,7 @@ class ColorPrinterTest {
     String message = null;
 
     // Assert: Verify the printed output
-    assertThrows(IllegalArgumentException.class, () -> {
-      printer.print(message);
-    }, "Expects an IllegalArgumentException when a null message is trying to print");
+    assertThrows(IllegalArgumentException.class, () -> printer.print(message));
   }
 
   //test default color

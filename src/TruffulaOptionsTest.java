@@ -50,9 +50,7 @@ public class TruffulaOptionsTest {
     String[] args = null;
 
     // Act & Assert: Creating a TruffulaOptions instance with null should throw an IllegalArgumentException
-    assertThrows(IllegalArgumentException.class, () -> {
-      new TruffulaOptions(args);
-    });
+    assertThrows(IllegalArgumentException.class, () -> new TruffulaOptions(args));
   }
 
   // test if path (put a file)
@@ -90,4 +88,15 @@ public class TruffulaOptionsTest {
   }
 
   // test for multiple commands
+  @Test
+  void testManyArguements(@TempDir File tempDir) throws FileNotFoundException {
+    // Arrange: Prepare the arguments with the temp directory
+    File directory = new File(tempDir, "subfolder");
+    directory.mkdir();
+    String directoryPath = directory.getAbsolutePath();
+    String[] args = {"-nc", "-h", "-h", "-nc", directoryPath};
+
+    // Assert: Check that IllegalArgumentException is thrown
+    assertThrows(IllegalArgumentException.class, () -> new TruffulaOptions(args));
+  }
 }

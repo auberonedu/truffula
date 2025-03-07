@@ -110,6 +110,8 @@ public class TruffulaOptions  {
     boolean showHidden = false;
     boolean useColor = true;
 
+    if (args.length > 3) throw new IllegalArgumentException("Too many command-line arguments");
+
     for (String string : args) {
       if(string.equals("-h")) {
         showHidden = true;
