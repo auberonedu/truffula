@@ -1,5 +1,6 @@
-import java.io.PrintStream;
 import java.util.List;
+import java.io.File;
+import java.io.PrintStream;
 
 /**
  * TruffulaPrinter is responsible for printing a directory tree structure
@@ -112,7 +113,71 @@ public class TruffulaPrinter {
     // DO NOT USE SYSTEM.OUT.PRINTLN
     // USE out.println instead (will use your ColorPrinter)
 
+
+  //   if (root == null || !root.exists()) {
+  //     out.println("Directory does not exist");
+  //     return;
+  //   }
+
+  //   printTreeHelper(root, 0);
+
     out.println("printTree was called!");
     out.println("My options are: " + options);
+
+    // File rootDir = options.getRoot();
+    // if (rootDir.exists() && rootDir.isDirectory()) {
+    //   printTreeHelper(rootDir, 1);
+    // } else {
+    //   out.println("Invalid root directory:");
+    // }
+
+    printTreeHelper(options.getRoot(), 0);
+  }
+
+  // create a helper method
+  private void printTreeHelper(File current, int level) {
+    if (current == null || !current.exists()) {
+      return;
+    }
+    
+    if (current.isDirectory()) {
+      out.println(current.getName());
+    }
+
+    // getting the file from the directory
+    File[] files = current.listFiles();
+    if (files == null) {
+      return;
+    }
+
+    // sorting the files
+    for (File file : files) {
+      printTreeHelper(file, level + 1);
+    }
+  }
+
+  private void printSpaces(String name, int level) {
+    String indent = "   ".repeat(level);
+    out.println(indent + name);
   }
 }
+
+  // }
+
+  // private void printTreeHelper(File file, int level) {
+
+  //   // base case
+  //   String indent = "   ".repeat(level);
+
+  //   out.println(indent + file.getName());
+
+  //   // recursive case
+  //   if (file.isDirectory()) {
+  //     File[] files = file.listFiles();
+
+  //     for (File f : files) {
+  //       printTreeHelper(f, level + 1);
+  //     }
+  //   }
+  
+
