@@ -89,4 +89,5 @@ public class TruffulaOptionsTest {
     assertTrue(exception.getMessage().contains("Unknown arguement given: -invalid"));
   }
 
+  // test for multiple commands
 }
