@@ -113,6 +113,41 @@ public class TruffulaPrinter {
     // DO NOT USE SYSTEM.OUT.PRINTLN
     // USE out.println instead (will use your ColorPrinter)
 
+  File root = options.getRoot();
+
+  // check if the root directory exists
+  if (root == null || !root.exists() || !root.isDirectory()) {
+    out.println("Directory does not exist");
+    return;
+  }
+
+  out.println(root.getName() + "/");
+  printTreeHelper(root, 1);
+}
+
+// create a helper method
+private void printTreeHelper(File dir, int level) {
+  File[] files = dir.listFiles();
+
+  if (files == null) {
+    return;
+  }
+
+  // sort the files
+  for (File file : files) {
+    out.print("   ".repeat(level));
+
+    if (file.isDirectory()) {
+      out.println(file.getName() + "/");
+      printTreeHelper(file, level + 1);
+    } else {
+      out.println(file.getName());
+    }
+  }
+}
+}
+
+
 
   //   if (root == null || !root.exists()) {
   //     out.println("Directory does not exist");
@@ -121,8 +156,8 @@ public class TruffulaPrinter {
 
   //   printTreeHelper(root, 0);
 
-    out.println("printTree was called!");
-    out.println("My options are: " + options);
+    //out.println("printTree was called!");
+    //out.println("My options are: " + options);
 
     // File rootDir = options.getRoot();
     // if (rootDir.exists() && rootDir.isDirectory()) {
@@ -131,36 +166,36 @@ public class TruffulaPrinter {
     //   out.println("Invalid root directory:");
     // }
 
-    printTreeHelper(options.getRoot(), 0);
-  }
+//     printTreeHelper(options.getRoot(), 0);
+//   }
 
-  // create a helper method
-  private void printTreeHelper(File current, int level) {
-    if (current == null || !current.exists()) {
-      return;
-    }
+//   // create a helper method
+//   private void printTreeHelper(File current, int level) {
+//     if (current == null || !current.exists()) {
+//       return;
+//     }
     
-    if (current.isDirectory()) {
-      out.println(current.getName());
-    }
+//     if (current.isDirectory()) {
+//       out.println(current.getName());
+//     }
 
-    // getting the file from the directory
-    File[] files = current.listFiles();
-    if (files == null) {
-      return;
-    }
+//     // getting the file from the directory
+//     File[] files = current.listFiles();
+//     if (files == null) {
+//       return;
+//     }
 
-    // sorting the files
-    for (File file : files) {
-      printTreeHelper(file, level + 1);
-    }
-  }
+//     // sorting the files
+//     for (File file : files) {
+//       printTreeHelper(file, level + 1);
+//     }
+//   }
 
-  private void printSpaces(String name, int level) {
-    String indent = "   ".repeat(level);
-    out.println(indent + name);
-  }
-}
+//   private void printSpaces(String name, int level) {
+//     String indent = "   ".repeat(level);
+//     out.println(indent + name);
+//   }
+// }
 
   // }
 

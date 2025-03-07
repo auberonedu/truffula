@@ -68,7 +68,7 @@ public class TruffulaOptionsTest {
     FileNotFoundException exception = assertThrows(FileNotFoundException.class, () -> {
       new TruffulaOptions(args);
     });
-    //you forgot to add FileNotFound exception then exception and I rewrote the assert message you dont + nopath
+    
     // assertEquals("Directory not found: " + noPath, exception.getMessage());
     assertTrue(exception.getMessage().contains("Directory not found: "));
   }
