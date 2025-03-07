@@ -29,19 +29,64 @@ public class TruffulaOptionsTest {
   }
 
   // test if empty
-  // test if null
-  // test if path (put a file)
-  // test invalid command
+  @Test
+  void testEmptyArguments() {
+    // Arrange: Prepare an empty argument array
+    String[] args = {};
 
-   // test if empty
-  // test that an empty argument array throws an IllegalArgumentException.
- @Test
- void testEmptyArguments() {
-  String[] args = {};
-  Exception exception = assertThrows(
-    IllegalArgumentException.class, () -> {
-      
+    // Act & Assert: Creating a TruffulaOptions instance should throw an IllegalArgumentException
+    Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+      new TruffulaOptions(args);
     });
+
+    // Assert: Verify that the exception message contains information about the missing path
+    assertTrue(exception.getMessage().contains("Path required"));
+  }
+
+  // test if null
+  @Test
+  void testNullArguments() {
+    // Arrange: Set the arguments to null
+    String[] args = null;
+
+    // Act & Assert: Creating a TruffulaOptions instance with null should throw an IllegalArgumentException
+    assertThrows(IllegalArgumentException.class, () -> {
+      new TruffulaOptions(args);
+    });
+  }
+
+  // test if path (put a file)
+  @Test
+  void testPathIsAFile(@TempDir File tempDir) throws Exception {
+    // Arrange: Create a temporary file instead of a directory
+    File file = new File(tempDir, "aFile.txt");
+    file.createNewFile();
+    String[] args = {"-h", file.getAbsolutePath()};
+
+    // Act & Assert: Creating a TruffulaOptions instance with a file should throw a FileNotFoundException
+    Exception exception = assertThrows(FileNotFoundException.class, () -> {
+      new TruffulaOptions(args);
+    });
+
+    // Assert: Verify that the exception message indicates that the directory was not found
+    assertTrue(exception.getMessage().contains("Directory not found"));
+  }
+
+  // test invalid command
+  @Test
+  void testInvalidFlag(@TempDir File tempDir) {
+    // Arrange: Create a valid subdirectory and prepare arguments with an invalid flag
+    File directory = new File(tempDir, "subfolder");
+    directory.mkdir();
+    String[] args = {"-invalid", directory.getAbsolutePath()};
+
+    // Act & Assert: Creating a TruffulaOptions instance with an invalid flag should throw an IllegalArgumentException
+    Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+      new TruffulaOptions(args);
+    });
+
+    // Assert: Verify that the exception message indicates the unknown flag
+    assertTrue(exception.getMessage().contains("Unknown arguement given: -invalid"));
   }
 
 }
