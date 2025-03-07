@@ -146,7 +146,7 @@ public class TruffulaPrinter {
   // private helper to add indentation to the files structure   
   public int printTreeHelper(File root, int depth, boolean showHidden, boolean showColor) {
     // BASE CASE - FILE HIDDEN && !SHOWHIDDEN
-    if (root.isHidden() && !showHidden) return depth;
+    if ((root.isHidden() && !showHidden) || (root.getName().charAt(0) == '.' && !showHidden)) return depth;
 
     // incrementing the depth 
     depth++;
