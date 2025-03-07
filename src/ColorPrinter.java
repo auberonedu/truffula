@@ -87,6 +87,12 @@ public class ColorPrinter {
    */
   public void print(String message, boolean reset) {
     // TODO: Implement this!
+    if (message == null) {
+      throw new IllegalArgumentException("Message can't be null!");
+    }
+
+    if (message.isEmpty()) return;
+    
     if (reset) {
       printStream.print(currentColor + message + ConsoleColor.RESET);
     } else {
@@ -113,5 +119,21 @@ public class ColorPrinter {
   public ColorPrinter(PrintStream printStream, ConsoleColor color) {
     this.printStream = printStream;
     this.currentColor = color;
+  }
+
+  public static void main(String[] args) {
+    ColorPrinter coloredPrinter = new ColorPrinter(System.out);
+
+    // Blue
+    coloredPrinter.setCurrentColor(ConsoleColor.BLUE);
+    coloredPrinter.println("Hello");
+
+    // Purple
+    coloredPrinter.setCurrentColor(ConsoleColor.PURPLE);
+    coloredPrinter.println("Hello");
+
+    // Reset to white
+    coloredPrinter.setCurrentColor(ConsoleColor.RESET);
+    coloredPrinter.println("Hello");
   }
 }
