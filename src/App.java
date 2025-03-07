@@ -48,4 +48,6 @@ public class App {
 
     printer.printTree();
   }
+  // fix to run app.java
+  //java -cp target App -nc -h src
 }

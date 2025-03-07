@@ -115,6 +115,8 @@ public class TruffulaPrinter {
     // getName() ==> returns the name of the file or directory denoted by this abstract path name
     // isDirectory() ==> Tests whether the file denoted by this abstract pathname is a directory.
     // isHidden() ==> Tests whether the file named by this abstract pathname is a hidden file.
+    //out.println(options.getRoot().getName()+ "/");
+    out.setCurrentColor(ConsoleColor.WHITE);
     out.println(options.getRoot().getName()+ "/");
     printTreeHelper(options.getRoot(), 1);
 
@@ -122,22 +124,37 @@ public class TruffulaPrinter {
     //out.println("My options are: " + options);
   }
 
-  private void printTreeHelper(File directory, int level){
-    if(directory == null || !directory.isDirectory()) return;
-
-    File[] files = directory.listFiles();
-    if(files != null){
-      for(File file : files){
-        StringBuilder str = new StringBuilder();
-        str.append("   ".repeat(level));
-        str.append(file.getName());
-          if(file.isDirectory()){
-            str.append("/");
-          }
-        out.println(str.toString());
-      printTreeHelper(file, level +1);
-    }
-    }
+  private void printTreeHelper(File directory, int level) {
+    if (directory == null || !directory.isDirectory()) return;
     
+    // Recursively process files and subdirectories
+    File[] files = directory.listFiles();
+    if (files != null) {
+        for (File file : files) {
+          ConsoleColor color = getColorForLevel(level);
+          out.setCurrentColor(color);
+          String indent = " ".repeat(level);
+            if (file.isDirectory() ) {
+              out.println( indent + directory.getName() + "/");
+              printTreeHelper(file, level + 1);
+            } else {
+              out.println(indent + " " + file.getName());
+            }
+        }
+    }
+  }
+
+  private ConsoleColor getColorForLevel(int level) {
+    // Cycle through the colors based on the level of the directory
+    switch (level % 3) {
+        case 0:
+            return ConsoleColor.WHITE; //root white and child of yellow white
+        case 1:
+            return ConsoleColor.PURPLE; 
+        case 2:
+            return ConsoleColor.YELLOW;  
+        default:
+            return ConsoleColor.WHITE;  
+    }
   }
 }
