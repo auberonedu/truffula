@@ -198,12 +198,6 @@ public class TruffulaPrinterTest {
         Files.setAttribute(path, "dos:hidden", Boolean.TRUE, LinkOption.NOFOLLOW_LINKS);
         assertTrue(hidden.isHidden());
 
-        
-
-        // Create hidden subdirectory "Secrets" in myFolder
-        // File secrets = new File(myFolder, ".Secrets");
-        // assertTrue(secrets.mkdir(), "Secrets directory should be created");
-
         // Set up TruffulaOptions with showHidden = false and useColor = false
         TruffulaOptions options = new TruffulaOptions(myFolder, false, false);
 
@@ -363,14 +357,6 @@ public class TruffulaPrinterTest {
 
         StringBuilder expected = new StringBuilder();
 
-        // Alphabet/
-        //    a.txt
-        //    b.txt
-        //    c/
-        //      d.txt
-        //      e.txt
-        //    zebra.txt
-       
         expected.append(white).append("Alphabet/").append(nl).append(reset);
         expected.append(white).append("   a.txt").append(nl).append(reset);
         expected.append(white).append("   b.txt").append(nl).append(reset);

@@ -71,7 +71,6 @@ class ColorPrinterTest {
     assertEquals(expectedOutput, outputStream.toString());
   }
 
-  // Test one red line, two yellow lines
   @Test
   void testPrintRedResetYellowNoResetYellow() {
     // Arrange: Capture the printed output
@@ -98,7 +97,6 @@ class ColorPrinterTest {
     assertEquals(expectedOutput, outputStream.toString());
   }
 
-  // Throws illegalArgumentException when null input
   @Test
   void testPrintNullInput() {
     // Arrange: Capture the printed output
@@ -114,7 +112,6 @@ class ColorPrinterTest {
     }, "Illegal Argument Exception Expected");
   }
 
-  // No output for empty String
   @Test
   void testPrintEmptyString() {
     // Arrange: Capture the printed output
@@ -132,5 +129,4 @@ class ColorPrinterTest {
     // Assert: Verify the printed output
     assertEquals(expectedOutput, outputStream.toString());
   }
-  
 }

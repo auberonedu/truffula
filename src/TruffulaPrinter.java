@@ -104,27 +104,21 @@ public class TruffulaPrinter {
    *    zebra.txt
    */
   public void printTree() {
-    // REQUIRED: ONLY use java.io, DO NOT use java.nio
     File root = options.getRoot();
     boolean showHidden = options.isShowHidden();
     boolean showColor = options.isUseColor();
    
-    // base cases 
     if (root == null || !root.isDirectory()) {
       throw new IllegalArgumentException("Invalid/missing directory");
     }
 
-    // If root is hidden, showHidden off, return error
     if (showHidden == false && root.isHidden()) {
       throw new IllegalArgumentException("Root is hidden!");
     }
 
     int depth = 0;
-
-    // Print the root
     out.println(root.getName() + "/");
   
-    // Create an array of files in root, iterate through
     File[] listOfFiles = root.listFiles();
     AlphabeticalFileSorter.sort(listOfFiles);
 
@@ -132,21 +126,13 @@ public class TruffulaPrinter {
       printTreeHelper(file, depth, showHidden, showColor);
     }
 
-    // Hints:
-    // - For Wave 6: Use AlphabeticalFileSorter
-    // DO NOT USE SYSTEM.OUT.PRINTLN
-    // USE out.println instead (will use your ColorPrinter)
-
     // out.println("printTree was called!");
     // out.println("My options are: " + options);
   }
-
-  // private helper to add indentation to the files structure   
-  public int printTreeHelper(File root, int depth, boolean showHidden, boolean showColor) {
-    // BASE CASE - FILE HIDDEN && !SHOWHIDDEN
+ 
+  private int printTreeHelper(File root, int depth, boolean showHidden, boolean showColor) {
     if ((root.isHidden() && !showHidden) || (root.getName().charAt(0) == '.' && !showHidden)) return depth;
 
-    // incrementing the depth 
     depth++;
 
     StringBuilder spacesString = new StringBuilder();
@@ -160,19 +146,15 @@ public class TruffulaPrinter {
     int colorPicker = depth % 3;
     ConsoleColor levelColor = DEFAULT_COLOR_SEQUENCE.get(colorPicker);
     
-    // Handles files that are NOT folders
     if (!root.isDirectory()) {
-      // COLORS: if showColor == true, add color, else:
       if (showColor == true) {
         out.setCurrentColor(levelColor);
       } 
       printedFile = spaces + root.getName();
-      
       out.println(printedFile);
       return depth;
     }
 
-    // COLORS: if showColor == true, add color, else:
     if (showColor == true) {
       out.setCurrentColor(levelColor);
     } 

@@ -105,14 +105,12 @@ public class TruffulaOptions  {
       throw new IllegalArgumentException("Missing arguments or too many flags.");
     }
 
-    // Set default values
     boolean showHiddenToggle = false;
     boolean setHidden = false;
     boolean useColorToggle = true;
     boolean setColor = false;
     File path = new File(args[args.length - 1]);
 
-    // if does not exist or is not directory, throw illegalArgumentException
     if (!path.exists()) {
       throw new FileNotFoundException("File/directory not found.");
     } else if (!path.isDirectory()) {
@@ -153,7 +151,6 @@ public class TruffulaOptions  {
     } else {
       useColor = false;
     }
-
   }
 
   /**

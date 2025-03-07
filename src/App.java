@@ -42,17 +42,12 @@ public class App {
    */
   public static void main(String[] args) throws Exception {
     try {
-      // Creating a TruffulaOptions object with the args
       TruffulaOptions choices = new TruffulaOptions(args);
-
-      // Creating a TruffulaPrinter object by passing the choices to constructor
       TruffulaPrinter printer = new TruffulaPrinter(choices);
 
-      // Calling printTree() on the method
       printer.printTree();
     } catch (Exception e) {
       System.err.println(e.getMessage());
     }
-  
   }
 }
