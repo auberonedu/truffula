@@ -115,20 +115,39 @@ public class TruffulaPrinter {
 
     out.println("printTree was called!");
     out.println("My options are: " + options);
-    printTreeHelper(options.getRoot());
+    printTreeHelper(options.getRoot(), 0);
   }
 
-  private void printTreeHelper(File dir) {
-    File[] files = dir.listFiles();
-    if (files == null) return;
+  // Helper method with param levelDepth for storing level depth
+  // Create a file array to store the files from File dir using listFiles
+  // Base Case: check if dir is null, if so return 
+  // Second Base Case: Check if dir has no children, if so print only dir and return
+  // For loop: Loop the children of dir using list files.
+  //    Increment levelDepth by one
+  //    Check if child is a directory using .isDirectory(), if so
+  //    out.println("indent" * levelDepth + child.getName()) and recurse
+  //    helper method with level depth.
+  //    Else out.println("indent" * levelDepth + child.getName()).
 
-    for (File file : files) {
-      if (file.isDirectory()) {
-        
+  private void printTreeHelper(File dir, int levelDepth) {
+    if (dir == null) return;
+
+    if (dir.isFile()) {
+      out.println(dir.getName());
+      return;
+    }
+
+    for (File child : dir.listFiles()) {
+      levelDepth++;
+
+      String indent = "   ";
+      
+      if (child.isDirectory()) {
+        out.println(indent + child.getName());
+        printTreeHelper(child, levelDepth);
       } else {
-
+        out.println(indent + child.getName());
       }
     }
   }
-
 }
