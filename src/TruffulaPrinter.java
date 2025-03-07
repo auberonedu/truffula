@@ -1,3 +1,4 @@
+import java.io.File;
 import java.io.PrintStream;
 import java.util.List;
 
@@ -114,5 +115,20 @@ public class TruffulaPrinter {
 
     out.println("printTree was called!");
     out.println("My options are: " + options);
+    printTreeHelper(options.getRoot());
   }
+
+  private void printTreeHelper(File dir) {
+    File[] files = dir.listFiles();
+    if (files == null) return;
+
+    for (File file : files) {
+      if (file.isDirectory()) {
+        
+      } else {
+
+      }
+    }
+  }
+
 }
