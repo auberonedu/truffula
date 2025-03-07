@@ -108,7 +108,6 @@ public class TruffulaOptions {
    */
   public TruffulaOptions(String[] args) throws IllegalArgumentException, FileNotFoundException {
     // TODO: Replace the below lines with your implementation
-
     if (args == null || args.length == 0) {
       throw new IllegalArgumentException("Invalid arguments. Please provide a valid path");
     }
