@@ -16,6 +16,15 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TruffulaPrinterTest {
 
+    // order
+    // color on hidden on
+    // color off hidden on
+    // color on hidden off
+    // color off hidden off
+    // root directory is hidden
+    // root directoy is null
+    // super deep directory
+
     @Test
     public void testPrintTree_ExactOutput_WithCustomPrintStream(@TempDir File tempDir) throws IOException {
         // Build the example directory structure:
