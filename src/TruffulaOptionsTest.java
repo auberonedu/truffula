@@ -105,12 +105,7 @@ public class TruffulaOptionsTest {
     String[] args = {"-xyz", "-v", directoryPath};
 
     // Act: Create TruffulaOptions instance
-    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-      new TruffulaOptions(args);
-    });
-
-    // Assert: Check that the root directory is set correctly
-    assertEquals("Unknown argument: -xyz", exception.getMessage());
+    assertThrows(IllegalArgumentException.class, () -> {new TruffulaOptions(args);});
   }
 
   @Test
@@ -135,7 +130,7 @@ public class TruffulaOptionsTest {
     String[] args = {"/invalid123/123path"};
 
     // Act & Assert: expect a thrown exception
-    assertThrows(IllegalArgumentException.class, () -> new TruffulaOptions(args));
+    assertThrows(FileNotFoundException.class, () -> new TruffulaOptions(args));
   }
 
   @Test

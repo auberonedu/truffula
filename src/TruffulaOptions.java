@@ -134,7 +134,6 @@ public class TruffulaOptions {
     }
 
     File root = new File(filePath);
-    root = new File(filePath);
 
     if (!root.exists()) {
       throw new FileNotFoundException("No path was found" + root.getAbsolutePath());
