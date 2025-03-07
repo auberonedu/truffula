@@ -183,11 +183,7 @@ public class TruffulaPrinter {
     AlphabeticalFileSorter.sort(list);
     
     for (File file: list) {
-      if (file.isDirectory()) {
-        return depth + printTreeHelper(file, depth, showHidden, showColor);
-      } else {
-        printTreeHelper(file, depth, showHidden, showColor);
-      }
+      printTreeHelper(file, depth, showHidden, showColor);
     }
     return depth;
   }
