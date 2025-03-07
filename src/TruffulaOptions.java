@@ -110,32 +110,38 @@ public class TruffulaOptions {
     // TODO: Replace the below lines with your implementation
 
     if (args == null || args.length == 0) {
-      throw new IllegalArgumentException("Invalid argument. Please provide a valid path");
+      throw new IllegalArgumentException("Invalid arguments. Please provide a valid path");
     }
 
-    File root = null;
     boolean showHidden = false;
     boolean useColor = true;
+    String filePath = null;
 
-    for (var arg : args) {
+    for (String arg : args) {
       if (arg.equals("-nc")) {
         useColor = false;
       } else if (arg.equals("-h")) {
         showHidden = true;
-      } else if (arg.startsWith("-")) {
+      } else if (filePath == null) {
+        filePath = arg;
+      } else {
         throw new IllegalArgumentException("Unknown argument: " + arg);
       }
     }
 
-    String filePath = args[args.length - 1];
+    if (filePath == null) {
+      throw new IllegalArgumentException("Missing path");
+    }
+
+    File root = new File(filePath);
     root = new File(filePath);
 
     if (!root.exists()) {
-      throw new IllegalArgumentException("No path was found" + root.getAbsolutePath());
+      throw new FileNotFoundException("No path was found" + root.getAbsolutePath());
     } 
 
     if (!root.isDirectory()) {
-      throw new IllegalArgumentException("The passed in path is not a directory" + root.getAbsolutePath());
+      throw new FileNotFoundException("The passed in path is not a directory" + root.getAbsolutePath());
     }
 
     this.root = root;
