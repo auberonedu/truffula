@@ -1,5 +1,6 @@
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
@@ -31,4 +32,16 @@ public class TruffulaOptionsTest {
   // test if null
   // test if path (put a file)
   // test invalid command
+
+   // test if empty
+  // test that an empty argument array throws an IllegalArgumentException.
+ @Test
+ void testEmptyArguments() {
+  String[] args = {};
+  Exception exception = assertThrows(
+    IllegalArgumentException.class, () -> {
+      
+    });
+  }
+
 }
