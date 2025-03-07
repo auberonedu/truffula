@@ -108,18 +108,15 @@ public class TruffulaPrinter {
     File root = options.getRoot();
     boolean showHidden = options.isShowHidden();
     boolean showColor = options.isUseColor();
-
+   
     // base cases 
     if (root == null || !root.isDirectory()) {
-      out.println("Invalid/missing directory.");
-      return;
+      throw new IllegalArgumentException("Invalid/missing directory");
     }
 
     // If root is hidden, showHidden off, return error
     if (showHidden == false && root.isHidden()) {
-      out.println("Root is hidden.");
-      // throw exception illegalargument
-      return;
+      throw new IllegalArgumentException("Root is hidden!");
     }
 
     int depth = 0;
@@ -129,6 +126,7 @@ public class TruffulaPrinter {
   
     // Create an array of files in root, iterate through
     File[] listOfFiles = root.listFiles();
+    AlphabeticalFileSorter.sort(listOfFiles);
 
     for (File file: listOfFiles) {
       printTreeHelper(file, depth, showHidden, showColor);
@@ -182,6 +180,8 @@ public class TruffulaPrinter {
     out.println(printedFile);
 
     File[] list = root.listFiles();
+    AlphabeticalFileSorter.sort(list);
+    
     for (File file: list) {
       if (file.isDirectory()) {
         return depth + printTreeHelper(file, depth, showHidden, showColor);
