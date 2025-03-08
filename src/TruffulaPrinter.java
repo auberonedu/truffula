@@ -108,12 +108,11 @@ public class TruffulaPrinter {
 
     //dfs now
 
-    File[] files = root.listFiles();
+    int depth = 0;
 
+    printTree(root, depth);
     //now we are printing our files! 
-    for(var file: files){
-      System.out.println(file);
-    }
+   
     // TODO: Implement this!
     // REQUIRED: ONLY use java.io, DO NOT use java.nio
     
@@ -129,5 +128,12 @@ public class TruffulaPrinter {
 
     out.println("printTree was called!");
     out.println("My options are: " + options);
+  }
+
+  public void printTree(File root, int depth){
+    File[] files = root.listFiles();
+    for(var file : files){
+      printTree(file, depth + 1);
+    }
   }
 }
