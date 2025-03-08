@@ -88,14 +88,16 @@ public class ColorPrinter {
   public void print(String message, boolean reset) {
     // TODO: Implement this!
 
+    printStream.print(getCurrentColor().getCode() + message);
 
     if(reset == true){
-    
-    
+    printStream.print(ConsoleColor.RESET.getCode());
     }
-    var theColor = getCurrentColor();
 
-    print( ConsoleColor.theColor + message);
+    // this is a helper method for println and can accept... dont be fooled
+    
+
+    
 
   }
 
