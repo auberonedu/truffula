@@ -9,9 +9,9 @@ import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.attribute.FileAttribute;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TruffulaPrinterTest {
@@ -22,7 +22,7 @@ public class TruffulaPrinterTest {
     // color on hidden off - y
     // color off hidden off - y
     // root directory is hidden
-    // root directoy is null
+    // root directoy is null - y
     // super deep directory
 
     @Test
@@ -89,7 +89,7 @@ public class TruffulaPrinterTest {
         String purple = "\033[0;35m";
         String yellow = "\033[0;33m";
 
-                // Sample Directory:
+        // Sample Directory:
         //
         // folder/
         //  image.png
@@ -155,7 +155,7 @@ public class TruffulaPrinterTest {
         assertTrue(hiddenFolder.isHidden());
         assertTrue(hidden.isHidden());
 
-        // Set up TruffulaOptions with showHidden = false and useColor = true
+        // Set up TruffulaOptions with showHidden = true and useColor = false
         TruffulaOptions options = new TruffulaOptions(folder, true, false);
 
         // Capture output using a custom PrintStream
@@ -178,7 +178,7 @@ public class TruffulaPrinterTest {
         // String purple = "\033[0;35m";
         // String yellow = "\033[0;33m";
 
-                // Sample Directory:
+        // Sample Directory:
         //
         // folder/
         //  image.png
@@ -267,7 +267,7 @@ public class TruffulaPrinterTest {
         String purple = "\033[0;35m";
         String yellow = "\033[0;33m";
 
-                // Sample Directory:
+        // Sample Directory:
         //
         // folder/
         //  image.png
@@ -330,7 +330,7 @@ public class TruffulaPrinterTest {
         assertTrue(hiddenFolder.isHidden());
         assertTrue(hidden.isHidden());
 
-        // Set up TruffulaOptions with showHidden = false and useColor = true
+        // Set up TruffulaOptions with showHidden = false and useColor = false
         TruffulaOptions options = new TruffulaOptions(folder, false, false);
 
         // Capture output using a custom PrintStream
@@ -350,10 +350,10 @@ public class TruffulaPrinterTest {
         // Build expected output with exact colors and indentation
         String reset = "\033[0m";
         String white = "\033[0;37m";
-        String purple = "\033[0;35m";
-        String yellow = "\033[0;33m";
+        // String purple = "\033[0;35m";
+        // String yellow = "\033[0;33m";
 
-                // Sample Directory:
+        // Sample Directory:
         //
         // folder/
         //  image.png
@@ -674,7 +674,7 @@ public class TruffulaPrinterTest {
 
         // Create "Alphabet"
         File alphabet = new File(tempDir, "Alphabet");
-        assertTrue(alphabet.mkdir(), "myFolder should be created");
+        assertTrue(alphabet.mkdir(), "Alphabet should be created");
 
         // Create files in Alphabet
         File zebra = new File(alphabet, "zebra.txt");
@@ -694,7 +694,7 @@ public class TruffulaPrinterTest {
         e.createNewFile();
         d.createNewFile();
 
-        // Set up TruffulaOptions with showHidden = false and useColor = true
+        // Set up TruffulaOptions with showHidden = false and useColor = false
         TruffulaOptions options = new TruffulaOptions(alphabet, false, false);
 
         // Capture output using a custom PrintStream
@@ -726,5 +726,31 @@ public class TruffulaPrinterTest {
 
         // Assert that the output matches the expected output exactly
         assertEquals(expected.toString(), output);
+    }
+
+    @Test
+    public void testRootDirectoryNull(@TempDir File tempDir) throws IOException {
+        File folder = new File(tempDir, "folder");
+        folder.mkdir();
+        File image = new File(folder, "image.png");
+        File text = new File(folder, "text.txt");
+        image.createNewFile();
+        text.createNewFile();
+
+        // Set up TruffulaOptions with null root directory
+        TruffulaOptions options = new TruffulaOptions(null, true, true);
+
+        // Capture output using a custom PrintStream
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(baos);
+
+        // Instantiate TruffulaPrinter with custom PrintStream
+        TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
+
+        // Call printTree and expect exception (since root is null)
+        assertThrows(IllegalArgumentException.class, () -> printer.printTree());
+
+        // Verify that no output was printed
+        assertTrue(baos.toString().isEmpty(), "Output should be empty when root directory is null");
     }
 }
