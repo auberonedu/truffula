@@ -106,6 +106,7 @@ public class TruffulaPrinter {
   public void printTree() {
     File root = options.getRoot();
 
+    
     //dfs now
 
     int depth = 0;
@@ -126,15 +127,25 @@ public class TruffulaPrinter {
     // DO NOT USE SYSTEM.OUT.PRINTLN
     // USE out.println instead (will use your ColorPrinter)
 
-    out.println("printTree was called!");
-    out.println("My options are: " + options);
+    
   }
 
   public void printTree(File root, int depth){
     File[] files = root.listFiles();
-   
+    
+    
+  //cooked
     for(var file : files){
-      out.println(file.getName());
+      if(!options.isShowHidden() && file.isHidden()){
+        continue;
+      }
+      if(!options.isUseColor()){
+        out.println("   ".repeat(depth) + file.getName());
+      }else{
+
+        System.out.println("no");
+      }
+
       if(file.isDirectory()){
         printTree(file, depth + 1);
       }
