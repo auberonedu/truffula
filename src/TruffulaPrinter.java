@@ -131,7 +131,7 @@ public class TruffulaPrinter {
     if (files != null) {
       
       ConsoleColor color = getColorForLevel(level);
-      String indent = "     ".repeat(level);
+      String indent = " ".repeat(level);
       out.print(color.getCode());  // Set the color before printing
       
       out.print(indent);
@@ -142,10 +142,11 @@ public class TruffulaPrinter {
       for (File file : files) {
           if (file.isDirectory()) {
               printTreeHelper(file, level + 1); 
-          }  
-          color = getColorForLevel(level);
-          out.setCurrentColor(color);
-          out.println(indent + " " + file.getName());
+          }  else {
+          out.print(indent + " ");
+          out.setCurrentColor(getColorForLevel(level + 1));
+          out.println(file.getName());
+          }
       }
   }
   }
