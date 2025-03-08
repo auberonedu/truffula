@@ -214,4 +214,12 @@ truffula/
     }
     return indent.toString() + name;
   }
+
+  public String coloredText(String name, int indentLevel) {
+    //Implement these color codes here
+
+    //then in if statements cycle through colors based on indentLevel % 3
+
+  }
+
 }
