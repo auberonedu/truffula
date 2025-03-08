@@ -107,16 +107,26 @@ public class TruffulaOptions  {
     useColor = true;
     //need to loop through the arary being passed in and check each thing
 
-    for(int i = 0; i < args.length; i++) { 
-      if(args[i] == "-h") { 
+    for(int i = 0; i < args.length -1; i++) { 
+      if(args[i].equals("-h")) { 
           showHidden = true;
-      } else if(args[i] == "-nc") {  
+      } else if(args[i].equals("-nc")) {  
           useColor = false;
       } else {
           throw new IllegalArgumentException("Unknown Argument " + args[i]); 
       }
   }
-    
+
+  String path = args[args.length -1];
+  File directory = new File(path);
+
+  if(!directory.exists() && !directory.isDirectory()){
+    throw new FileNotFoundException("invalid Directory: " + directory);
+  }
+
+  root = directory; 
+
+    // HOW TO DEAL WITH FINAL VARIABLES 
   }
 
   /**
