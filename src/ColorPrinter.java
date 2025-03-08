@@ -122,9 +122,9 @@ public class ColorPrinter {
    * @param reset   if true, resets the color after printing; if false, keeps the current color
    */
   public void print(String message, boolean reset) {
-    if(currentColor == ConsoleColor.RESET || currentColor == ConsoleColor.WHITE){
-      printStream.print(message);
-    } else if(reset){
+  //  if(currentColor == ConsoleColor.RESET || currentColor == ConsoleColor.WHITE){
+  //    printStream.print(message);}
+    if(reset){
       printStream.print(currentColor + message + ConsoleColor.RESET);
       setCurrentColor(ConsoleColor.RESET);
     } else {

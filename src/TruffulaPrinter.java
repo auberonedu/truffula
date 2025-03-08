@@ -1,3 +1,4 @@
+import java.io.Console;
 import java.io.File;
 import java.io.PrintStream;
 import java.util.List;
@@ -115,9 +116,9 @@ public class TruffulaPrinter {
     // getName() ==> returns the name of the file or directory denoted by this abstract path name
     // isDirectory() ==> Tests whether the file denoted by this abstract pathname is a directory.
     // isHidden() ==> Tests whether the file named by this abstract pathname is a hidden file.
-    //out.setCurrentColor(ConsoleColor.WHITE);
-    //out.println(options.getRoot().getName()+ "/");
-    printTreeHelper(options.getRoot(), 0);
+    out.setCurrentColor(ConsoleColor.WHITE);
+    out.println(options.getRoot().getName()+ "/");
+    printTreeHelper(options.getRoot(), 1);
 
     //out.println("printTree was called!");
     //out.println("My options are: " + options);
@@ -128,25 +129,19 @@ public class TruffulaPrinter {
     
     
     File[] files = directory.listFiles();
-    if (files != null) {
-      
-      ConsoleColor color = getColorForLevel(level);
-      String indent = "     ".repeat(level);
-      out.print(color.getCode());  // Set the color before printing
-      
-      out.print(indent);
-      out.setCurrentColor(color);
-      out.println(directory.getName() + "/");
-      
-     
-      for (File file : files) {
-          if (file.isDirectory()) {
-              printTreeHelper(file, level + 1); 
-          }  
-          color = getColorForLevel(level);
-          out.setCurrentColor(color);
-          out.println(indent + " " + file.getName());
-      }
+    if(files != null){
+      for(File file : files){
+        StringBuilder str = new StringBuilder();
+        str.append("   ".repeat(level));
+        ConsoleColor color = getColorForLevel(level);
+        out.setCurrentColor(color);
+        str.append(file.getName());
+          if(file.isDirectory()){
+            str.append("/");
+          }
+        out.println(str.toString());
+      printTreeHelper(file, level +1);
+    }
   }
   }
   
