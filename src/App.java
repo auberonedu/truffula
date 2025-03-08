@@ -49,8 +49,6 @@ public class App {
     //this works cause we tested it! 
     TruffulaOptions options = new TruffulaOptions(args);
     TruffulaPrinter truffulaPrint = new TruffulaPrinter(options);
-
-    
     truffulaPrint.printTree();
   }
 }

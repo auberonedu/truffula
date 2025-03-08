@@ -1,3 +1,4 @@
+import java.io.File;
 import java.io.PrintStream;
 import java.util.List;
 
@@ -103,9 +104,23 @@ public class TruffulaPrinter {
    *    zebra.txt
    */
   public void printTree() {
+    File root = options.getRoot();
+
+    //dfs now
+
+    File[] files = root.listFiles();
+
+    //now we are printing our files! 
+    for(var file: files){
+      System.out.println(file);
+    }
     // TODO: Implement this!
     // REQUIRED: ONLY use java.io, DO NOT use java.nio
     
+
+
+
+
     // Hints:
     // - Add a recursive helper method
     // - For Wave 6: Use AlphabeticalFileSorter
