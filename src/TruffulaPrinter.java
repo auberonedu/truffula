@@ -115,10 +115,9 @@ public class TruffulaPrinter {
     // getName() ==> returns the name of the file or directory denoted by this abstract path name
     // isDirectory() ==> Tests whether the file denoted by this abstract pathname is a directory.
     // isHidden() ==> Tests whether the file named by this abstract pathname is a hidden file.
+    //out.setCurrentColor(ConsoleColor.WHITE);
     //out.println(options.getRoot().getName()+ "/");
-    out.setCurrentColor(ConsoleColor.WHITE);
-    out.println(options.getRoot().getName()+ "/");
-    printTreeHelper(options.getRoot(), 1);
+    printTreeHelper(options.getRoot(), 0);
 
     //out.println("printTree was called!");
     //out.println("My options are: " + options);
@@ -127,22 +126,30 @@ public class TruffulaPrinter {
   private void printTreeHelper(File directory, int level) {
     if (directory == null || !directory.isDirectory()) return;
     
-    // Recursively process files and subdirectories
+    
     File[] files = directory.listFiles();
     if (files != null) {
-        for (File file : files) {
-          ConsoleColor color = getColorForLevel(level);
+      
+      ConsoleColor color = getColorForLevel(level);
+      String indent = "     ".repeat(level);
+      out.print(color.getCode());  // Set the color before printing
+      
+      out.print(indent);
+      out.setCurrentColor(color);
+      out.println(directory.getName() + "/");
+      
+     
+      for (File file : files) {
+          if (file.isDirectory()) {
+              printTreeHelper(file, level + 1); 
+          }  
+          color = getColorForLevel(level);
           out.setCurrentColor(color);
-          String indent = " ".repeat(level);
-            if (file.isDirectory() ) {
-              out.println( indent + directory.getName() + "/");
-              printTreeHelper(file, level + 1);
-            } else {
-              out.println(indent + " " + file.getName());
-            }
-        }
-    }
+          out.println(indent + " " + file.getName());
+      }
   }
+  }
+  
 
   private ConsoleColor getColorForLevel(int level) {
     // Cycle through the colors based on the level of the directory
