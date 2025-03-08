@@ -115,11 +115,12 @@ public class TruffulaPrinter {
 
     //out.println("printTree was called!");
     //out.println("My options are: " + options);
+    out.setCurrentColor(ConsoleColor.WHITE);
     out.println(options.getRoot().getName() + "/");
-    printTreeHelper(options.getRoot(), "");
+    printTreeHelper(options.getRoot(), "", 1);
   }
 
-  private void printTreeHelper(File dir, String indent) {
+  private void printTreeHelper(File dir, String indent, int depth) {
     if (!dir.isDirectory()) {
       return;
     }
@@ -130,9 +131,12 @@ public class TruffulaPrinter {
     }
     
     for (File file : files) {
+      ConsoleColor color = colorSequence.get(depth % colorSequence.size());
+      out.setCurrentColor(color);
+
       out.println(indent + (file.isDirectory() ? file.getName() + "/" : file.getName()));
       if (file.isDirectory()) {
-        printTreeHelper(file, indent + "   ");
+        printTreeHelper(file, indent + "   ", depth + 1);
       }
     }
   }
