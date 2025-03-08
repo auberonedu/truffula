@@ -39,9 +39,9 @@ public class TruffulaPrinterTest {
         banana.createNewFile();
         zebra.createNewFile();
 
-        // Create a hidden file in myFolder
-        File hidden = new File(myFolder, ".hidden.txt");
-        hidden.createNewFile();
+        // // Create a hidden file in myFolder
+        // File hidden = new File(myFolder, ".hidden.txt");
+        // hidden.createNewFile();
 
         // Create subdirectory "Documents" in myFolder
         File documents = new File(myFolder, "Documents");
