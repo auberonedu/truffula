@@ -17,13 +17,363 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class TruffulaPrinterTest {
 
     // order
-    // color on hidden on
-    // color off hidden on
-    // color on hidden off
-    // color off hidden off
+    // color on hidden on - y
+    // color off hidden on - y
+    // color on hidden off - y
+    // color off hidden off - y
     // root directory is hidden
     // root directoy is null
     // super deep directory
+
+    @Test
+    public void printTreeColorTrueHiddenTrue(@TempDir File tempDir) throws IOException {
+        // Sample Directory:
+        //
+        // folder/
+        //  image.png
+        //  nested-folder/
+        //      .hidden-folder/
+        //          42.png
+        //      .hidden.txt
+        //      not-hidden.txt
+        //  text.txt
+
+        // Create folders
+        File folder = new File(tempDir, "folder");
+        folder.mkdir();
+        File nestedFolder = new File(folder, "nested-folder");
+        nestedFolder.mkdir();
+        File hiddenFolder = new File(nestedFolder, ".hidden-folder");
+        hiddenFolder.mkdir();
+
+        // Create files
+        File image = new File(folder, "image.png");
+        File fortyTwo = new File(hiddenFolder, "42.png");
+        File text = new File(folder, "text.txt");
+        File notHidden = new File(nestedFolder, "not-hidden.txt");
+        File hidden = new File(nestedFolder, ".hidden.txt");
+        image.createNewFile();
+        fortyTwo.createNewFile();
+        text.createNewFile();
+        notHidden.createNewFile();
+        hidden.createNewFile();
+
+        // set hidden files (for Windows)
+        Path path = Paths.get(hiddenFolder.toURI());
+        Files.setAttribute(path, "dos:hidden", Boolean.TRUE, LinkOption.NOFOLLOW_LINKS);
+        path = Paths.get(hidden.toURI());
+        Files.setAttribute(path, "dos:hidden", Boolean.TRUE, LinkOption.NOFOLLOW_LINKS);
+        assertTrue(hiddenFolder.isHidden());
+        assertTrue(hidden.isHidden());
+
+        // Set up TruffulaOptions with showHidden = false and useColor = true
+        TruffulaOptions options = new TruffulaOptions(folder, true, true);
+
+        // Capture output using a custom PrintStream
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(baos);
+
+        // Instantiate TruffulaPrinter with custom PrintStream
+        TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
+
+        // Call printTree (output goes to printStream)
+        printer.printTree();
+
+        // Retrieve printed output
+        String output = baos.toString();
+        String nl = System.lineSeparator();
+
+        // Build expected output with exact colors and indentation
+        String reset = "\033[0m";
+        String white = "\033[0;37m";
+        String purple = "\033[0;35m";
+        String yellow = "\033[0;33m";
+
+                // Sample Directory:
+        //
+        // folder/
+        //  image.png
+        //  nested-folder/
+        //      .hidden-folder/
+        //          42.png
+        //      .hidden.txt
+        //      not-hidden.txt
+        //  text.txt
+
+        StringBuilder expected = new StringBuilder();
+        expected.append(white).append("folder/").append(nl).append(reset);
+        expected.append(purple).append("   image.png").append(nl).append(reset);
+        expected.append(purple).append("   nested-folder/").append(nl).append(reset);
+        expected.append(yellow).append("      .hidden-folder/").append(nl).append(reset);
+        expected.append(white).append("         42.png").append(nl).append(reset);
+        expected.append(yellow).append("      .hidden.txt").append(nl).append(reset);
+        expected.append(yellow).append("      not-hidden.txt").append(nl).append(reset);
+        expected.append(purple).append("   text.txt").append(nl).append(reset);
+
+        // Assert that the output matches the expected output exactly
+        assertEquals(expected.toString(), output);
+    }
+
+    @Test
+    public void printTreeColorFalseHiddenTrue(@TempDir File tempDir) throws IOException {
+        // Sample Directory:
+        //
+        // folder/
+        //  image.png
+        //  nested-folder/
+        //      .hidden-folder/
+        //          42.png
+        //      .hidden.txt
+        //      not-hidden.txt
+        //  text.txt
+
+        // Create folders
+        File folder = new File(tempDir, "folder");
+        folder.mkdir();
+        File nestedFolder = new File(folder, "nested-folder");
+        nestedFolder.mkdir();
+        File hiddenFolder = new File(nestedFolder, ".hidden-folder");
+        hiddenFolder.mkdir();
+
+        // Create files
+        File image = new File(folder, "image.png");
+        File fortyTwo = new File(hiddenFolder, "42.png");
+        File text = new File(folder, "text.txt");
+        File notHidden = new File(nestedFolder, "not-hidden.txt");
+        File hidden = new File(nestedFolder, ".hidden.txt");
+        image.createNewFile();
+        fortyTwo.createNewFile();
+        text.createNewFile();
+        notHidden.createNewFile();
+        hidden.createNewFile();
+
+        // set hidden files (for Windows)
+        Path path = Paths.get(hiddenFolder.toURI());
+        Files.setAttribute(path, "dos:hidden", Boolean.TRUE, LinkOption.NOFOLLOW_LINKS);
+        path = Paths.get(hidden.toURI());
+        Files.setAttribute(path, "dos:hidden", Boolean.TRUE, LinkOption.NOFOLLOW_LINKS);
+        assertTrue(hiddenFolder.isHidden());
+        assertTrue(hidden.isHidden());
+
+        // Set up TruffulaOptions with showHidden = false and useColor = true
+        TruffulaOptions options = new TruffulaOptions(folder, true, false);
+
+        // Capture output using a custom PrintStream
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(baos);
+
+        // Instantiate TruffulaPrinter with custom PrintStream
+        TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
+
+        // Call printTree (output goes to printStream)
+        printer.printTree();
+
+        // Retrieve printed output
+        String output = baos.toString();
+        String nl = System.lineSeparator();
+
+        // Build expected output with exact colors and indentation
+        String reset = "\033[0m";
+        String white = "\033[0;37m";
+        // String purple = "\033[0;35m";
+        // String yellow = "\033[0;33m";
+
+                // Sample Directory:
+        //
+        // folder/
+        //  image.png
+        //  nested-folder/
+        //      .hidden-folder/
+        //          42.png
+        //      .hidden.txt
+        //      not-hidden.txt
+        //  text.txt
+
+        StringBuilder expected = new StringBuilder();
+        expected.append(white).append("folder/").append(nl).append(reset);
+        expected.append(white).append("   image.png").append(nl).append(reset);
+        expected.append(white).append("   nested-folder/").append(nl).append(reset);
+        expected.append(white).append("      .hidden-folder/").append(nl).append(reset);
+        expected.append(white).append("         42.png").append(nl).append(reset);
+        expected.append(white).append("      .hidden.txt").append(nl).append(reset);
+        expected.append(white).append("      not-hidden.txt").append(nl).append(reset);
+        expected.append(white).append("   text.txt").append(nl).append(reset);
+
+        // Assert that the output matches the expected output exactly
+        assertEquals(expected.toString(), output);
+    }
+
+    @Test
+    public void printTreeColorTrueHiddenFalse(@TempDir File tempDir) throws IOException {
+        // Sample Directory:
+        //
+        // folder/
+        //  image.png
+        //  nested-folder/
+        //      .hidden-folder/
+        //          42.png
+        //      .hidden.txt
+        //      not-hidden.txt
+        //  text.txt
+
+        // Create folders
+        File folder = new File(tempDir, "folder");
+        folder.mkdir();
+        File nestedFolder = new File(folder, "nested-folder");
+        nestedFolder.mkdir();
+        File hiddenFolder = new File(nestedFolder, ".hidden-folder");
+        hiddenFolder.mkdir();
+
+        // Create files
+        File image = new File(folder, "image.png");
+        File fortyTwo = new File(hiddenFolder, "42.png");
+        File text = new File(folder, "text.txt");
+        File notHidden = new File(nestedFolder, "not-hidden.txt");
+        File hidden = new File(nestedFolder, ".hidden.txt");
+        image.createNewFile();
+        fortyTwo.createNewFile();
+        text.createNewFile();
+        notHidden.createNewFile();
+        hidden.createNewFile();
+
+        // set hidden files (for Windows)
+        Path path = Paths.get(hiddenFolder.toURI());
+        Files.setAttribute(path, "dos:hidden", Boolean.TRUE, LinkOption.NOFOLLOW_LINKS);
+        path = Paths.get(hidden.toURI());
+        Files.setAttribute(path, "dos:hidden", Boolean.TRUE, LinkOption.NOFOLLOW_LINKS);
+        assertTrue(hiddenFolder.isHidden());
+        assertTrue(hidden.isHidden());
+
+        // Set up TruffulaOptions with showHidden = false and useColor = true
+        TruffulaOptions options = new TruffulaOptions(folder, false, true);
+
+        // Capture output using a custom PrintStream
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(baos);
+
+        // Instantiate TruffulaPrinter with custom PrintStream
+        TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
+
+        // Call printTree (output goes to printStream)
+        printer.printTree();
+
+        // Retrieve printed output
+        String output = baos.toString();
+        String nl = System.lineSeparator();
+
+        // Build expected output with exact colors and indentation
+        String reset = "\033[0m";
+        String white = "\033[0;37m";
+        String purple = "\033[0;35m";
+        String yellow = "\033[0;33m";
+
+                // Sample Directory:
+        //
+        // folder/
+        //  image.png
+        //  nested-folder/
+        //      .hidden-folder/
+        //          42.png
+        //      .hidden.txt
+        //      not-hidden.txt
+        //  text.txt
+
+        StringBuilder expected = new StringBuilder();
+        expected.append(white).append("folder/").append(nl).append(reset);
+        expected.append(purple).append("   image.png").append(nl).append(reset);
+        expected.append(purple).append("   nested-folder/").append(nl).append(reset);
+        expected.append(yellow).append("      not-hidden.txt").append(nl).append(reset);
+        expected.append(purple).append("   text.txt").append(nl).append(reset);
+
+        // Assert that the output matches the expected output exactly
+        assertEquals(expected.toString(), output);
+    }
+
+    @Test
+    public void printTreeColorFalseHiddenFalse(@TempDir File tempDir) throws IOException {
+        // Sample Directory:
+        //
+        // folder/
+        //  image.png
+        //  nested-folder/
+        //      .hidden-folder/
+        //          42.png
+        //      .hidden.txt
+        //      not-hidden.txt
+        //  text.txt
+
+        // Create folders
+        File folder = new File(tempDir, "folder");
+        folder.mkdir();
+        File nestedFolder = new File(folder, "nested-folder");
+        nestedFolder.mkdir();
+        File hiddenFolder = new File(nestedFolder, ".hidden-folder");
+        hiddenFolder.mkdir();
+
+        // Create files
+        File image = new File(folder, "image.png");
+        File fortyTwo = new File(hiddenFolder, "42.png");
+        File text = new File(folder, "text.txt");
+        File notHidden = new File(nestedFolder, "not-hidden.txt");
+        File hidden = new File(nestedFolder, ".hidden.txt");
+        image.createNewFile();
+        fortyTwo.createNewFile();
+        text.createNewFile();
+        notHidden.createNewFile();
+        hidden.createNewFile();
+
+        // set hidden files (for Windows)
+        Path path = Paths.get(hiddenFolder.toURI());
+        Files.setAttribute(path, "dos:hidden", Boolean.TRUE, LinkOption.NOFOLLOW_LINKS);
+        path = Paths.get(hidden.toURI());
+        Files.setAttribute(path, "dos:hidden", Boolean.TRUE, LinkOption.NOFOLLOW_LINKS);
+        assertTrue(hiddenFolder.isHidden());
+        assertTrue(hidden.isHidden());
+
+        // Set up TruffulaOptions with showHidden = false and useColor = true
+        TruffulaOptions options = new TruffulaOptions(folder, false, false);
+
+        // Capture output using a custom PrintStream
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(baos);
+
+        // Instantiate TruffulaPrinter with custom PrintStream
+        TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
+
+        // Call printTree (output goes to printStream)
+        printer.printTree();
+
+        // Retrieve printed output
+        String output = baos.toString();
+        String nl = System.lineSeparator();
+
+        // Build expected output with exact colors and indentation
+        String reset = "\033[0m";
+        String white = "\033[0;37m";
+        String purple = "\033[0;35m";
+        String yellow = "\033[0;33m";
+
+                // Sample Directory:
+        //
+        // folder/
+        //  image.png
+        //  nested-folder/
+        //      .hidden-folder/
+        //          42.png
+        //      .hidden.txt
+        //      not-hidden.txt
+        //  text.txt
+
+        StringBuilder expected = new StringBuilder();
+        expected.append(white).append("folder/").append(nl).append(reset);
+        expected.append(white).append("   image.png").append(nl).append(reset);
+        expected.append(white).append("   nested-folder/").append(nl).append(reset);
+        expected.append(white).append("      not-hidden.txt").append(nl).append(reset);
+        expected.append(white).append("   text.txt").append(nl).append(reset);
+
+        // Assert that the output matches the expected output exactly
+        assertEquals(expected.toString(), output);
+    }
 
     @Test
     public void testPrintTree_ExactOutput_WithCustomPrintStream(@TempDir File tempDir) throws IOException {
