@@ -130,6 +130,9 @@ public class TruffulaPrinter {
     
     File[] files = directory.listFiles();
     if(files != null){
+
+      files = AlphabeticalFileSorter.sort(files);
+
       for(File file : files){
         StringBuilder str = new StringBuilder();
         str.append("   ".repeat(level));
