@@ -108,12 +108,8 @@ public class TruffulaPrinter {
     boolean showHidden = options.isShowHidden();
     boolean showColor = options.isUseColor();
    
-    if (root == null || !root.isDirectory()) {
-      throw new IllegalArgumentException("Invalid/missing directory");
-    }
-
-    if (showHidden == false && root.isHidden()) {
-      throw new IllegalArgumentException("Root is hidden!");
+    if (root == null || !root.isDirectory() || (showHidden == false && root.isHidden())) {
+      throw new IllegalArgumentException("Can't find directory");
     }
 
     int depth = 0;
