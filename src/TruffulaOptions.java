@@ -104,7 +104,19 @@ public class TruffulaOptions  {
     // TODO: Replace the below lines with your implementation
     root = null;
     showHidden = false;
-    useColor = false;
+    useColor = true;
+    //need to loop through the arary being passed in and check each thing
+
+    for(int i = 0; i < args.length; i++) { 
+      if(args[i] == "-h") { 
+          showHidden = true;
+      } else if(args[i] == "-nc") {  
+          useColor = false;
+      } else {
+          throw new IllegalArgumentException("Unknown Argument " + args[i]); 
+      }
+  }
+    
   }
 
   /**
