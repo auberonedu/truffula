@@ -13,7 +13,7 @@ Hints:
 
 YOU MUST ALSO IMPLEMENT THOROUGH UNIT TESTS!!!
 
-## Wave 2: TruffulaOptions
+## Wave 2: TruffulaOptions (Completed)
 In this wave you will be implementing a command line argument parser! You will do so by implementing `TruffulaOptions(String[] args)`. You do not need to modify the other methods. There is a detailed comment at the top of the file explaining how the args should be parsed. READ IT CAREFULLY!
 
 This will later be responsible for actually parsing the commands the user will run from the command line. For example if the user types:
@@ -38,7 +38,7 @@ You must NOT use the `java.nio` package for any wave! You can only use `java.io`
 
 YOU MUST ALSO IMPLEMENT THOROUGH UNIT TESTS!!!
 
-## Wave 3: App
+## Wave 3: App (Completed)
 In this wave you will set up your main method in `App.java`. This is where your program will actually start when called from the command line! When you have it implemented, you will be able to do the following command from the command line (make sure you are in the root of the project repository):
 
 ```
