@@ -1,5 +1,8 @@
 import java.io.PrintStream;
+import java.util.Arrays;
 import java.util.List;
+import java.io.File;
+
 
 /**
  * TruffulaPrinter is responsible for printing a directory tree structure
@@ -111,8 +114,49 @@ public class TruffulaPrinter {
     // - For Wave 6: Use AlphabeticalFileSorter
     // DO NOT USE SYSTEM.OUT.PRINTLN
     // USE out.println instead (will use your ColorPrinter)
+    printTreeHelper(options.getRoot(), 0);
+  }
+
+  private void printTreeHelper(File file, int level) {
+    // skip the hidden files/folders if showHidden is false.
+    if (!options.isShowHidden() && file.isHidden()) {
+      return;
+    }
+    
+    // Build the indentation string.
+    String indent = "";
+    for (int i = 0; i < level; i++) {
+      indent += "   ";
+    }
+    
+    // Append "/" if the file is a directory.
+    String nameToPrint = file.getName();
+    if (file.isDirectory()) {
+    nameToPrint = nameToPrint + "/";
+  }
+
+    String line = indent + nameToPrint;
+
+    ConsoleColor colorToUse;
+    if (options.isUseColor()) {
+      int colorIndex = level % colorSequence.size();
+      colorToUse = colorSequence.get(colorIndex);
+    } else {
+      colorToUse = ConsoleColor.WHITE;
+    }
 
 
-    out.println(options.getRoot().getName() + "/");
+    out.setCurrentColor(colorToUse);
+    out.println(line);
+    
+    // If this file is a directory, print its children recursively.
+    if (file.isDirectory()) {
+      File[] children = file.listFiles();
+      if (children == null) return;
+      
+      for (File child : children) {
+        printTreeHelper(child, level + 1);
+      }
+    }
   }
 }
