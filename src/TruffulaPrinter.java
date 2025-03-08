@@ -1,7 +1,6 @@
 import java.io.File;
 import java.io.PrintStream;
 import java.util.List;
-import javax.management.OperationsException;
 
 /**
  * TruffulaPrinter is responsible for printing a directory tree structure
@@ -140,8 +139,6 @@ truffula/
       get the root directory  
       then call recursively to the printTreeMethodHelper
      */
-
-  
     printTreeMethodHelper(options.getRoot(),0);
   }
 
@@ -167,30 +164,36 @@ truffula/
       print the file name with the proper intentations
 
      */
+    
+    // Base case to check if directory exists
+    if (currentDirectory == null || !currentDirectory.exists()) return;
 
-    if(currentDirectory.isDirectory()) {
-      out.println(currentDirectory.getName());
-    }
-
+    // To list the files and directories in the current directory
     File[] files = currentDirectory.listFiles();
+    if (files == null) return;
 
-    for(File file : files) {
-      // if(file.isHidden() && !options.isShowHidden()) {
-      //   continue;
-      // }
-      printTreeMethodHelper(file, indentLevel + 1);
-            else {
-        printIndentedSpaces(currentDirectory.getName(), indentLevel);
+    // This prints the directory name with indentation
+    out.println(printIndentedSpaces((currentDirectory.getName()), indentLevel));
+
+    // Loops through files
+    for (File file : files) {
+      if (file.isHidden() && !options.isShowHidden()) {
+        continue;
+      }
+      if (file.isDirectory()) {
+        printTreeMethodHelper(file, indentLevel + 1);
+      } else {
+        out.println(printIndentedSpaces(file.getName(), indentLevel + 1));
       }
     }
-
   }
 
+  // Helper method to generate indentation
   public static String printIndentedSpaces(String name, int indentLevel){
-    String indent = "   ";
+    StringBuilder indent = new StringBuilder();
     for (int i = 1; i < indentLevel; i++) {
-      indent += "   ";
+      indent.append("   "); // 3 spaces
     }
-    return indent + name;
+    return indent.toString() + name;
   }
 }

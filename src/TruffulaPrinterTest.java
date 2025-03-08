@@ -101,4 +101,82 @@ public class TruffulaPrinterTest {
         // Assert that the output matches the expected output exactly
         assertEquals(expected.toString(), output);
     }
+
+    @Test
+    public void testPrintTree_MultipleFiles(@TempDir File tempDir) throws IOException {
+        //  myFolder/
+        //    file1.txt
+        //    file2.txt
+        //    file3.txt
+
+        // Create multiple files inside tempDir
+        File myFolder = new File(tempDir, "myFolder");
+        File file1 = new File(tempDir, "file1.txt");
+        File file2 = new File(tempDir, "file2.txt");
+        File file3 = new File(tempDir, "file3.txt");
+
+        assertTrue(file1.createNewFile(), "file1.txt should be created");
+        assertTrue(file2.createNewFile(), "file2.txt should be created");
+        assertTrue(file3.createNewFile(), "file3.txt should be created");
+
+        // Capture output using a PrintStream
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(outputStream);
+
+        // Set up TruffulaOptions and TruffulaPrinter
+        TruffulaOptions options = new TruffulaOptions(tempDir, false, false);
+        TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
+
+        // Run printTree()
+        printer.printTree();
+
+        // Get output
+        String output = outputStream.toString();
+
+        // Verify that all files are printed in the output
+        assertTrue(output.contains("file1.txt"), "Output should contain 'file1.txt'");
+        assertTrue(output.contains("file2.txt"), "Output should contain 'file2.txt'");
+        assertTrue(output.contains("file3.txt"), "Output should contain 'file3.txt'");
+    }
+
+    @Test
+    public void testPrintTree_WithSubdirectoryAndFiles(@TempDir File tempDir) throws IOException {
+        // Create structure:
+        // myFolder/
+        //    fileA.txt
+        //    subDir/
+        //       fileB.txt
+
+        // Create a file in tempDir
+        File myFolder = new File(tempDir, "myFolder");
+        File fileA = new File(tempDir, "fileA.txt");
+        assertTrue(fileA.createNewFile(), "fileA.txt should be created");
+
+        // Create a subdirectory inside tempDir
+        File subDir = new File(tempDir, "subDir");
+        assertTrue(subDir.mkdir(), "subDir should be created");
+
+        // Create a file inside subDir
+        File fileB = new File(subDir, "fileB.txt");
+        assertTrue(fileB.createNewFile(), "fileB.txt should be created");
+
+        // Capture output using a PrintStream
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(outputStream);
+
+        // Set up TruffulaOptions and TruffulaPrinter
+        TruffulaOptions options = new TruffulaOptions(tempDir, false, false);
+        TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
+
+        // Run printTree()
+        printer.printTree();
+
+        // Get output
+        String output = outputStream.toString();
+
+        // Verify that the files and subdirectory are printed in the output
+        assertTrue(output.contains("fileA.txt"), "Output should contain 'fileA.txt'");
+        assertTrue(output.contains("subDir"), "Output should contain 'subDir/'");
+        assertTrue(output.contains("fileB.txt"), "Output should contain 'fileB.txt'");
+    }
 }
