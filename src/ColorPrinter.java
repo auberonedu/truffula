@@ -95,7 +95,7 @@ public class ColorPrinter {
     if (reset) {
       printStream.print(currentColor + message + ConsoleColor.RESET);
     } else {
-    printStream.print(currentColor + message);
+      printStream.print(currentColor + message);
     }
   }
 
