@@ -97,18 +97,6 @@ public class TruffulaOptionsTest {
   }
 
   @Test
-  void testInvalidFlag(@TempDir File tempDir) throws FileNotFoundException {
-    // Arrange: Prepare the arguments with the temp directory
-    File directory = new File(tempDir, "subfolder");
-    directory.mkdir();
-    String directoryPath = directory.getAbsolutePath();
-    String[] args = {"-xyz", "-v", directoryPath};
-
-    // Act: Create TruffulaOptions instance
-    assertThrows(IllegalArgumentException.class, () -> {new TruffulaOptions(args);});
-  }
-
-  @Test
   void testEmptyDirectory(@TempDir File tempDir) throws FileNotFoundException {
     // Arrange: Prepare the arguments with an empty directory
     File directory = new File(tempDir, "");
@@ -125,21 +113,59 @@ public class TruffulaOptionsTest {
   }
 
   @Test
-  void testInvalidPathIllegalArgumentException() {
-    // Arrange: invalid directory path
-    String[] args = {"/invalid123/123path"};
+  void testInvalidFlag(@TempDir File tempDir) throws FileNotFoundException {
+    // Arrange: Prepare the arguments with the temp directory
+    File directory = new File(tempDir, "subfolder");
+    directory.mkdir();
+    String directoryPath = directory.getAbsolutePath();
+    String[] args = {"-xyz", "-v", directoryPath};
 
-    // Act & Assert: expect a thrown exception
-    assertThrows(FileNotFoundException.class, () -> new TruffulaOptions(args));
+    // Act: Create TruffulaOptions instance
+    assertThrows(IllegalArgumentException.class, () -> {new TruffulaOptions(args);});
   }
 
   @Test
-  void testMissingPathIllegalArgumentException() {
-    // Arrange: No path
+  void testNullPath() {
+    // Arrange: null args entered
+    String[] args = null;
+
+    // Act & Assert: expect a thrown exception
+    assertThrows(IllegalArgumentException.class, () -> new TruffulaOptions(args));
+  }
+
+  @Test
+  void testMissingPath() {
+    // Arrange: no args entered
     String[] args = {};
 
     // Act & Assert: expect a thrown exception
     assertThrows(IllegalArgumentException.class, () -> new TruffulaOptions(args));
   }
 
+  @Test
+  void testFlagsWithNoPath() {
+    // Arrange: args entered but no file path provided
+    String[] args = {"-nc", "-h"};
+
+    // Act & Assert: expect a thrown exception
+    assertThrows(IllegalArgumentException.class, () -> new TruffulaOptions(args));
+  }
+
+  @Test
+  void testUnknownPath() {
+    // Arrange: invalid directory path
+    String[] args = {"/unknown/path/doesnt/exist"};
+
+    // Act & Assert: expect a thrown exception
+    assertThrows(FileNotFoundException.class, () -> new TruffulaOptions(args));
+  }
+
+  @Test
+  void testPathIsNotDirectory() {
+    // Arrange: arg passed doesn't contain a proper path/directory
+    String[] args = {"-nc", "-h", "penguin.jpg"};
+
+    // Act & Assert: expect a thrown exception
+    assertThrows(FileNotFoundException.class, () -> new TruffulaOptions(args));
+  }
 }
