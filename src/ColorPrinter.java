@@ -87,6 +87,16 @@ public class ColorPrinter {
    */
   public void print(String message, boolean reset) {
     // TODO: Implement this!
+
+
+    if(reset == true){
+    
+    
+    }
+    var theColor = getCurrentColor();
+
+    print( ConsoleColor.theColor + message);
+
   }
 
   /**
