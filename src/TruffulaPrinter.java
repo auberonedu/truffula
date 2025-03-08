@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.PrintStream;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -113,8 +114,9 @@ public class TruffulaPrinter {
     // DO NOT USE SYSTEM.OUT.PRINTLN
     // USE out.println instead (will use your ColorPrinter)
 
-    out.println("printTree was called!");
-    out.println("My options are: " + options);
+    // out.println("printTree was called!");
+    // out.println("My options are: " + options);
+    out.println(options.getRoot().getName() + "/");
     printTreeHelper(options.getRoot(), 0);
   }
 
@@ -130,21 +132,25 @@ public class TruffulaPrinter {
   //    Else out.println("indent" * levelDepth + child.getName()).
 
   private void printTreeHelper(File dir, int levelDepth) {
-    if (dir == null) return;
+    // base case: if dir null or doesn't exist
+    if (dir == null || !dir.exists()) return;
 
+    // indentation thats repeated based on how deep it is in folder level
+    String indent = "   ".repeat(levelDepth);;
+
+    // if directory is a file, print it
     if (dir.isFile()) {
-      out.println(dir.getName());
+      out.println(indent + dir.getName() + "/");
       return;
     }
 
+    // loop through directory sub files/folders
+    // if child is a directory print appropriately and recurse 1 lvl deeper
+    //    else, just print subfile name with indentation
     for (File child : dir.listFiles()) {
-      levelDepth++;
-
-      String indent = "   ";
-      
       if (child.isDirectory()) {
-        out.println(indent + child.getName());
-        printTreeHelper(child, levelDepth);
+        out.println(indent + child.getName() + "/");
+        printTreeHelper(child, levelDepth + 1);
       } else {
         out.println(indent + child.getName());
       }
