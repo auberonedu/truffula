@@ -115,7 +115,7 @@ public class TruffulaPrinter {
 
     //out.println("printTree was called!");
     //out.println("My options are: " + options);
-    out.println("   " + options.getRoot().getName() + "/");
+    out.println(options.getRoot().getName() + "/");
     printTreeHelper(options.getRoot(), "");
   }
 
