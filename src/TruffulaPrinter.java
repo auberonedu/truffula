@@ -144,15 +144,17 @@ truffula/
 
 
   public void printTreeMethodHelper(File currentDirectory, int indentLevel) {
-    /*
-    in this directory we're going to pass in the directory and the indentLevel
+  /*
+  WAVE 4: PSUEDO CODE AND IMPLEMENTATION
+
+    In this directory we're going to pass in the directory and the indentLevel
     Consider the base case
       if directory is null or if the directory isn't a directory or doesn't exists
-        simply return 
+      simply return 
     Logic
       Create concactnation of indent sn string based on the level
         something like, indent = "   " repeated indentLevel times
-    
+  
       then print the directory with the proper indentation => directory + "/"
       
       after that get the list of files and directories
@@ -163,7 +165,23 @@ truffula/
 
       print the file name with the proper intentations
 
-     */
+  WAVE 5: PSUEDO and IMPLEMENTATION
+    Will implement this method to show hidden files
+
+    for loop
+      skip HIDDEN files if -h is not enabled
+      if file is directory, call method recursively with more indentLevel
+      if file is NOT directory, print correct color and indentation
+
+    Cycle colors using indentLevel % 3 for better readability
+    Example Output:
+    (WHITE) project/
+      (PURPLE) fileA.txt
+      (PURPLE) src/
+          (YELLOW) main.java
+          (YELLOW) utils/
+            (WHITE) helper.java
+    */
     
     // Base case to check if directory exists
     if (currentDirectory == null || !currentDirectory.exists()) return;
