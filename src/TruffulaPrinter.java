@@ -1,8 +1,6 @@
 import java.io.PrintStream;
-import java.util.Arrays;
 import java.util.List;
 import java.io.File;
-
 
 /**
  * TruffulaPrinter is responsible for printing a directory tree structure
@@ -114,49 +112,56 @@ public class TruffulaPrinter {
     // - For Wave 6: Use AlphabeticalFileSorter
     // DO NOT USE SYSTEM.OUT.PRINTLN
     // USE out.println instead (will use your ColorPrinter)
-    printTreeHelper(options.getRoot(), 0);
+
+    // Set the output color to WHITE for the root directory
+    out.setCurrentColor(ConsoleColor.WHITE);
+
+    // Print the root directory name followed by a slash no indentation at level 0
+    out.println(options.getRoot().getName() + "/");
+
+    // Begin the recursive printing at level 1
+    printTreeHelper(options.getRoot(), 1);
   }
 
-  private void printTreeHelper(File file, int level) {
-    // skip the hidden files/folders if showHidden is false.
-    if (!options.isShowHidden() && file.isHidden()) {
-      return;
-    }
+  private void printTreeHelper(File directory, int level) {
+
+    // If the directory is null or not a valid directory we stop immediately
+    if (directory == null || !directory.isDirectory()) return;
     
-    // Build the indentation string.
-    String indent = "";
-    for (int i = 0; i < level; i++) {
-      indent += "   ";
-    }
-    
-    // Append "/" if the file is a directory.
-    String nameToPrint = file.getName();
-    if (file.isDirectory()) {
-    nameToPrint = nameToPrint + "/";
-  }
+    // Get all files in the current directory
+    File[] files = directory.listFiles();
+    if (files != null) {
+      // Sort them case insensitively
+      files = AlphabeticalFileSorter.sort(files);
 
-    String line = indent + nameToPrint;
+      // For each file or subdirectory
+      for (File file : files) {
+        // Build indentation 
+        StringBuilder str = new StringBuilder();
+        for (int i = 0; i < level; i++){
+          str.append("   ");
+        }
+        // Get the appropriate color for this level
+        ConsoleColor color = getColorForLevel(level);
 
-    ConsoleColor colorToUse;
-    if (options.isUseColor()) {
-      int colorIndex = level % colorSequence.size();
-      colorToUse = colorSequence.get(colorIndex);
-    } else {
-      colorToUse = ConsoleColor.WHITE;
-    }
-
-
-    out.setCurrentColor(colorToUse);
-    out.println(line);
-    
-    // If this file is a directory, print its children recursively.
-    if (file.isDirectory()) {
-      File[] children = file.listFiles();
-      if (children == null) return;
-      
-      for (File child : children) {
-        printTreeHelper(child, level + 1);
+        // Apply that color before printing
+        out.setCurrentColor(color);
+        str.append(file.getName());
+         // If it's a directory, append a trailing slash
+        if (file.isDirectory()){
+          str.append("/");
+        }
+        // Print out this file or directory
+        out.println(str.toString());
+        printTreeHelper(file, level + 1);
       }
     }
   }
+//Cycles through three colors WHITE, PURPLE, YELLOW based on directory depth.
+private ConsoleColor getColorForLevel(int level) {
+    ConsoleColor[] colors = { ConsoleColor.WHITE, ConsoleColor.PURPLE, ConsoleColor.YELLOW };
+    // Use modulo to cycle through the array of colors
+    return colors[level % colors.length];
+}
+
 }
