@@ -169,6 +169,71 @@ public class TruffulaPrinterTest {
     
             assertEquals(expected.toString(), output);
         }
-    
 
+
+
+    @Test //test for color make file directory so it gets to white 3 times
+        public void testPrintTree_levelColor(@TempDir File tempDir) throws IOException {
+            
+            File level0 = new File(tempDir, "level0");
+            assertTrue(level0.mkdir(), "level0 should be created");
+            
+            File level1 = new File(level0, "level1");
+            assertTrue(level1.mkdir(), "level1 directory should be created");
+            
+            File level2 = new File(level1, "level2");
+            assertTrue(level2.mkdir(), "level2 directory should be created");
+
+            File level3 = new File(level2, "level3");
+            assertTrue(level3.mkdir(), "level3 directory should be created");
+
+            File level4 = new File(level3, "level4");
+            assertTrue(level4.mkdir(), "level4 directory should be created");
+
+            File level5 = new File(level4, "level5");
+            assertTrue(level5.mkdir(), "level5 directory should be created");
+    
+            File level6 = new File(level5, "level6.txt");
+            level6.createNewFile();
+          
+    
+            TruffulaOptions options = new TruffulaOptions(level0, false, true);
+    
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            PrintStream printStream = new PrintStream(baos);
+    
+            TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
+    
+            printer.printTree();
+    
+            String output = baos.toString();
+
+            String white = "\033[0;37m";
+            String purple = "\033[0;35m";
+            String yellow = "\033[0;33m";
+
+            // Level 0: White
+            assertTrue(output.contains(white), "Output for level 0 should be white");
+    
+            // Level 1: Purple
+            assertTrue(output.contains(purple), "Output for level 1 should be purple");
+    
+            // Level 2: Yellow
+            assertTrue(output.contains(yellow), "Output for level 2 should be yellow");
+    
+            // Level 3: White
+            assertTrue(output.contains(white), "Output for level 3 should be white");
+    
+            // Level 4: Purple
+            assertTrue(output.contains(purple), "Output for level 4 should be purple");
+    
+            // Level 5: Yellow
+            assertTrue(output.contains(yellow), "Output for level 5 should be yellow");
+    
+            // Level 6: White
+            assertTrue(output.contains(white), "Output for level 6 should be white");
+    
+            assertTrue(output.contains("\u001B[0m"), "Output should contain reset color code after each print");
+        }
+    
     }
