@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TruffulaPrinterTest {
 
-     @Test
+    @Test
     public void testPrintTree_ExactOutput_WithCustomPrintStream(@TempDir File tempDir) throws IOException {
         // Build the example directory structure:
         // myFolder/

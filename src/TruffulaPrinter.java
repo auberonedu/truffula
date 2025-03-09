@@ -132,7 +132,8 @@ public class TruffulaPrinter {
   public void printTree(File root, int depth) {
     File[] files = root.listFiles();
 
-    // cooked
+    
+   
     for (var file : files) {
       
       out.println(file.getName());
