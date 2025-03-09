@@ -124,44 +124,35 @@ public class TruffulaPrinter {
   }
 
   private void printTreeHelper(File directory, int level) {
-
-    // If the directory is null or not a valid directory we stop immediately
-    if (directory == null || !directory.isDirectory()) return;
-    
-    // get all files in the current directory
-    File[] files = directory.listFiles();
-    if (files != null) {
-      // Sort them case insensitively
-      files = AlphabeticalFileSorter.sort(files);
-
-      // For each file or subdirectory
-      for (File file : files) {
-        // Build indentation 
-        StringBuilder str = new StringBuilder();
-        for (int i = 0; i < level; i++){
-          str.append("   ");
+        if (directory == null || !directory.isDirectory()) {
+            return;
         }
-        // Get the appropriate color for this level
-        ConsoleColor color = getColorForLevel(level);
-
-        // Apply that color before printing
-        out.setCurrentColor(color);
-        str.append(file.getName());
-         // If it's a directory, append a trailing slash
-        if (file.isDirectory()){
-          str.append("/");
+        File[] files = directory.listFiles();
+        if (files == null) {
+            return;
         }
-        // Print out this file or directory
-        out.println(str.toString());
-        printTreeHelper(file, level + 1);
-      }
+        for (File file : files) {
+            //Skip hidden files folders if the option is set to not show hidden items.
+            if (!options.isShowHidden() && file.isHidden()) {
+                continue;
+            }
+            StringBuilder sb = new StringBuilder();
+            // Add indentation (3 spaces per level)
+            for (int i = 0; i < level; i++) {
+                sb.append("   ");
+            }
+            // Append the file or directory name
+            sb.append(file.getName());
+            // Append a slash if it's a directory
+            if (file.isDirectory()) {
+                sb.append("/");
+            }
+            out.println(sb.toString());
+            // Recursively print subdirectories
+            if (file.isDirectory()) {
+                printTreeHelper(file, level + 1);
+            }
+        }
     }
-  }
-//Cycles through three colors WHITE, PURPLE, YELLOW based on directory depth.
-private ConsoleColor getColorForLevel(int level) {
-    ConsoleColor[] colors = { ConsoleColor.WHITE, ConsoleColor.PURPLE, ConsoleColor.YELLOW };
-    // Use modulo to cycle through the array of colors
-    return colors[level % colors.length];
-}
 
 }
