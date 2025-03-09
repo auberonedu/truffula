@@ -191,7 +191,7 @@ truffula/
     if (files == null) return;
 
     // This prints the directory name with indentation
-    out.println(printIndentedSpaces((currentDirectory.getName()), indentLevel));
+    out.println(printIndentedSpaces((currentDirectory.getName()) + "/", indentLevel));
 
     // Loops through files
     for (File file : files) {
@@ -209,7 +209,7 @@ truffula/
   // Helper method to generate indentation
   public static String printIndentedSpaces(String name, int indentLevel){
     StringBuilder indent = new StringBuilder();
-    for (int i = 1; i < indentLevel; i++) {
+    for (int i = 0; i < indentLevel; i++) {
       indent.append("   "); // 3 spaces
     }
     return indent.toString() + name;
