@@ -5,7 +5,7 @@ import java.io.File;
 
 public class AlphabeticalFileSorterTest {
  
-    @Test
+    @Test //test with simple abc put in array not in order
     public void testSortFileNames() {
         
         File fileA = new File("a.txt");
@@ -20,7 +20,7 @@ public class AlphabeticalFileSorterTest {
 
         File[] sortedFiles = AlphabeticalFileSorter.sort(files);
         
-        // Check the sorted order by names
+        
         assertEquals("a.txt", sortedFiles[0].getName());
         assertEquals("b.txt", sortedFiles[1].getName());
         assertEquals("c.txt", sortedFiles[2].getName());
@@ -29,7 +29,7 @@ public class AlphabeticalFileSorterTest {
         assertEquals("f.txt", sortedFiles[5].getName());
         assertEquals("g.txt", sortedFiles[6].getName());
     }
-    @Test
+    @Test // test file name with 2 letters put in array in order but files were created in non alpha order
     public void testSortFileNamesMultiplesameletter() {
         
         File file1 = new File("bb.txt");
@@ -55,13 +55,13 @@ public class AlphabeticalFileSorterTest {
         assertEquals("ca.txt", sortedFiles[5].getName());
         assertEquals("cb.txt", sortedFiles[6].getName());
     }
-    @Test
+    @Test //if capitolization is not working taco would be first due to Upper case being a lower ascii number
     public void testCapitolization() {
 
-        //if capitolization is not working taco would be first due to lower case being a lower ascii number
+    
         
-        File file1 = new File("tacos.txt");
-        File file2 = new File("Burrito.txt");
+        File file1 = new File("Tacos.txt");
+        File file2 = new File("burrito.txt");
         
         
         File[] files = {file1, file2};
@@ -70,7 +70,7 @@ public class AlphabeticalFileSorterTest {
         File[] sortedFiles = AlphabeticalFileSorter.sort(files);
         
         
-        assertEquals("Burrito.txt", sortedFiles[0].getName());
-        assertEquals("tacos.txt", sortedFiles[1].getName());
+        assertEquals("burrito.txt", sortedFiles[0].getName());
+        assertEquals("Tacos.txt", sortedFiles[1].getName());
     }
 }
