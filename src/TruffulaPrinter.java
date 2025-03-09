@@ -128,7 +128,7 @@ public class TruffulaPrinter {
     // If the directory is null or not a valid directory we stop immediately
     if (directory == null || !directory.isDirectory()) return;
     
-    // Get all files in the current directory
+    // get all files in the current directory
     File[] files = directory.listFiles();
     if (files != null) {
       // Sort them case insensitively
