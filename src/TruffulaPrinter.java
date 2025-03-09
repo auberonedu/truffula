@@ -106,113 +106,126 @@ public class TruffulaPrinter {
   public void printTree() {
     // TODO: Implement this!
     // REQUIRED: ONLY use java.io, DO NOT use java.nio
-    
+
     // Hints:
     // - Add a recursive helper method
     // - For Wave 6: Use AlphabeticalFileSorter
     // DO NOT USE SYSTEM.OUT.PRINTLN
     // USE out.println instead (will use your ColorPrinter)
 
-  File root = options.getRoot();
+    File root = options.getRoot();
 
-  // check if the root directory exists
-  if (root == null || !root.exists() || !root.isDirectory()) {
-    out.println("Directory does not exist");
-    return;
-  }
-
-  out.println(root.getName() + "/");
-  printTreeHelper(root, 1);
-}
-
-// create a helper method
-private void printTreeHelper(File dir, int level) {
-  File[] files = dir.listFiles();
-
-  if (files == null) {
-    return;
-  }
-
-  // sort the files
-  for (File file : files) {
-    out.print("   ".repeat(level));
-
-    if (file.isDirectory()) {
-      out.println(file.getName() + "/");
-      printTreeHelper(file, level + 1);
-    } else {
-      out.println(file.getName());
+    // check if the root directory exists
+    if (root == null || !root.exists() || !root.isDirectory()) {
+      out.println("Directory does not exist");
+      return;
     }
+
+    // set the color to white
+    out.setCurrentColor(ConsoleColor.WHITE);
+    out.println(root.getName() + "/");
+
+    printTreeHelper(root, 1);
+  }
+
+  // create a helper method
+  private void printTreeHelper(File dir, int level) {
+    File[] files = dir.listFiles();
+
+    if (files == null) {
+      return;
+    }
+
+    // sort the files before printing
+    files = AlphabeticalFileSorter.sort(files);
+
+    // applying the colors
+    out.setCurrentColor(getColorForLevel(level));
+
+    // sort the files
+    for (File file : files) {
+      out.print("   ".repeat(level));
+
+      if (file.isDirectory()) {
+        out.println(file.getName() + "/");
+        printTreeHelper(file, level + 1);
+      } else {
+        out.println(file.getName());
+      }
+    }
+
+    // reseeting color
+    out.setCurrentColor(ConsoleColor.RESET);
+  }
+
+  // get the color for the level
+  private ConsoleColor getColorForLevel(int level) {
+    return colorSequence.get(level % colorSequence.size());
   }
 }
-}
 
-
-
-  //   if (root == null || !root.exists()) {
-  //     out.println("Directory does not exist");
-  //     return;
-  //   }
-
-  //   printTreeHelper(root, 0);
-
-    //out.println("printTree was called!");
-    //out.println("My options are: " + options);
-
-    // File rootDir = options.getRoot();
-    // if (rootDir.exists() && rootDir.isDirectory()) {
-    //   printTreeHelper(rootDir, 1);
-    // } else {
-    //   out.println("Invalid root directory:");
-    // }
-
-//     printTreeHelper(options.getRoot(), 0);
-//   }
-
-//   // create a helper method
-//   private void printTreeHelper(File current, int level) {
-//     if (current == null || !current.exists()) {
-//       return;
-//     }
-    
-//     if (current.isDirectory()) {
-//       out.println(current.getName());
-//     }
-
-//     // getting the file from the directory
-//     File[] files = current.listFiles();
-//     if (files == null) {
-//       return;
-//     }
-
-//     // sorting the files
-//     for (File file : files) {
-//       printTreeHelper(file, level + 1);
-//     }
-//   }
-
-//   private void printSpaces(String name, int level) {
-//     String indent = "   ".repeat(level);
-//     out.println(indent + name);
-//   }
+// if (root == null || !root.exists()) {
+// out.println("Directory does not exist");
+// return;
 // }
 
-  // }
+// printTreeHelper(root, 0);
 
-  // private void printTreeHelper(File file, int level) {
+// out.println("printTree was called!");
+// out.println("My options are: " + options);
 
-  //   // base case
-  //   String indent = "   ".repeat(level);
+// File rootDir = options.getRoot();
+// if (rootDir.exists() && rootDir.isDirectory()) {
+// printTreeHelper(rootDir, 1);
+// } else {
+// out.println("Invalid root directory:");
+// }
 
-  //   out.println(indent + file.getName());
+// printTreeHelper(options.getRoot(), 0);
+// }
 
-  //   // recursive case
-  //   if (file.isDirectory()) {
-  //     File[] files = file.listFiles();
+// // create a helper method
+// private void printTreeHelper(File current, int level) {
+// if (current == null || !current.exists()) {
+// return;
+// }
 
-  //     for (File f : files) {
-  //       printTreeHelper(f, level + 1);
-  //     }
-  //   }
-  
+// if (current.isDirectory()) {
+// out.println(current.getName());
+// }
 
+// // getting the file from the directory
+// File[] files = current.listFiles();
+// if (files == null) {
+// return;
+// }
+
+// // sorting the files
+// for (File file : files) {
+// printTreeHelper(file, level + 1);
+// }
+// }
+
+// private void printSpaces(String name, int level) {
+// String indent = " ".repeat(level);
+// out.println(indent + name);
+// }
+// }
+
+// }
+
+// private void printTreeHelper(File file, int level) {
+
+// // base case
+// String indent = " ".repeat(level);
+
+// out.println(indent + file.getName());
+
+// // recursive case
+// if (file.isDirectory()) {
+// File[] files = file.listFiles();
+
+// for (File f : files) {
+// printTreeHelper(f, level + 1);
+// }
+// }
