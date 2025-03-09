@@ -132,15 +132,16 @@ public class TruffulaPrinter {
   public void printTree(File root, int depth) {
     File[] files = root.listFiles();
 
-    
-   
     for (var file : files) {
+
       
-      out.println(file.getName());
+
+      out.println("  ".repeat(depth) + file.getName());
       if (file.isDirectory()) {
         printTree(file, depth + 1);
       }
 
     }
   }
+
 }
