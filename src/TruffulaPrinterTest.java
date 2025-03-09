@@ -101,4 +101,57 @@ public class TruffulaPrinterTest {
         // Assert that the output matches the expected output exactly
         assertEquals(expected.toString(), output);
     }
+
+    @Test
+    public void testPrintTree_ColorsApplied(@TempDir File tempDir) throws IOException {
+
+        // Create the directory structure
+        // World/
+        //    Land/
+        //    Ocean/
+        //       Fish/
+
+        // Create test directory structure
+        File world = new File(tempDir, "World");
+        assertTrue(world.mkdir(), "World folder should be created");
+
+        File land = new File(world, "Land");
+        assertTrue(land.mkdir(), "Land folder should be created");
+
+        File ocean = new File(world, "Ocean");
+        assertTrue(ocean.mkdir(), "Ocean folder should be created");
+
+        File fish = new File(ocean, "Fish");
+        assertTrue(fish.mkdir(), "Fish folder should be created");
+
+        // Capture output
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(baos);
+
+        // Initialize TruffulaPrinter
+        TruffulaOptions options = new TruffulaOptions(world, false, true);
+        TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
+
+        printer.printTree();
+
+        // Get actual output
+        String output = baos.toString();
+        String nl = System.lineSeparator();
+
+        // define ANSI color codes
+        String reset = "\033[0m";
+        String white = "\033[0;37m"; 
+        String purple = "\033[0;35m"; 
+        String yellow = "\033[0;33m"; 
+
+        // build expected output
+        StringBuilder expected = new StringBuilder();
+        expected.append(white).append("World/").append(nl).append(reset);
+        expected.append(purple).append("   Land/").append(nl).append(reset);
+        expected.append(purple).append("   Ocean/").append(nl).append(reset);
+        expected.append(yellow).append("      Fish/").append(nl).append(reset);
+        
+        // assert that the output matches the expected output
+        assertEquals(expected.toString(), output);
+    }
 }

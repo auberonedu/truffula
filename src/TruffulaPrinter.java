@@ -132,18 +132,16 @@ public class TruffulaPrinter {
   private void printTreeHelper(File dir, int level) {
     File[] files = dir.listFiles();
 
-    if (files == null) {
-      return;
-    }
+    if (files == null) return;
 
-    // sort the files before printing
+    // sort files alphabetically
     files = AlphabeticalFileSorter.sort(files);
 
-    // applying the colors
-    out.setCurrentColor(getColorForLevel(level));
+    ConsoleColor color = LevelColor(level);
 
     // sort the files
     for (File file : files) {
+      out.setCurrentColor(color);
       out.print("   ".repeat(level));
 
       if (file.isDirectory()) {
@@ -159,8 +157,9 @@ public class TruffulaPrinter {
   }
 
   // get the color for the level
-  private ConsoleColor getColorForLevel(int level) {
-    return colorSequence.get(level % colorSequence.size());
+  private ConsoleColor LevelColor (int level) {
+    ConsoleColor[] colors = {ConsoleColor.WHITE, ConsoleColor.PURPLE, ConsoleColor.YELLOW};
+    return colors[level % colors.length];
   }
 }
 
