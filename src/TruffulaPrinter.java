@@ -113,7 +113,7 @@ public class TruffulaPrinter {
     // DO NOT USE SYSTEM.OUT.PRINTLN
     // USE out.println instead (will use your ColorPrinter)
 
-    // Set the output color to WHITE for the root directory
+    // set the output color to WHITE for the root directory
     out.setCurrentColor(ConsoleColor.WHITE);
 
     // Print the root directory name followed by a slash no indentation at level 0
