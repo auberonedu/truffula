@@ -216,10 +216,19 @@ truffula/
   }
 
   public String coloredText(String name, int indentLevel) {
-    //Implement these color codes here
-
     //then in if statements cycle through colors based on indentLevel % 3
+    String indent = printIndentedSpaces(name, indentLevel);
 
+    String textColoroutput;
+    if () { //this part white, root directory
+
+    } else if { //this part purple, direct children
+
+    } else { //then this part yellow, then their children yellow
+    
+    }
   }
-
+  //NOTE*
+  //guys does this look correct idk please let me know kfjaslkfjd;flkgj
+  //feel free to update or correct it if it looks wrong LOL
 }
