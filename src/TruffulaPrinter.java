@@ -97,16 +97,16 @@ public class TruffulaPrinter {
    * Example Output:
    *
    * myFolder/
-   *    Apple.txt
-   *    banana.txt
-   *    Documents/
-   *       images/
-   *          Cat.png
-   *          cat.png
-   *          Dog.png
-   *       notes.txt
-   *       README.md
-   *    zebra.txt
+   * Apple.txt
+   * banana.txt
+   * Documents/
+   * images/
+   * Cat.png
+   * cat.png
+   * Dog.png
+   * notes.txt
+   * README.md
+   * zebra.txt
    */
   public void printTree() {
     // TODO: Implement this!
@@ -129,25 +129,35 @@ public class TruffulaPrinter {
     printTreeHelper(root, level);
   }
 
-  private void printTreeHelper(File root, int lvl){
+  private void printTreeHelper(File root, int lvl) {
     int spaces = lvl * 3;
     String rootName = "";
-    // if lvl % 3 == 0 set color to white by appending it to rootName 
-    //  default_colors.get(0);
+    // if lvl % 3 == 0 set color to white by appending it to rootName
+    if (lvl % 3 == 0) {
+      rootName += DEFAULT_COLOR_SEQUENCE.get(0);
+    }
+    // default_colors.get(0);
     // if lvl % 3 equals 2 set color to purple
+    if (lvl % 3 == 2) {
+      rootName += DEFAULT_COLOR_SEQUENCE.get(1);
+    }
     // if lvl %3 equals 1 set color to yellow
-    for (int i = 0; i < spaces; i++){
+    if (lvl % 3 == 1) {
+      rootName += DEFAULT_COLOR_SEQUENCE.get(2);
+    }
+    for (int i = 0; i < spaces; i++) {
       rootName += " ";
     }
     rootName += root.getName();
-    if (root.isDirectory()){
+    if (root.isDirectory()) {
       rootName += "/";
     }
     out.println(rootName + ConsoleColor.RESET);
     File[] childFiles = root.listFiles();
-    if (childFiles == null) return;
+    if (childFiles == null)
+      return;
     lvl++;
-    for(File child : childFiles){
+    for (File child : childFiles) {
       printTreeHelper(child, lvl);
     }
   }
