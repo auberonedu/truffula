@@ -97,8 +97,8 @@ JAR is short for "Java Archive". It's a collection of our compiled code that we 
 Make sure you are in the root of the repository, then compile your code:
 
 ```
-javac -d target src/App.java src/ColorPrinter.java src/ConsoleColor.java src/TruffulaOptions.java src/TruffulaPrinter.java 
-```
+javac -d target src/App.java src/ColorPrinter.java src/ConsoleColor.java src/TruffulaOptions.java src/TruffulaPrinter.java src/AlphabeticalFileSorter.java ```
+
 run the code: java -cp target App
 run the code with your args: example: java -cp target App src or  java -cp target App -nc -h src
 

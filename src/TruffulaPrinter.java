@@ -214,7 +214,8 @@ truffula/
 
   public String coloredText(String name, int indentLevel) {
     String indent = printIndentedSpaces(name, indentLevel);
-    
+
+    // Set color based on the indentLevel
     String color = "";
     if (indentLevel % 3 == 0) { // this part white, root directory
       color = ConsoleColor.WHITE.getCode();
@@ -223,6 +224,7 @@ truffula/
     } else { // then this part yellow, then their children yellow
       color = ConsoleColor.YELLOW.getCode();
     }
-      return indent; // Apply color and then reset
+    // Apply color to name and then reset after the text
+    return color + indent + name + ConsoleColor.RESET.getCode();
   }
 }
