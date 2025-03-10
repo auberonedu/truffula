@@ -16,17 +16,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TruffulaPrinterTest {
 
-    
-    // root directoy is null - y
-    // root directory is not a directory - y
-    // root directory is hidden - y
-    // color on hidden on - y
-    // color off hidden on - y
-    // color on hidden off - y
-    // color off hidden off - y
-    // ordered - y
-    // super deep directory - y
-
     @Test
     public void printTreeColorNullRoot() {
 
@@ -49,7 +38,6 @@ public class TruffulaPrinterTest {
 
     @Test
     public void printTreeColorRootNotDirectory (@TempDir File tempDir) throws IOException {
-
         // Sample Directory:
         //
         // folder/
@@ -82,7 +70,6 @@ public class TruffulaPrinterTest {
 
     @Test
     public void printTreeColorRootHidden (@TempDir File tempDir) throws IOException {
-
         // Sample Directory:
         //
         // .hidden-folder/
@@ -180,17 +167,6 @@ public class TruffulaPrinterTest {
         String purple = "\033[0;35m";
         String yellow = "\033[0;33m";
 
-        // Sample Directory:
-        //
-        // folder/
-        //  image.png
-        //  nested-folder/
-        //      .hidden-folder/
-        //          42.png
-        //      .hidden.txt
-        //      not-hidden.txt
-        //  text.txt
-
         StringBuilder expected = new StringBuilder();
         expected.append(white).append("folder/").append(nl).append(reset);
         expected.append(purple).append("   image.png").append(nl).append(reset);
@@ -266,20 +242,7 @@ public class TruffulaPrinterTest {
         // Build expected output with exact colors and indentation
         String reset = "\033[0m";
         String white = "\033[0;37m";
-        // String purple = "\033[0;35m";
-        // String yellow = "\033[0;33m";
-
-        // Sample Directory:
-        //
-        // folder/
-        //  image.png
-        //  nested-folder/
-        //      .hidden-folder/
-        //          42.png
-        //      .hidden.txt
-        //      not-hidden.txt
-        //  text.txt
-
+       
         StringBuilder expected = new StringBuilder();
         expected.append(white).append("folder/").append(nl).append(reset);
         expected.append(white).append("   image.png").append(nl).append(reset);
@@ -358,17 +321,6 @@ public class TruffulaPrinterTest {
         String purple = "\033[0;35m";
         String yellow = "\033[0;33m";
 
-        // Sample Directory:
-        //
-        // folder/
-        //  image.png
-        //  nested-folder/
-        //      .hidden-folder/
-        //          42.png
-        //      .hidden.txt
-        //      not-hidden.txt
-        //  text.txt
-
         StringBuilder expected = new StringBuilder();
         expected.append(white).append("folder/").append(nl).append(reset);
         expected.append(purple).append("   image.png").append(nl).append(reset);
@@ -441,20 +393,7 @@ public class TruffulaPrinterTest {
         // Build expected output with exact colors and indentation
         String reset = "\033[0m";
         String white = "\033[0;37m";
-        // String purple = "\033[0;35m";
-        // String yellow = "\033[0;33m";
-
-        // Sample Directory:
-        //
-        // folder/
-        //  image.png
-        //  nested-folder/
-        //      .hidden-folder/
-        //          42.png
-        //      .hidden.txt
-        //      not-hidden.txt
-        //  text.txt
-
+        
         StringBuilder expected = new StringBuilder();
         expected.append(white).append("folder/").append(nl).append(reset);
         expected.append(white).append("   image.png").append(nl).append(reset);
@@ -673,7 +612,6 @@ public class TruffulaPrinterTest {
         File folder25 = new File(folder24, "folder");
         folder25.mkdir();
 
-
         // Set up TruffulaOptions with showHidden = false and useColor = false
         TruffulaOptions options = new TruffulaOptions(folder1, false, true);
 
@@ -724,7 +662,6 @@ public class TruffulaPrinterTest {
         expected.append(yellow).append("                                                                     folder/").append(nl).append(reset);
         expected.append(white).append("                                                                        folder/").append(nl).append(reset);
                   
-          
         // Assert that the output matches the expected output exactly
         assertEquals(expected.toString(), output);
     }
@@ -819,5 +756,4 @@ public class TruffulaPrinterTest {
         // Assert that the output matches the expected output exactly
         assertEquals(expected.toString(), output);
     }
-
 }

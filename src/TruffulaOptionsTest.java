@@ -64,7 +64,6 @@ public class TruffulaOptionsTest {
     String directoryPath = directory.getAbsolutePath();
     String[] args = {"-nc", "-nc", directoryPath};
 
-
     assertThrows(IllegalArgumentException.class, () -> {
       // Act: Create TruffulaOptions instance
       TruffulaOptions options = new TruffulaOptions(args);
