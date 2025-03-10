@@ -107,15 +107,12 @@ public class TruffulaOptions  {
     boolean thisColor = true;
 
     for (int i = 0; i < args.length; i++){
-      boolean pathFound = false;
 
       String currentString = args[i];
 
       if (i == args.length - 1) {
-        // do some other thing
         foundFile = new File(currentString);
       }
-      //TODO: fix this maybe
       else if (currentString.startsWith("-")) {
         if (currentString.equals("-nc")) {
           thisColor = false;
@@ -137,7 +134,7 @@ public class TruffulaOptions  {
       throw new FileNotFoundException(foundFile + " is a file. Must be a directory.");
     }
 
-    // check is file exists
+    // check if file exists
     if (!foundFile.exists()){
       throw new FileNotFoundException(foundFile + " does not exist.");
     }

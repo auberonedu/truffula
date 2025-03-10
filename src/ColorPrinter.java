@@ -95,11 +95,6 @@ public class ColorPrinter {
       printStream.append(currentColor + message + ConsoleColor.RESET);
       currentColor = ConsoleColor.RESET;
     }
-  
-    // pseudo code? -augy
-    // printStream.append(currentColor + message);
-    // if (reset)
-      // currentColor = ConsoleColor.RESET
     
   }
 

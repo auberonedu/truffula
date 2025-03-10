@@ -120,7 +120,6 @@ public class TruffulaPrinter {
 
     // base case
     printTree(options.getRoot());
-
   }
 
   private void printTree(File root) {
@@ -131,7 +130,6 @@ public class TruffulaPrinter {
   private void printTree(File root, String threeSpaces) {
 
     // Check if root is a file or a directory - print accordingly
-
     if (root.isDirectory()) {
       out.println(threeSpaces + root.getName() + "/");
     } 
@@ -148,11 +146,16 @@ public class TruffulaPrinter {
     }
 
     // Check for color
-    // Rotate through color for each directory level - WIP
+    // If true - Rotate through color for each directory level else print in white for false - WIP
     if (options.isUseColor() == true) {
+      // Do something to start color rotation
+      out.setCurrentColor(); // Maybe? Not sure what to put in ()
+      // I feel like getCurrentColor will be needed at some point to check when it should rotate to next color
+      
+    }
+    else {
+      // Keep the color white
       out.setCurrentColor(ConsoleColor.WHITE);
-
-
     }
 
     // traverse
