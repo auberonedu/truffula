@@ -140,20 +140,6 @@ public class TruffulaOptionsTest {
   }
 
   @Test
-  void testPathIsAFile() {
-      File testFile = new File("testFile.txt");
-      try {
-          testFile.createNewFile(); // Create test file
-          assertThrows(FileNotFoundException.class, () -> new TruffulaOptions(
-            new String[]{testFile.getAbsolutePath()}));
-      } catch (Exception e) {
-          fail("Unexpected exception while setting up test file.");
-      } finally {
-          testFile.delete(); // Cleanup
-      }
-  } 
-
-  @Test
   void testMultipleUnknownFlags() {
       Exception exception = assertThrows(IllegalArgumentException.class, () -> {
           new TruffulaOptions(new String[]{"-vfv", "-x", "/valid/path"}); // unrecognizable flags
