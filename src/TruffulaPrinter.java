@@ -137,28 +137,28 @@ public class TruffulaPrinter {
     // sort files alphabetically
     files = AlphabeticalFileSorter.sort(files);
 
-    //ConsoleColor color = LevelColor(level);
+    ConsoleColor color = LevelColor(level);
 
     // sort the files
     for (File file : files) {
-      out.setCurrentColor(LevelColor(level));
-      out.print("   ".repeat(level));
-
+      out.setCurrentColor(color);
+      //experimental code to see if it prints the file with proper indentation
+      out.println(spaceIndent(file.getName() + (file.isDirectory() ? "/" : ""), level));
       if (file.isDirectory()) {
-        out.println(file.getName() + "/");
         printTreeHelper(file, level + 1);
-      } else {
-        out.println(file.getName());
       }
     }
 
-    // reseeting color
+    // resetting color
     out.setCurrentColor(ConsoleColor.RESET);
   }
 
   // get the color for the level
   private ConsoleColor LevelColor (int level) {
-    ConsoleColor[] colors = {ConsoleColor.WHITE, ConsoleColor.PURPLE, ConsoleColor.YELLOW};
-    return colors[level % colors.length];
+    return colorSequence.get(level % colorSequence.size());
+  }
+
+  public static String spaceIndent(String name, int indentLevel) {
+    return "   ".repeat(indentLevel) + name;
   }
 }
