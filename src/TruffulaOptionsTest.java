@@ -108,7 +108,7 @@ public class TruffulaOptionsTest {
 
     File directory2 = new File(tempDir, "subfolder2");
     // Act:
-    String[] args = {"-h","directory2"};
+    String[] args = {"-h",directory2.toString()};
     //TruffulaOptions options = new TruffulaOptions(args);
     // Assert:
     assertThrows (FileNotFoundException.class, () ->  new TruffulaOptions(args));
