@@ -185,36 +185,33 @@ truffula/
     
     if (currentDirectory == null || !currentDirectory.exists()) return;
 
+    out.println(coloredText(currentDirectory.getName() + "/", indentLevel));
+
     // To list the files and directories in the current directory
     File[] files = currentDirectory.listFiles();
     if (files == null) return;
 
-    out.println(coloredText(currentDirectory.getName() + "/", indentLevel));
-
-    for (File file : files) {
-      if (file.isHidden() && !options.isShowHidden()) {
-        continue;
-      }
-      if (file.isDirectory()) {
-        printTreeMethodHelper(file, indentLevel + 1);
-      } else {
-      // If it's a file, print with the correct indentation and color
+  for (File file : files) {
+    if (file.isHidden() && !options.isShowHidden()) {
+      continue;
+    }
+    if (file.isDirectory()) {
+      printTreeMethodHelper(file, indentLevel + 1); 
+    } else {
         out.println(coloredText(file.getName(), indentLevel + 1));
-      }
     }
   }
+}
 
-  // Helper method to generate indentation
   public static String printIndentedSpaces(String name, int indentLevel){
     StringBuilder indent = new StringBuilder();
     for (int i = 0; i < indentLevel; i++) {
-      indent.append("   "); // 3 spaces
+      indent.append("   "); 
     }
     return indent.toString() + name;
   }
 
   public String coloredText(String name, int indentLevel) {
-    //then in if statements cycle through colors based on indentLevel % 3
     String indent = printIndentedSpaces(name, indentLevel);
 
     String color = "";
