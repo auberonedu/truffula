@@ -136,6 +136,11 @@ public class TruffulaOptions  {
     if (!root.exists()) {
         throw new FileNotFoundException("The directory does not exist: " + path);
     }
+    // check if path is empty
+    if (path.isEmpty()) {
+      throw new IllegalArgumentException("No arguments found!" + path);
+    }
+    // check if root exists
     if (!root.isDirectory()) {
         throw new FileNotFoundException("The path is not a directory: " + path);
     }
