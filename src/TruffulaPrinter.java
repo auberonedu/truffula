@@ -214,15 +214,15 @@ truffula/
 
   public String coloredText(String name, int indentLevel) {
     String indent = printIndentedSpaces(name, indentLevel);
-
-  String color = "";
-  if (indentLevel % 3 == 0) { // this part white, root directory
-    color = ConsoleColor.WHITE.getCode();
-  } else if (indentLevel % 3 == 1) { // this part purple, direct children
-    color = ConsoleColor.PURPLE.getCode();
-  } else { // then this part yellow, then their children yellow
-    color = ConsoleColor.YELLOW.getCode();
+    
+    String color = "";
+    if (indentLevel % 3 == 0) { // this part white, root directory
+      color = ConsoleColor.WHITE.getCode();
+    } else if (indentLevel % 3 == 1) { // this part purple, direct children
+      color = ConsoleColor.PURPLE.getCode();
+    } else { // then this part yellow, then their children yellow
+      color = ConsoleColor.YELLOW.getCode();
+    }
+      return indent; // Apply color and then reset
   }
-    return color + indent; // Apply color to name, then reset
-}
 }
