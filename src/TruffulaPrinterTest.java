@@ -176,6 +176,66 @@ public class TruffulaPrinterTest {
         assertEquals(expected.toString(), output);
     }
 
+    @Test
+    public void testPrintTree_AlphabeticalSorting(@TempDir File tempDir) throws IOException {
+        // Create "testFolder"
+        File testFolder = new File(tempDir, "myFolder");
+        assertTrue(testFolder.mkdir(), "myFolder should be created");
+
+        // Create files in testFolder (unordered creation)
+        File zebra = new File(testFolder, "zebra.txt");
+        File apple = new File(testFolder, "Apple.txt");
+        File banana = new File(testFolder, "banana.txt");
+        apple.createNewFile();
+        banana.createNewFile();
+        zebra.createNewFile();
+
+        // Create subdirectory "Docs" in testFolder
+        File docs = new File(testFolder, "Documents");
+        assertTrue(docs.mkdir(), "Documents directory should be created");
+
+        // Create files in Docs (unordered creation)
+        File readme = new File(docs, "README.md");
+        File notes = new File(docs, "notes.txt");
+        readme.createNewFile();
+        notes.createNewFile();
+
+        // Set up TruffulaOptions with showHidden = false and useColor = false (for simplicity)
+        TruffulaOptions options = new TruffulaOptions(testFolder, false, false);
+
+        // Capture output using a custom PrintStream
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(baos);
+
+        // Instantiate TruffulaPrinter with custom PrintStream
+        TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
+
+        // Call printTree (output goes to printStream)
+        printer.printTree();
+
+        // Retrieve printed output
+        String output = baos.toString();
+        String nl = System.lineSeparator();
+
+        // Build expected output with exact colors and indentation
+        String reset = "\033[0m";
+        String white = "\033[0;37m";
+
+        // Build expected output (alphabetically sorted)
+        StringBuilder expected = new StringBuilder();
+        expected.append(white).append("myFolder/").append(nl).append(reset);
+        expected.append(reset).append("   Apple.txt").append(nl).append(reset);
+        expected.append(reset).append("   banana.txt").append(nl).append(reset);
+        expected.append(reset).append("   Documents/").append(nl).append(reset);
+        expected.append(reset).append("      notes.txt").append(nl).append(reset);
+        expected.append(reset).append("      README.md").append(nl).append(reset);
+        expected.append(reset).append("   zebra.txt").append(nl).append(reset);
+
+        // Assert that the output matches the expected output exactly
+        assertEquals(expected.toString(), output);
+    }
+
+
 
     @Test
     public void testPrintTree_ExactOutput_WithCustomPrintStream(@TempDir File tempDir) throws IOException {
