@@ -124,35 +124,37 @@ public class TruffulaPrinter {
   }
 
   private void printTreeHelper(File directory, int level) {
-        if (directory == null || !directory.isDirectory()) {
-            return;
-        }
-        File[] files = directory.listFiles();
-        if (files == null) {
-            return;
-        }
-        for (File file : files) {
-            //Skip hidden files folders if the option is set to not show hidden items.
-            if (!options.isShowHidden() && file.isHidden()) {
-                continue;
-            }
-            StringBuilder sb = new StringBuilder();
-            // Add indentation (3 spaces per level)
-            for (int i = 0; i < level; i++) {
-                sb.append("   ");
-            }
-            // Append the file or directory name
-            sb.append(file.getName());
-            // Append a slash if it's a directory
-            if (file.isDirectory()) {
-                sb.append("/");
-            }
-            out.println(sb.toString());
-            // Recursively print subdirectories
-            if (file.isDirectory()) {
-                printTreeHelper(file, level + 1);
-            }
-        }
+    if (directory == null || !directory.isDirectory()) {
+      return;
     }
+    File[] files = directory.listFiles();
+
+    if (files == null) {
+      return;
+    }
+
+    for (File file : files) {
+      //Skip hidden files folders if the option is set to not show hidden items.
+      if (!options.isShowHidden() && file.isHidden()) {
+        continue;
+      }
+      StringBuilder sb = new StringBuilder();
+      // Add indentation (3 spaces per level)
+      for (int i = 0; i < level; i++) {
+        sb.append("   ");
+      }
+      // Append the file or directory name
+      sb.append(file.getName());
+      // Append a slash if it's a directory
+      if (file.isDirectory()) {
+        sb.append("/");
+      }
+      out.println(sb.toString());
+      // Recursively print subdirectories
+      if (file.isDirectory()) {
+        printTreeHelper(file, level + 1);
+      }
+    }
+  }
 
 }
