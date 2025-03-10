@@ -29,21 +29,6 @@ public class TruffulaOptionsTest {
   }
 
   @Test
-  void testTooManyFlags(@TempDir File tempDir) throws FileNotFoundException {
-    // Arrange: Prepare the arguments with the temp directory
-    File directory = new File(tempDir, "subfolder");
-    directory.mkdir();
-    String directoryPath = directory.getAbsolutePath();
-    String[] args = {"-nc", "-h", "-h", "-h", directoryPath};
-
-    // Assert: Check that the root directory is set correctly
-    assertThrows(IllegalArgumentException.class, () -> {
-      // Act: Create TruffulaOptions instance
-      TruffulaOptions options = new TruffulaOptions(args);
-    }, "Illegal Argument Exception Expected");
-  }
-
-  @Test
   void testFileNotFound(@TempDir File tempDir) throws FileNotFoundException {
     // Arrange: Prepare the arguments with the temp directory
     String randomInvalidPath = "random/nonexistent/directory/path";
@@ -69,5 +54,35 @@ public class TruffulaOptionsTest {
     // Assert: Check that the root directory is set correctly
     assertEquals(directory.getAbsolutePath(), options.getRoot().getAbsolutePath());
     assertFalse(options.isUseColor());
+  }
+
+  @Test
+  void testDuplicateFlags(@TempDir File tempDir) throws IllegalArgumentException {
+    // Arrange: Prepare the arguments with the temp directory
+    File directory = new File(tempDir, "subfolder");
+    directory.mkdir();
+    String directoryPath = directory.getAbsolutePath();
+    String[] args = {"-nc", "-nc", directoryPath};
+
+
+    assertThrows(IllegalArgumentException.class, () -> {
+      // Act: Create TruffulaOptions instance
+      TruffulaOptions options = new TruffulaOptions(args);
+    }, "Illegal Argument Exception Expected");
+  }
+
+  @Test
+  void testInvalidFlags(@TempDir File tempDir) throws FileNotFoundException {
+    // Arrange: Prepare the arguments with the temp directory
+    File directory = new File(tempDir, "subfolder");
+    directory.mkdir();
+    String directoryPath = directory.getAbsolutePath();
+    String[] args = {"-nocolor", directoryPath};
+
+    // Assert: Check that the root directory is set correctly
+    assertThrows(IllegalArgumentException.class, () -> {
+      // Act: Create TruffulaOptions instance
+      TruffulaOptions options = new TruffulaOptions(args);
+    }, "Illegal Argument Exception Expected");
   }
 }
