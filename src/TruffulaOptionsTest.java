@@ -43,7 +43,7 @@ public class TruffulaOptionsTest {
     // Assert: Check that the root directory is set and flags have default values
     assertEquals(directoryPath, options.getRoot().getAbsolutePath());
     assertFalse(options.isShowHidden());
-    assertFalse(options.isUseColor());  // Should now be true by default
+    assertTrue(options.isUseColor());  // Should now be true by default
   }
 
   @Test

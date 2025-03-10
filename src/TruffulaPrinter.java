@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.PrintStream;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -186,7 +187,7 @@ truffula/
     if (currentDirectory == null || !currentDirectory.exists()) return;
 
     // To list the files and directories in the current directory
-    File[] files = currentDirectory.listFiles();
+    File[] files = AlphabeticalFileSorter.sort(currentDirectory.listFiles());
     if (files == null) return;
 
     out.println(coloredText(currentDirectory.getName() + "/", indentLevel));  
@@ -222,6 +223,6 @@ truffula/
   } else { // then this part yellow, then their children yellow
     color = ConsoleColor.YELLOW.getCode();
   }
-    return color + indent + ConsoleColor.RESET.getCode(); // Apply color and then reset
-  }
+    return color + indent; // Apply color to name, then reset
+}
 }
