@@ -1,4 +1,5 @@
 import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -86,65 +87,117 @@ public class TruffulaOptionsTest {
     });
     assertEquals("The directory does not exist: " + noPath, exception.getMessage());
   }
+
+  @Test
+  void testToStringOutput() throws FileNotFoundException {
+    File Dir = new File("/"); // assuming current dir exists
+    TruffulaOptions options = new TruffulaOptions(new String[]{"-h", "-nc", Dir.getAbsolutePath()});
+
+    String expected = "TruffulaOptions [root=" + Dir.getAbsoluteFile() + ", showHidden=true, useColor=false]";
+    assertEquals(expected, options.toString());
+  }
+
   // edge cases tests
   @Test
-    void testFlagDifferentOrder() throws FileNotFoundException {
-        File validDir = new File("/");
-        
-        TruffulaOptions options1 = new TruffulaOptions(new String[]{"-nc", "-h", validDir.getAbsolutePath()});
-        TruffulaOptions options2 = new TruffulaOptions(new String[]{"-h", "-nc", validDir.getAbsolutePath()});
-        
-        assertEquals(options1.isShowHidden(), options2.isShowHidden());
-        assertEquals(options1.isUseColor(), options2.isUseColor());
-        assertEquals(options1.getRoot(), options2.getRoot());
+  void testFlagDifferentOrder() throws FileNotFoundException {
+      File validDir = new File("/");
+      
+      TruffulaOptions options1 = new TruffulaOptions(new String[]{"-nc", "-h", validDir.getAbsolutePath()});
+      TruffulaOptions options2 = new TruffulaOptions(new String[]{"-h", "-nc", validDir.getAbsolutePath()});
+      
+      assertEquals(options1.isShowHidden(), options2.isShowHidden());
+      assertEquals(options1.isUseColor(), options2.isUseColor());
+      assertEquals(options1.getRoot(), options2.getRoot());
     }
 
-    @Test
-    void testRelativeVsAbsolutePath() throws FileNotFoundException {
-        File validDir = new File("/"); 
-        String absolutePath = validDir.getAbsolutePath();
-        
-        TruffulaOptions optionsRelative = new TruffulaOptions(new String[]{ "/" });
-        TruffulaOptions optionsAbsolute = new TruffulaOptions(new String[]{ absolutePath });
-        
-        assertEquals(optionsAbsolute.getRoot(), optionsRelative.getRoot());
-    }
+  @Test
+  void testRelativeVsAbsolutePath() throws FileNotFoundException {
+      File validDir = new File("/"); 
+      String absolutePath = validDir.getAbsolutePath();
+      
+      TruffulaOptions optionsRelative = new TruffulaOptions(new String[]{ "/" });
+      TruffulaOptions optionsAbsolute = new TruffulaOptions(new String[]{ absolutePath });
+      
+      assertEquals(optionsAbsolute.getRoot(), optionsRelative.getRoot());
+  }
 
-    @Test
-    void testPathWithSpaces() throws FileNotFoundException {
-        File validDir = new File("Test Directory");
-        if (!validDir.exists()) validDir.mkdir(); // Creates the test directory if missing
+  @Test
+  void testPathWithSpaces() throws FileNotFoundException {
+      File validDir = new File("Test Directory");
+      if (!validDir.exists()) validDir.mkdir(); // Creates the test directory if missing
 
-        TruffulaOptions options = new TruffulaOptions(new String[]{validDir.getAbsolutePath()});
-        assertEquals(validDir.getAbsoluteFile(), options.getRoot());
-    }
+      TruffulaOptions options = new TruffulaOptions(
+        new String[]{validDir.getAbsolutePath()});
+      assertEquals(validDir.getAbsoluteFile(), options.getRoot());
+  }
 
-    @Test
-    void testEmptyPathArgument() {
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            new TruffulaOptions(new String[]{""}); // empty path argument
-        });
-        assertTrue(exception.getMessage().contains("No arguments found!"));
-    }
+  @Test
+  void testEmptyPathArgument() {
+      Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+          new TruffulaOptions(new String[]{""}); // empty path argument
+      });
+      assertTrue(exception.getMessage().contains("No arguments found!"));
+  }
 
-    @Test
-    void testPathIsAFile() {
-        File testFile = new File("testFile.txt");
-        try {
-            testFile.createNewFile(); // Create test file
-            assertThrows(FileNotFoundException.class, () -> new TruffulaOptions(new String[]{testFile.getAbsolutePath()}));
-        } catch (Exception e) {
-            fail("Unexpected exception while setting up test file.");
-        } finally {
-            testFile.delete(); // Cleanup
-        }
-    } 
+  @Test
+  void testPathIsAFile() {
+      File testFile = new File("testFile.txt");
+      try {
+          testFile.createNewFile(); // Create test file
+          assertThrows(FileNotFoundException.class, () -> new TruffulaOptions(
+            new String[]{testFile.getAbsolutePath()}));
+      } catch (Exception e) {
+          fail("Unexpected exception while setting up test file.");
+      } finally {
+          testFile.delete(); // Cleanup
+      }
+  } 
 
-    @Test
-    void testMultipleUnknownFlags() {
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            new TruffulaOptions(new String[]{"-vfv", "-x", "/valid/path"});
-        });
-        assertTrue(exception.getMessage().contains("Unknown flag"));
-    }
+  @Test
+  void testMultipleUnknownFlags() {
+      Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+          new TruffulaOptions(new String[]{"-vfv", "-x", "/valid/path"}); // unrecognizable flags
+      });
+      assertTrue(exception.getMessage().contains("Unknown flag"));
+  }
+
+  @Test
+  void testExtremelyLongPath() {
+      StringBuilder longPath = new StringBuilder();
+      for (int i = 0; i < 100; i++) {
+          longPath.append("a"); 
+      }
+
+      File longPathDir = new File(longPath.toString()); //creates a long path file
+
+      if (!longPathDir.exists()) longPathDir.mkdir(); 
+
+      assertDoesNotThrow(() -> new TruffulaOptions(
+        new String[]{longPathDir.getAbsolutePath()}));
+  }
+
+  @Test
+  void testDirectoryNameResemblingFlag() throws FileNotFoundException {
+    File trickyDir = new File("-nc"); // Directory name looks like a flag
+    if (!trickyDir.exists()) trickyDir.mkdir(); 
+
+    TruffulaOptions options = new TruffulaOptions(new String[]{trickyDir.getAbsolutePath()});
+    assertEquals(trickyDir.getAbsoluteFile(), options.getRoot());
+  }
+  
+  @Test
+  void testFlagsWithoutPath() {
+    Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+        new TruffulaOptions(new String[]{"-h", "-nc"}); // flags without a path specified
+    });
+    assertTrue(exception.getMessage().contains("A path is required"));
+  }
+
+  @Test
+  void testPathWithNewline() {
+    Exception exception = assertThrows(FileNotFoundException.class, () -> {
+        new TruffulaOptions(new String[]{"\n/path/to/directory"}); // a directory starting with a newLine character
+    });
+    assertTrue(exception.getMessage().contains("The directory does not exist: "));
+  }
 }
