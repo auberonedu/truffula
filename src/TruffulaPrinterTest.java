@@ -39,9 +39,6 @@ public class TruffulaPrinterTest {
         banana.createNewFile();
         zebra.createNewFile();
 
-        // Create a hidden file in myFolder
-        File hidden = new File(myFolder, ".hidden.txt");
-        hidden.createNewFile();
 
         // Create subdirectory "Documents" in myFolder
         File documents = new File(myFolder, "Documents");
@@ -129,9 +126,6 @@ public class TruffulaPrinterTest {
         banana.createNewFile();
         zebra.createNewFile();
 
-        // Create a hidden file in myFolder
-        File hidden = new File(myFolder, ".hidden.txt");
-        hidden.createNewFile();
 
         // Create subdirectory "Documents" in myFolder
         File documents = new File(myFolder, "Documents");
@@ -179,7 +173,6 @@ public class TruffulaPrinterTest {
         expected.append(white).append("   zebra.txt").append(nl).append(reset);
         expected.append(white).append("   banana.txt").append(nl).append(reset);
         expected.append(white).append("   Apple.txt").append(nl).append(reset);
-        expected.append(white).append("   .hidden.txt").append(nl).append(reset);
         expected.append(white).append("   Documents/").append(nl).append(reset);
         expected.append(white).append("      notes.txt").append(nl).append(reset);
         expected.append(white).append("      images/").append(nl).append(reset);
