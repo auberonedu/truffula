@@ -112,6 +112,8 @@ public class TruffulaPrinter {
     File[] contents = dir.listFiles();
     if (contents == null) return;
 
+    AlphabeticalFileSorter.sort(contents);
+    
     for (File f : contents) {
       boolean isDotFile = f.getName().startsWith(".");
       if ((f.isHidden() || isDotFile) && !options.isShowHidden()) continue;
@@ -122,7 +124,7 @@ public class TruffulaPrinter {
 
   private void printIndented(String text, int depth) {
     if (!options.isUseColor()) out.setCurrentColor(ConsoleColor.WHITE);
-    
+
     else {
       ConsoleColor color = colorSequence.get(depth % colorSequence.size());
       out.setCurrentColor(color);
