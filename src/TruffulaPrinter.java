@@ -129,15 +129,21 @@ public class TruffulaPrinter {
     if (files == null || files.length == 0) {
       return;
     }
+
+    ConsoleColor color = colorSequence.get(depth % colorSequence.size());
+    out.setCurrentColor(color);
     
     for (File file : files) {
-      ConsoleColor color = colorSequence.get(depth % colorSequence.size());
-      out.setCurrentColor(color);
-
+      //Skipping hidden files if its not requested
+      if (!options.isShowHidden() && file.isHidden()) {
+        continue;
+      }
       out.println(indent + (file.isDirectory() ? file.getName() + "/" : file.getName()));
+
       if (file.isDirectory()) {
-        printTreeHelper(file, indent + "   ", depth + 1);
+        printTreeHelper(file, indent + "   ", depth);
       }
     }
+    out.setCurrentColor(ConsoleColor.RESET);
   }
 }
