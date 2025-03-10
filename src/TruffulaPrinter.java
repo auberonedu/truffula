@@ -142,13 +142,12 @@ public class TruffulaPrinter {
     // if the directory has no children, then return
     if (children == null) return;
 
-   // Sort the children by name alphabetically
+   // Sort the children by name alphabetically by using AlphabeticalFileSorter class
     AlphabeticalFileSorter.sort(children);
-
  
     // loop through directory sub files/folders
     for (File child : children) {
-      // Determine the level based on modulus result
+      // Determine the color for a level based on modulus result
       ConsoleColor color = colorSequence.get(levelDepth % colorSequence.size());
       out.setCurrentColor(color);
 
