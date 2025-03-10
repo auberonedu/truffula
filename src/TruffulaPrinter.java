@@ -132,6 +132,10 @@ public class TruffulaPrinter {
   private void printTreeHelper(File root, int lvl){
     int spaces = lvl * 3;
     String rootName = "";
+    // if lvl % 3 == 0 set color to white by appending it to rootName 
+    //  default_colors.get(0);
+    // if lvl % 3 equals 2 set color to purple
+    // if lvl %3 equals 1 set color to yellow
     for (int i = 0; i < spaces; i++){
       rootName += " ";
     }
@@ -139,7 +143,7 @@ public class TruffulaPrinter {
     if (root.isDirectory()){
       rootName += "/";
     }
-    out.println(rootName);
+    out.println(rootName + ConsoleColor.RESET);
     File[] childFiles = root.listFiles();
     if (childFiles == null) return;
     lvl++;
