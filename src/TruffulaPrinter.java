@@ -113,7 +113,7 @@ public class TruffulaPrinter {
     if (contents == null) return;
 
     AlphabeticalFileSorter.sort(contents);
-    
+
     for (File f : contents) {
       boolean isDotFile = f.getName().startsWith(".");
       if ((f.isHidden() || isDotFile) && !options.isShowHidden()) continue;
