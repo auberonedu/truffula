@@ -140,7 +140,11 @@ public class TruffulaOptions  {
     if (path.isEmpty()) {
       throw new IllegalArgumentException("No arguments found!" + path);
     }
-    // check if root exists
+    // checks if the last argument is a flag and not a path
+    if (path.startsWith("-")) {
+      throw new IllegalArgumentException("A path is required, but found a flag instead: " + path);
+    }
+    // check if root doesn't exists
     if (!root.isDirectory()) {
         throw new FileNotFoundException("The path is not a directory: " + path);
     }
