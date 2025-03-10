@@ -206,6 +206,21 @@ truffula/
     }
   }
 
+  public String coloredText(String name, int indentLevel) {
+    //then in if statements cycle through colors based on indentLevel % 3
+    String indent = printIndentedSpaces(name, indentLevel);
+
+    ConsoleColor color;
+    if (indentLevel % 3 == 0) { //this part white, root directory
+      color = ConsoleColor.WHITE;
+    } else if (indentLevel % 3 == 1) { //this part purple, direct children
+      color = ConsoleColor.PURPLE;
+    } else { //then this part yellow, then their children yellow
+      color = ConsoleColor.YELLOW;
+    }
+    return color + indent + ConsoleColor.RESET;
+  }
+
   // Helper method to generate indentation
   public static String printIndentedSpaces(String name, int indentLevel){
     StringBuilder indent = new StringBuilder();
@@ -214,21 +229,4 @@ truffula/
     }
     return indent.toString() + name;
   }
-
-  public String coloredText(String name, int indentLevel) {
-    //then in if statements cycle through colors based on indentLevel % 3
-    String indent = printIndentedSpaces(name, indentLevel);
-
-    String textColoroutput;
-    if () { //this part white, root directory
-
-    } else if { //this part purple, direct children
-
-    } else { //then this part yellow, then their children yellow
-    
-    }
-  }
-  //NOTE*
-  //guys does this look correct idk please let me know kfjaslkfjd;flkgj
-  //feel free to update or correct it if it looks wrong LOL
 }
