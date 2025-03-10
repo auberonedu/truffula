@@ -119,7 +119,7 @@ public class TruffulaPrinter {
     // out.println("printTree was called!");
     // out.println("My options are: " + options);
     out.println(options.getRoot().getName() + "/");
-    printTreeHelper(options.getRoot(), 0);
+    printTreeHelper(options.getRoot(), 1);
   }
 
   // Helper method with param levelDepth for storing level depth
@@ -145,20 +145,11 @@ public class TruffulaPrinter {
     // if the directory has no children, then return
     if (children == null) return;
 
-    // Sort the children by name alphabetically
-    Arrays.sort(children);
-
     // loop through directory sub files/folders
     for (File child : children) {
-      // Test case for if depth is number 2 or multiple of 2
-      if (levelDepth % 3 == 0) {
-        colorSequence.add(DEFAULT_COLOR_SEQUENCE.getLast());
-      } else if (levelDepth % 2 == 1) {
-        colorSequence.add(DEFAULT_COLOR_SEQUENCE.get(1));
-      } else if (levelDepth % 2 == 0) {
-        colorSequence.add(DEFAULT_COLOR_SEQUENCE.getFirst());
-      }
-
+      // Determine the level based on modulus result
+      ConsoleColor color = colorSequence.get(levelDepth % colorSequence.size());
+      out.setCurrentColor(color);
       // if child is a directory print appropriately and recurse 1 lvl deeper
       // else, just print subfile name with indentation
       if (child.isDirectory()) {
