@@ -133,7 +133,7 @@ public class TruffulaPrinter {
     int spaces = lvl * 3;
     String rootName = "";
     // if lvl % 3 == 0 set color to white by appending it to rootName
-    if ( options.isUseColor() == true){
+    if (options.isUseColor() == true) {
       if (lvl % 3 == 0) {
         out.setCurrentColor(DEFAULT_COLOR_SEQUENCE.get(0));
       }
@@ -147,7 +147,7 @@ public class TruffulaPrinter {
         out.setCurrentColor(DEFAULT_COLOR_SEQUENCE.get(1));
       }
     }
-    
+
     for (int i = 0; i < spaces; i++) {
       rootName += " ";
     }
@@ -159,6 +159,7 @@ public class TruffulaPrinter {
     File[] childFiles = root.listFiles();
     if (childFiles == null)
       return;
+    AlphabeticalFileSorter.sort(childFiles);
     lvl++;
     for (File child : childFiles) {
       printTreeHelper(child, lvl);
