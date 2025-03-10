@@ -183,43 +183,45 @@ truffula/
             (WHITE) helper.java
     */
     
-    // Base case to check if directory exists
     if (currentDirectory == null || !currentDirectory.exists()) return;
+
+    out.println(coloredText(currentDirectory.getName() + "/", indentLevel));
 
     // To list the files and directories in the current directory
     File[] files = currentDirectory.listFiles();
     if (files == null) return;
 
-    // This prints the directory name with indentation
-    out.println(printIndentedSpaces((currentDirectory.getName()), indentLevel));
-
-    // Loops through files
-    for (File file : files) {
-      if (file.isHidden() && !options.isShowHidden()) {
-        continue;
-      }
-      if (file.isDirectory()) {
-        printTreeMethodHelper(file, indentLevel + 1);
-      } else {
-        out.println(printIndentedSpaces(file.getName(), indentLevel + 1));
-      }
+  for (File file : files) {
+    if (file.isHidden() && !options.isShowHidden()) {
+      continue;
+    }
+    if (file.isDirectory()) {
+      printTreeMethodHelper(file, indentLevel + 1); 
+    } else {
+        out.println(coloredText(file.getName(), indentLevel + 1));
     }
   }
+}
 
-  // Helper method to generate indentation
   public static String printIndentedSpaces(String name, int indentLevel){
     StringBuilder indent = new StringBuilder();
-    for (int i = 1; i < indentLevel; i++) {
-      indent.append("   "); // 3 spaces
+    for (int i = 0; i < indentLevel; i++) {
+      indent.append("   "); 
     }
     return indent.toString() + name;
   }
 
   public String coloredText(String name, int indentLevel) {
-    //Implement these color codes here
+    String indent = printIndentedSpaces(name, indentLevel);
 
-    //then in if statements cycle through colors based on indentLevel % 3
-
-  }
-
+    String color = "";
+      if (indentLevel % 3 == 0) { //this part white, root directory
+        color = ConsoleColor.WHITE.getCode();
+      } else if (indentLevel % 3 == 1) { //this part purple, direct children
+        color = ConsoleColor.PURPLE.getCode();
+      } else { //then this part yellow, then their children yellow
+        color = ConsoleColor.YELLOW.getCode();
+      }
+      return color + indent + ConsoleColor.RESET.getCode();
+    }
 }
