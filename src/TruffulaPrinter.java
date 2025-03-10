@@ -3,6 +3,8 @@ import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.print.DocFlavor.STRING;
+
 /**
  * TruffulaPrinter is responsible for printing a directory tree structure
  * with optional colored output. It supports sorting files and directories
@@ -132,11 +134,11 @@ public class TruffulaPrinter {
   //    Else out.println("indent" * levelDepth + child.getName()).
 
   private void printTreeHelper(File dir, int levelDepth) {
-    // base case: if dir null or doesn't exist
+    // base case: if dir null or doesn't exist, return
     if (dir == null || !dir.exists()) return;
 
     // indentation thats repeated based on how deep it is in folder level
-    String indent = "   ".repeat(levelDepth);;
+    String indent = "   ".repeat(levelDepth);
 
     File[] children = dir.listFiles();
 
