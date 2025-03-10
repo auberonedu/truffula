@@ -261,4 +261,47 @@ public class TruffulaPrinterHiddenFilesTest {
         // Indentation in front of "Zed.txt"
         assertTrue(output.contains("      Zed.txt"), "Zed.txt should be indented by 6 spaces (2 levels deep)");
     }
+
+    // not done, need to figure out how to test color as well in this
+    @Test
+    public void testPrintTree_CyclingColors(@TempDir File tempDir) throws IOException {
+        // Folder structure:
+        // rootFolder/
+        //   subFolder1/
+        //      file1.txt
+        //   subFolder2/
+        //      file2.txt
+
+        File rootFolder = new File(tempDir, "rootFolder");
+        assertTrue(rootFolder.mkdir(), "rootFolder should be created");
+
+        File subFolder1 = new File(rootFolder, "subFolder1");
+        assertTrue(subFolder1.mkdir(), "subFolder1 should be created");
+
+        File subFolder2 = new File(rootFolder, "subFolder2");
+        assertTrue(subFolder2.mkdir(), "subFolder2 should be created");
+
+        File file1= new File(subFolder1, "file1.txt");
+        file1.createNewFile();
+
+        File file2 = new File(subFolder2, "file2.txt");
+        file2.createNewFile();
+
+        TruffulaOptions options = new TruffulaOptions(rootFolder, false, true);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream ps = new PrintStream(baos);
+        
+        TruffulaPrinter printer = new TruffulaPrinter(options, ps);
+
+        printer.printTree();
+
+        String output = baos.toString().replace("\r\n", "\n");
+
+        assertTrue(output.contains("rootFolder/"));
+        assertTrue(output.contains("   subFolder1/"));
+        assertTrue(output.contains("      file1.txt"));
+        assertTrue(output.contains("   subFolder2/"));
+        assertTrue(output.contains("      file2.txt"));
+    }
+    
 }
