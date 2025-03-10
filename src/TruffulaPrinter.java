@@ -133,6 +133,7 @@ public class TruffulaPrinter {
       return;
     }
 
+    // wave5 color cycling code
     ConsoleColor currentColor = DEFAULT_COLOR_SEQUENCE.get(level % DEFAULT_COLOR_SEQUENCE.size());
     out.setCurrentColor(currentColor);
 
