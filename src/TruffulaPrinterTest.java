@@ -140,13 +140,14 @@ public class TruffulaPrinterTest {
         //// Build expected output with exact colors and indentation
         String reset = "\033[0m";
         String white = "\033[0;37m";
+        String purple = "\033[0;35m";
 
 
         StringBuilder expected = new StringBuilder();
         expected.append(white).append("myFolder/").append(nl);
-        expected.append(reset).append(white).append("Apple.txt").append(nl);
-        expected.append(reset).append(white).append("Banana.txt").append(nl);
-        expected.append(reset).append(white).append("RecipeFolder/").append(nl);
+        expected.append(reset).append(purple).append("   Apple.txt").append(nl);
+        expected.append(reset).append(purple).append("   Banana.txt").append(nl);
+        expected.append(reset).append(purple).append("   RecipeFolder/").append(nl);
         expected.append(reset);
 
         // Assert that the output matches the expected output exactly
