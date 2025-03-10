@@ -118,12 +118,6 @@ public class TruffulaPrinter {
     // DO NOT USE SYSTEM.OUT.PRINTLN
     // USE out.println instead (will use your ColorPrinter)
 
-    // if it's a directory
-    // list all files in the directory as a children
-    // for each child
-    // check if they are also a directory
-    // rinse repeat until there are no more directories
-
     // base case
     printTree(options.getRoot());
 
@@ -137,6 +131,7 @@ public class TruffulaPrinter {
   private void printTree(File root, String threeSpaces) {
 
     // Check if root is a file or a directory - print accordingly
+
     if (root.isDirectory()) {
       out.println(threeSpaces + root.getName() + "/");
     } 
@@ -150,6 +145,14 @@ public class TruffulaPrinter {
     // Check for null children
     if (root.listFiles() == null) {
       return;
+    }
+
+    // Check for color
+    // Rotate through color for each directory level - WIP
+    if (options.isUseColor() == true) {
+      out.setCurrentColor(ConsoleColor.WHITE);
+
+
     }
 
     // traverse

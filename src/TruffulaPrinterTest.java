@@ -44,7 +44,7 @@ public class TruffulaPrinterTest {
     }
 
     @Test
-    public void testPrintTree_SimpleTest_WithChildren(@TempDir File tempDir) throws IOException {
+    public void testPrintTree_SimpleTest_WithChildrenAndNoColor(@TempDir File tempDir) throws IOException {
         File myFolder = new File(tempDir, "myFolder");
         assertTrue(myFolder.mkdir(), "myFolder should be created");
 

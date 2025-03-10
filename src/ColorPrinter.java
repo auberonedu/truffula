@@ -125,9 +125,11 @@ public class ColorPrinter {
   }
 
   public static void main(String[] args) {
+
     ColorPrinter printer = new ColorPrinter(System.out);
+    
     printer.setCurrentColor(ConsoleColor.RED);
-    printer.println("This is red text");
-    printer.println("!!should be white!!");
+    printer.println("This is red text!!");
+    printer.println("This should be white after reset!!");
   }
 }

@@ -142,9 +142,6 @@ public class TruffulaOptions  {
       throw new FileNotFoundException(foundFile + " does not exist.");
     }
 
-
-
-
     root = foundFile;
     showHidden = thisHidden;
     useColor = thisColor;
