@@ -185,22 +185,22 @@ truffula/
     
     if (currentDirectory == null || !currentDirectory.exists()) return;
 
-    out.println(coloredText(currentDirectory.getName() + "/", indentLevel));
-
     // To list the files and directories in the current directory
     File[] files = currentDirectory.listFiles();
     if (files == null) return;
 
-  for (File file : files) {
-    if (file.isHidden() && !options.isShowHidden()) {
-      continue;
+    out.println(coloredText(currentDirectory.getName() + "/", indentLevel));  
+
+    for (File file : files) {
+      // if (file.isHidden() && !options.isShowHidden()) {
+      //   continue;
+      // }
+      if (file.isDirectory()) {
+        printTreeMethodHelper(file, indentLevel + 1); 
+      } else {
+          out.println(coloredText(file.getName(), indentLevel + 1));
+      }
     }
-    if (file.isDirectory()) {
-      printTreeMethodHelper(file, indentLevel + 1); 
-    } else {
-        out.println(coloredText(file.getName(), indentLevel + 1));
-    }
-  }
 }
 
   public static String printIndentedSpaces(String name, int indentLevel){
@@ -214,14 +214,14 @@ truffula/
   public String coloredText(String name, int indentLevel) {
     String indent = printIndentedSpaces(name, indentLevel);
 
-    String color = "";
-      if (indentLevel % 3 == 0) { //this part white, root directory
-        color = ConsoleColor.WHITE.getCode();
-      } else if (indentLevel % 3 == 1) { //this part purple, direct children
-        color = ConsoleColor.PURPLE.getCode();
-      } else { //then this part yellow, then their children yellow
-        color = ConsoleColor.YELLOW.getCode();
-      }
-      return color + indent + ConsoleColor.RESET.getCode();
-    }
+  String color = "";
+  if (indentLevel % 3 == 0) { // this part white, root directory
+    color = ConsoleColor.WHITE.getCode();
+  } else if (indentLevel % 3 == 1) { // this part purple, direct children
+    color = ConsoleColor.PURPLE.getCode();
+  } else { // then this part yellow, then their children yellow
+    color = ConsoleColor.YELLOW.getCode();
+  }
+    return color + indent + ConsoleColor.RESET.getCode(); // Apply color and then reset
+  }
 }
