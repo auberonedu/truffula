@@ -133,18 +133,21 @@ public class TruffulaPrinter {
     int spaces = lvl * 3;
     String rootName = "";
     // if lvl % 3 == 0 set color to white by appending it to rootName
-    if (lvl % 3 == 0) {
-      rootName += DEFAULT_COLOR_SEQUENCE.get(0);
+    if ( options.isUseColor() == true){
+      if (lvl % 3 == 0) {
+        out.setCurrentColor(DEFAULT_COLOR_SEQUENCE.get(0));
+      }
+      // default_colors.get(0);
+      // if lvl % 3 equals 2 set color to purple
+      if (lvl % 3 == 2) {
+        out.setCurrentColor(DEFAULT_COLOR_SEQUENCE.get(2));
+      }
+      // if lvl %3 equals 1 set color to yellow
+      if (lvl % 3 == 1) {
+        out.setCurrentColor(DEFAULT_COLOR_SEQUENCE.get(1));
+      }
     }
-    // default_colors.get(0);
-    // if lvl % 3 equals 2 set color to purple
-    if (lvl % 3 == 2) {
-      rootName += DEFAULT_COLOR_SEQUENCE.get(1);
-    }
-    // if lvl %3 equals 1 set color to yellow
-    if (lvl % 3 == 1) {
-      rootName += DEFAULT_COLOR_SEQUENCE.get(2);
-    }
+    
     for (int i = 0; i < spaces; i++) {
       rootName += " ";
     }
@@ -152,7 +155,7 @@ public class TruffulaPrinter {
     if (root.isDirectory()) {
       rootName += "/";
     }
-    out.println(rootName + ConsoleColor.RESET);
+    out.println(rootName);
     File[] childFiles = root.listFiles();
     if (childFiles == null)
       return;
