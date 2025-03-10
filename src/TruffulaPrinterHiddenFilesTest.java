@@ -262,7 +262,8 @@ public class TruffulaPrinterHiddenFilesTest {
         assertTrue(output.contains("      Zed.txt"), "Zed.txt should be indented by 6 spaces (2 levels deep)");
     }
 
-    // started working on wave 5`s tests, need to figure out how to check if colors are properly cycled in this test
+    // started working on wave 5`s , need to figure out how to check if colors are properly cycled in this test
+    
     @Test
     public void testPrintTree_CyclingColors(@TempDir File tempDir) throws IOException {
         // Folder structure:
@@ -271,7 +272,7 @@ public class TruffulaPrinterHiddenFilesTest {
         //      file1.txt
         //   subFolder2/
         //      file2.txt
-
+    
         File rootFolder = new File(tempDir, "rootFolder");
         assertTrue(rootFolder.mkdir(), "rootFolder should be created");
 
@@ -281,27 +282,26 @@ public class TruffulaPrinterHiddenFilesTest {
         File subFolder2 = new File(rootFolder, "subFolder2");
         assertTrue(subFolder2.mkdir(), "subFolder2 should be created");
 
-        File file1= new File(subFolder1, "file1.txt");
-        file1.createNewFile();
+        File file1 = new File(subFolder1, "file1.txt");
+        assertTrue(file1.createNewFile(), "file1.txt should be created");
 
         File file2 = new File(subFolder2, "file2.txt");
-        file2.createNewFile();
+        assertTrue(file2.createNewFile(), "file2.txt should be created");
 
+        // Set up TruffulaOptions: showHidden = false, useColor = true
         TruffulaOptions options = new TruffulaOptions(rootFolder, false, true);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         PrintStream ps = new PrintStream(baos);
-        
         TruffulaPrinter printer = new TruffulaPrinter(options, ps);
 
         printer.printTree();
 
         String output = baos.toString().replace("\r\n", "\n");
 
-        assertTrue(output.contains("rootFolder/"));
-        assertTrue(output.contains("   subFolder1/"));
-        assertTrue(output.contains("      file1.txt"));
-        assertTrue(output.contains("   subFolder2/"));
-        assertTrue(output.contains("      file2.txt"));
+        assertTrue(output.contains(ConsoleColor.WHITE.toString() + "rootFolder/"), "Root should be printed in white");
+        assertTrue(output.contains(ConsoleColor.YELLOW.toString() + "      file1.txt"), "file1.txt should be printed in yellow");
+        assertTrue(output.contains(ConsoleColor.YELLOW.toString() + "      file2.txt"), "file2.txt should be printed in yellow");
+
     }
     
 }
