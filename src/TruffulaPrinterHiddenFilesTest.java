@@ -299,6 +299,8 @@ public class TruffulaPrinterHiddenFilesTest {
         String output = baos.toString().replace("\r\n", "\n");
 
         assertTrue(output.contains(ConsoleColor.WHITE.toString() + "rootFolder/"), "Root should be printed in white");
+        assertTrue(output.contains(ConsoleColor.PURPLE.toString() + "   subFolder1/"), "subFolder1 should be printed in purple");
+        assertTrue(output.contains(ConsoleColor.PURPLE.toString() + "   subFolder2/"), "subFolder2 should be printed in purple");
         assertTrue(output.contains(ConsoleColor.YELLOW.toString() + "      file1.txt"), "file1.txt should be printed in yellow");
         assertTrue(output.contains(ConsoleColor.YELLOW.toString() + "      file2.txt"), "file2.txt should be printed in yellow");
 
