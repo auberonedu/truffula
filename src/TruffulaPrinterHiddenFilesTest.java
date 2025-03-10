@@ -262,7 +262,7 @@ public class TruffulaPrinterHiddenFilesTest {
         assertTrue(output.contains("      Zed.txt"), "Zed.txt should be indented by 6 spaces (2 levels deep)");
     }
 
-    // not done, need to figure out how to check if colors are properly cycled in this test
+    // started working on wave 5`s tests, need to figure out how to check if colors are properly cycled in this test
     @Test
     public void testPrintTree_CyclingColors(@TempDir File tempDir) throws IOException {
         // Folder structure:
