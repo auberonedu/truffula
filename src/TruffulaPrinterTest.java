@@ -112,11 +112,11 @@ public class TruffulaPrinterTest {
         assertTrue(myFolder.mkdir(), "myFolder should be created");
 
         // Create visible files in myFolder
-        File apple = new File(myFolder, "Apple.txt");
         File banana = new File(myFolder, "banana.txt");
+        File apple = new File(myFolder, "Apple.txt");
         File zebra = new File(myFolder, "zebra.txt");
-        apple.createNewFile();
         banana.createNewFile();
+        apple.createNewFile();
         zebra.createNewFile();
 
         // Create subdirectory "Documents" in myFolder
@@ -134,10 +134,10 @@ public class TruffulaPrinterTest {
         assertTrue(images.mkdir(), "images directory should be created");
 
         // Create files in images
-        File cat = new File(images, "cat.png");
         File dog = new File(images, "Dog.png");
-        cat.createNewFile();
+        File cat = new File(images, "cat.png");
         dog.createNewFile();
+        cat.createNewFile();
 
         // Set up TruffulaOptions with showHidden = false and useColor = true
         TruffulaOptions options = new TruffulaOptions(myFolder, false, true);

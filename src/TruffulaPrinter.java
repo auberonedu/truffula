@@ -147,19 +147,19 @@ public class TruffulaPrinter {
 
     // Check for color
     // If true - Rotate through color for each directory level else print in white for false - WIP
-    if (options.isUseColor() == true) {
-      // Do something to start color rotation
-      out.setCurrentColor(); // Maybe? Not sure what to put in ()
-      // I feel like getCurrentColor will be needed at some point to check when it should rotate to next color
+    // if (options.isUseColor() == true) {
+    //   // Do something to start color rotation
+    //   // out.setCurrentColor(); // Maybe? Not sure what to put in ()
+    //   // I feel like getCurrentColor will be needed at some point to check when it should rotate to next color
       
-    }
-    else {
-      // Keep the color white
-      out.setCurrentColor(ConsoleColor.WHITE);
-    }
+    // }
+    // else {
+    //   Keep the color white
+    //   out.setCurrentColor(ConsoleColor.WHITE);
+    // }
 
-    // traverse
-    for (var file : root.listFiles()) {
+    // traverse - Trying out if this works for wave 6 - I think it does since I moved around some files in Test and they still passed
+    for (var file : AlphabeticalFileSorter.sort(root.listFiles())) {
       printTree(file, threeSpaces);
     }
   }
