@@ -217,13 +217,16 @@ public class TruffulaPrinterTest {
         StringBuilder expected = new StringBuilder();
         expected.append(white).append("DataTree/").append(nl).append(reset);
         expected.append(purple).append("   Level1/").append(nl).append(reset);
-        expected.append(purple).append("      File1.txt").append(nl).append(reset);
-        expected.append(purple).append("      Level2/").append(nl).append(reset);
-        expected.append(purple).append("         Level3/").append(nl).append(reset);
+        expected.append(yellow).append("      File1.txt").append(nl).append(reset);
+        expected.append(yellow).append("      Level2/").append(nl).append(reset);
+        expected.append(white).append("         Level3/").append(nl).append(reset);
         expected.append(purple).append("            File2.txt").append(nl).append(reset);
         expected.append(purple).append("            Level4/").append(nl).append(reset);
-        expected.append(purple).append("               File3.txt").append(nl).append(reset);
+        expected.append(yellow).append("               File3.txt").append(nl).append(reset);
 
         // assert that the output matches the expected output
         assertEquals(expected.toString(), output);
+    }
+
+    SingleFilehandler
 }
