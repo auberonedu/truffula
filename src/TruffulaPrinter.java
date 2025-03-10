@@ -138,16 +138,18 @@ public class TruffulaPrinter {
     // indentation thats repeated based on how deep it is in folder level
     String indent = "   ".repeat(levelDepth);;
 
-    // if directory is a file, print it
-    if (dir.isFile()) {
-      out.println(indent + dir.getName() + "/");
-      return;
-    }
+    File[] children = dir.listFiles();
+
+    // if the directory has no children, then return
+    if (children == null) return;
+
+    // Sort the children by name alphabetically
+    Arrays.sort(children);
 
     // loop through directory sub files/folders
-    // if child is a directory print appropriately and recurse 1 lvl deeper
-    //    else, just print subfile name with indentation
-    for (File child : dir.listFiles()) {
+    for (File child : children) {
+      // if child is a directory print appropriately and recurse 1 lvl deeper
+      // else, just print subfile name with indentation
       if (child.isDirectory()) {
         out.println(indent + child.getName() + "/");
         printTreeHelper(child, levelDepth + 1);

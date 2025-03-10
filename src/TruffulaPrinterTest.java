@@ -137,11 +137,14 @@ public class TruffulaPrinterTest {
         String output = baos.toString();
         String nl = System.lineSeparator();
 
+        // Build expected output with exact colors and indentation
+        String reset = "\033[0m";
+
         StringBuilder expected = new StringBuilder();
-        expected.append("myFolder/").append(nl);
-        expected.append("   Apple.txt").append(nl);
-        expected.append("   Banana.txt").append(nl);
-        expected.append("   RecipeFolder/").append(nl);
+        expected.append("myFolder/").append(nl).append(reset);
+        expected.append("   Apple.txt").append(nl).append(reset);
+        expected.append("   Banana.txt").append(nl).append(reset);
+        expected.append("   RecipeFolder/").append(nl).append(reset);
 
         // Assert that the output matches the expected output exactly
         assertEquals(expected.toString(), output);
