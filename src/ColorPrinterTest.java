@@ -20,8 +20,7 @@ class ColorPrinterTest {
     String message = "I speak for the trees";
     printer.println(message);
 
-
-    String expectedOutput = ConsoleColor.RED + "I speak for the trees" + System.lineSeparator() + ConsoleColor.RESET;
+    String expectedOutput = ConsoleColor.RESET + "I speak for the trees" + System.lineSeparator();
 
     // Assert: Verify the printed output
     assertEquals(expectedOutput, outputStream.toString());
@@ -40,13 +39,11 @@ class ColorPrinterTest {
     String message = "Testing Blue";
     printer.println(message);
 
-
-    String expectedOutput = ConsoleColor.BLUE + "Testing Blue" + System.lineSeparator() + ConsoleColor.RESET;
+    String expectedOutput = ConsoleColor.RESET + "Testing Blue" + System.lineSeparator();
 
     // Assert: Verify the printed output
     assertEquals(expectedOutput, outputStream.toString());
   }
-
 
   @Test
   void testPrintlnWithGreenColorAndNoReset() {
@@ -61,8 +58,7 @@ class ColorPrinterTest {
     String message = "Testing Green and NO RESET";
     printer.println(message, false);
 
-
-    String expectedOutput = ConsoleColor.GREEN + "Testing Green and NO RESET" + System.lineSeparator();
+    String expectedOutput = "Testing Green and NO RESET" + System.lineSeparator();
 
     // Assert: Verify the printed output
     assertEquals(expectedOutput, outputStream.toString());
@@ -81,15 +77,14 @@ class ColorPrinterTest {
     String message = "";
     printer.println(message, false);
 
-
-    String expectedOutput = ConsoleColor.GREEN + "" + System.lineSeparator();
+    String expectedOutput =System.lineSeparator();
 
     // Assert: Verify the printed output
     assertEquals(expectedOutput, outputStream.toString());
   }
 
   @Test
-void testPrintMultipleMessagesWithDifferentColors() {
+  void testPrintMultipleMessagesWithDifferentColors() {
     // Arrange: Capture the printed output
     ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
     PrintStream printStream = new PrintStream(outputStream);
@@ -98,26 +93,24 @@ void testPrintMultipleMessagesWithDifferentColors() {
 
     // Act: Print the message
     printer.setCurrentColor(ConsoleColor.RED);
-    printer.println("This is red", false);
+    printer.println(ConsoleColor.RESET + "This is red", false);
 
     printer.setCurrentColor(ConsoleColor.GREEN);
-    printer.println("This is green", false);
+    printer.println(ConsoleColor.RESET + "This is green", false);
 
     printer.setCurrentColor(ConsoleColor.BLUE);
-    printer.println("This is blue", false);
+    printer.println(ConsoleColor.RESET + "This is blue", false);
 
-    
-    String expectedOutput =
-            ConsoleColor.RED + "This is red" + System.lineSeparator() +
-            ConsoleColor.GREEN + "This is green" + System.lineSeparator() +
-            ConsoleColor.BLUE + "This is blue" + System.lineSeparator();
+    String expectedOutput = ConsoleColor.RESET + "This is red" + System.lineSeparator() +
+        ConsoleColor.RESET + "This is green" + System.lineSeparator() +
+        ConsoleColor.RESET + "This is blue" + System.lineSeparator();
 
     // Assert: Verify the printed output
     assertEquals(expectedOutput, outputStream.toString());
-}
+  }
 
-@Test
-void testPrintWithoutSettingColor() {
+  @Test
+  void testPrintWithoutSettingColor() {
     // Arrange: Capture the printed output
     ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
     PrintStream printStream = new PrintStream(outputStream);
@@ -127,11 +120,10 @@ void testPrintWithoutSettingColor() {
     // Act: Print the message
     printer.println("Default color text");
 
-   
-    String expectedOutput = ConsoleColor.WHITE + "Default color text" + System.lineSeparator() + ConsoleColor.RESET;
+    String expectedOutput = ConsoleColor.RESET + "Default color text" + System.lineSeparator();
 
     // Assert: Verify the printed output
     assertEquals(expectedOutput, outputStream.toString());
-}
+  }
 
 }

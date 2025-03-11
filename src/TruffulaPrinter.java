@@ -110,12 +110,13 @@ public class TruffulaPrinter {
    */
   public void printTree() {
     File root = options.getRoot();
-    
+
     // dfs now
 
     int depth = 0;
 
-    out.println(ConsoleColor.WHITE + root.getName() + "/");
+    out.println(ConsoleColor.BLUE + "Starting directory: " + root.getName() + "/");
+   
     printTree(root, depth);
     // now we are printing our files!
 
@@ -132,40 +133,67 @@ public class TruffulaPrinter {
 
   public void printTree(File root, int depth) {
     File[] files = root.listFiles();
-    if(options.isUseColor()){
+    //colors
+    if (options.isUseColor()) {
       for (var file : files) {
 
-      //white
-        if(file.isDirectory() && depth ==  0 ){
-          out.println(ConsoleColor.WHITE +  "  ".repeat(depth) + file.getName() + "/");
+
+        //color
+          // white
+        if (file.isDirectory() && depth == 0) {
+          out.println(ConsoleColor.WHITE + "  ".repeat(depth) + file.getName() + "/");
         }
-        if(!file.isDirectory() && depth ==  0 ){
+        if (!file.isDirectory() && depth == 0) {
           out.println(ConsoleColor.WHITE + "  ".repeat(depth) + file.getName());
         }
-      //purple
-        if(file.isDirectory() && depth ==  1 ){
-          out.println(ConsoleColor.PURPLE +  "  ".repeat(depth) + file.getName() + "/");
+          // purple
+        if (file.isDirectory() && depth == 1) {
+          out.println(ConsoleColor.PURPLE + "  ".repeat(depth) + file.getName() + "/");
         }
-        if(!file.isDirectory() && depth ==  1 ){
+        if (!file.isDirectory() && depth == 1) {
           out.println(ConsoleColor.PURPLE + "  ".repeat(depth) + file.getName());
         }
-
-        //yellow
-        if(file.isDirectory() && depth ==  2 ){
-          out.println(ConsoleColor.YELLOW +  "  ".repeat(depth) + file.getName() + "/");
+          // yellow
+        if (file.isDirectory() && depth == 2) {
+          out.println(ConsoleColor.YELLOW + "  ".repeat(depth) + file.getName() + "/");
         }
-        if(!file.isDirectory() && depth ==  2 ){
+        if (!file.isDirectory() && depth == 2) {
           out.println(ConsoleColor.YELLOW + "  ".repeat(depth) + file.getName());
         }
-        
+
+        //recurse
         if (file.isDirectory()) {
           printTree(file, depth + 1);
         }
-  
+
       }
+        
+
+        
+
+      }
+
+      //no colors
+    if (!options.isUseColor()) {
+        for (var file : files) {
+        if (file.isDirectory()) {
+          out.println("  ".repeat(depth) + file.getName() + "/");
+        }
+        if (!file.isDirectory()) {
+          out.println("  ".repeat(depth) + file.getName());
+        }
+
+        //recurse for no colors
+        
+      if (file.isDirectory()) {
+        printTree(file, depth + 1);
+      }
+
+      }
+
+
     }
-    
-    
+
   }
 
 }
