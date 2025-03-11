@@ -23,7 +23,7 @@ jobs:
       run: |
         mkdir -p src
         javac -cp lib/junit-platform-console-standalone-1.12.0.jar src/*.java
-        javac -d target src/App.java src/ColorPrinter.java src/ConsoleColor.java src/TruffulaOptions.java src/TruffulaPrinter.java 
+        javac -d target src/App.java src/ColorPrinter.java src/ConsoleColor.java src/TruffulaOptions.java src/TruffulaPrinter.java src/AlphabeticalFileSorter.java 
 
     - name: Visual
       run: |
