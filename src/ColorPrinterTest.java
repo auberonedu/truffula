@@ -133,12 +133,39 @@ class ColorPrinterTest {
 
   @Test
   void testPrintCurrentColorWithColorChangesSimple() {
-   // TODO: write this test
+   // Arrange
+   ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+   PrintStream printStream = new PrintStream(outputStream);
+ 
+   ColorPrinter print = new ColorPrinter(printStream);
+   print.setCurrentColor(ConsoleColor.CYAN);
+   print.setCurrentColor(ConsoleColor.RESET);
+   print.setCurrentColor(ConsoleColor.PURPLE);
+ 
+   // Act
+   ConsoleColor currentColor = print.getCurrentColor();
+ 
+   // Assert
+   assertEquals(ConsoleColor.PURPLE, currentColor);
   }
 
   @Test
-  void testPrintCurrentColorWithColorChangesComplex() {
-  // TODO: write this test
+  void testPrintCurrentColorWithColorChangesRepeatColors() {
+    // Arrange
+   ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+   PrintStream printStream = new PrintStream(outputStream);
+ 
+   ColorPrinter print = new ColorPrinter(printStream);
+   print.setCurrentColor(ConsoleColor.CYAN);
+   print.setCurrentColor(ConsoleColor.RESET);
+   print.setCurrentColor(ConsoleColor.PURPLE);
+   print.setCurrentColor(ConsoleColor.GREEN);
+ 
+   // Act
+   ConsoleColor currentColor = print.getCurrentColor();
+ 
+   // Assert
+   assertEquals(ConsoleColor.GREEN, currentColor);
   }
 
 }
