@@ -131,5 +131,15 @@ class ColorPrinterTest {
     assertEquals(ConsoleColor.CYAN, currentColor);
   }
 
+  @Test
+  void testPrintCurrentColorWithColorChangesSimple() {
+  
+  }
+
+  @Test
+  void testPrintCurrentColorWithColorChangesComplex() {
+  
+  }
+
 }
 
