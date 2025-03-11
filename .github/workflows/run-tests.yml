@@ -1,0 +1,38 @@
+name: JUnit Tests
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up JDK 
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'temurin' 
+        java-version: '21'
+
+    - name: Compile
+      run: |
+        mkdir -p src
+        javac -cp lib/junit-platform-console-standalone-1.12.0.jar src/*.java
+        javac -d target src/App.java src/ColorPrinter.java src/ConsoleColor.java src/TruffulaOptions.java src/TruffulaPrinter.java src/AlphabeticalFileSorter.java 
+
+    - name: Visual
+      run: |
+        java -cp target App || true
+        java -cp target App . || true
+        java -cp target App src || true
+        java -cp target App -nc . || true
+        java -cp target App -nc -h . || true
+
+    - name: Test
+      run: |
+        java -jar lib/junit-platform-console-standalone-1.12.0.jar -cp src --scan-classpath
