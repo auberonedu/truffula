@@ -110,7 +110,6 @@ public class TruffulaPrinter {
    * zebra.txt
    */
   public void printTree() {
-    // TODO: Implement this!
     // REQUIRED: ONLY use java.io, DO NOT use java.nio
 
     // Hints:
