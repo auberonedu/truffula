@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -123,11 +124,31 @@ public class TruffulaPrinter {
   }
 
   private void printTree(File root) {
+    // set color sequence
+    if (options.isUseColor()){
+      this.colorSequence = DEFAULT_COLOR_SEQUENCE;
+    }
+    else {
+      colorSequence = new ArrayList<>(List.of(ConsoleColor.WHITE));
+    }
+    
+    printTree(root, "", 0);
+    
 
-    printTree(root, "");
   }
 
-  private void printTree(File root, String threeSpaces) {
+  private void printTree(File root, String threeSpaces, int colorIndex) {
+    // --- Color Handling ---
+    out.setCurrentColor(colorSequence.get(colorIndex));
+
+    // if not at end of color sequence up color index
+    if (colorIndex + 1 < colorSequence.size()){
+      colorIndex++;
+    }
+
+    // if at end of color sequence reset color index
+    else colorIndex = 0;
+
 
     // Check if root is a file or a directory - print accordingly
     if (root.isDirectory()) {
@@ -151,6 +172,7 @@ public class TruffulaPrinter {
     //   // Do something to start color rotation
     //   // out.setCurrentColor(); // Maybe? Not sure what to put in ()
     //   // I feel like getCurrentColor will be needed at some point to check when it should rotate to next color
+    
       
     // }
     // else {
@@ -160,7 +182,7 @@ public class TruffulaPrinter {
 
     // traverse - Trying out if this works for wave 6 - I think it does since I moved around some files in Test and they still passed
     for (var file : AlphabeticalFileSorter.sort(root.listFiles())) {
-      printTree(file, threeSpaces);
+      printTree(file, threeSpaces, colorIndex);
     }
   }
 
