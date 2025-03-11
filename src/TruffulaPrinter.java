@@ -148,8 +148,10 @@ public class TruffulaPrinter {
     // loop through directory sub files/folders
     for (File child : children) {
       // Determine the color for a level based on modulus result
-      ConsoleColor color = colorSequence.get(levelDepth % colorSequence.size());
-      out.setCurrentColor(color);
+      if (options.isUseColor()) {
+        ConsoleColor color = colorSequence.get(levelDepth % colorSequence.size());
+        out.setCurrentColor(color);
+      }
 
       // if child is a directory print appropriately and recurse 1 lvl deeper
       // else, just print subfile name with indentation
