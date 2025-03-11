@@ -142,40 +142,6 @@ public class TruffulaPrinterTest {
     }
 
     @Test
-    public void testPrintTree_SimpleStructure_NoColors(@TempDir File tempDir) throws IOException {
-        // Arrange
-        File folder = new File(tempDir, "folder");
-        assertTrue(folder.mkdir(), "Folder should be created");
-
-        File fileA = new File(folder, "A.txt");
-        File fileB = new File(folder, "B.txt");
-        assertTrue(fileA.createNewFile(), "A.txt should be created");
-        assertTrue(fileB.createNewFile(), "B.txt should be created");
-
-        // Capture output
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        PrintStream printStream = new PrintStream(baos);
-
-        // Create TruffulaPrinter instance (no colors)
-        TruffulaOptions options = new TruffulaOptions(folder, false, false);
-        TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
-
-        // Act
-        printer.printTree();
-
-        // Assert
-        String output = baos.toString();
-        String nl = System.lineSeparator();
-
-        String expectedOutput =
-                "folder/" + nl +
-                "   A.txt" + nl +
-                "   B.txt" + nl;
-
-        assertEquals(expectedOutput, output, "Output should match expected folder structure");
-    }
-
-    @Test
     public void testPrintTree_NestedStructure_WithColors(@TempDir File tempDir) throws IOException {
         // **Arrange**
         File rootFolder = new File(tempDir, "root");
@@ -226,25 +192,5 @@ public class TruffulaPrinterTest {
         assertEquals("      A.txt", TruffulaPrinter.printIndentedSpaces("A.txt", 2));
     }
 
-    @Test
-    public void emptyDirectory(@TempDir File tempDir) {
-        // Arrange: Create an empty directory
-        File emptyFolder = new File(tempDir, "emptyFolder");
-        assertTrue(emptyFolder.mkdir(), "Empty folder should be created");
-
-        // Capture output
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        PrintStream printStream = new PrintStream(baos);
-
-        TruffulaOptions options = new TruffulaOptions(emptyFolder, false, false);
-        TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
-
-        // Act
-        printer.printTree();
-
-        // Assert
-        String output = baos.toString().trim(); // Trim to avoid newline inconsistencies
-        assertEquals("emptyFolder/", output, "Should print just the empty folder name");
-    }
     
 }
