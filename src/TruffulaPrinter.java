@@ -1,6 +1,5 @@
 import java.io.File;
 import java.io.PrintStream;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -140,9 +139,12 @@ truffula/
       get the root directory  
       then call recursively to the printTreeMethodHelper
      */
-    printTreeMethodHelper(options.getRoot(),0);
-  }
 
+    File root = options.getRoot();
+    // We had issue here where it duplicates the name of the root directory. This prints root once.
+    out.println(coloredText(root.getName() + "/", 0)); 
+    printTreeMethodHelper(root,1);
+  }
 
   public void printTreeMethodHelper(File currentDirectory, int indentLevel) {
   /*
@@ -165,23 +167,6 @@ truffula/
       loop 
 
       print the file name with the proper intentations
-
-  WAVE 5: PSUEDO and IMPLEMENTATION
-    Will implement this method to show hidden files
-
-    for loop
-      skip HIDDEN files if -h is not enabled
-      if file is directory, call method recursively with more indentLevel
-      if file is NOT directory, print correct color and indentation
-
-    Cycle colors using indentLevel % 3 for better readability
-    Example Output:
-    (WHITE) project/
-      (PURPLE) fileA.txt
-      (PURPLE) src/
-          (YELLOW) main.java
-          (YELLOW) utils/
-            (WHITE) helper.java
     */
     
     if (currentDirectory == null || !currentDirectory.exists()) return;
@@ -190,18 +175,17 @@ truffula/
     File[] files = AlphabeticalFileSorter.sort(currentDirectory.listFiles());
     if (files == null) return;
 
-    out.println(coloredText(currentDirectory.getName() + "/", indentLevel));  
-
     for (File file : files) {
-      // if (file.isHidden() && !options.isShowHidden()) {
-      //   continue;
-      // }
-      if (file.isDirectory()) {
-        printTreeMethodHelper(file, indentLevel + 1); 
-      } else {
-          out.println(coloredText(file.getName(), indentLevel + 1));
-      }
+    // if (file.isHidden() && !options.isShowHidden()) {
+    //   continue;
+    // }
+
+    // This prints the root once
+    out.println(coloredText(file.getName() + (file.isDirectory() ? "/" : ""), indentLevel));
+    if (file.isDirectory()) {
+      printTreeMethodHelper(file, indentLevel + 1); // Recursive call for directories
     }
+  }
 }
 
   public static String printIndentedSpaces(String name, int indentLevel){
@@ -213,18 +197,20 @@ truffula/
   }
 
   public String coloredText(String name, int indentLevel) {
-    String indent = printIndentedSpaces(name, indentLevel);
+    String indent = "   ".repeat(indentLevel);
 
-    // Set color based on the indentLevel
-    String color = "";
-    if (indentLevel % 3 == 0) { // this part white, root directory
-      color = ConsoleColor.WHITE.getCode();
-    } else if (indentLevel % 3 == 1) { // this part purple, direct children
-      color = ConsoleColor.PURPLE.getCode();
-    } else { // then this part yellow, then their children yellow
-      color = ConsoleColor.YELLOW.getCode();
-    }
-    // Apply color to name and then reset after the text
-    return color + indent + name + ConsoleColor.RESET.getCode();
+    // Choose color based on indentation level
+    ConsoleColor color;
+    switch (indentLevel % 3) {
+      case 0:
+        color = ConsoleColor.WHITE;
+        break;
+      case 1:
+        color = ConsoleColor.PURPLE;
+        break;
+      default:
+        color = ConsoleColor.YELLOW;
+      }
+    return color.getCode() + indent + name + ConsoleColor.RESET.getCode();
   }
-}
+} 

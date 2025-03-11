@@ -142,52 +142,80 @@ public class TruffulaPrinterTest {
     }
 
     @Test
-    public void testPrintTree_ColorsAssignedCorrectly(@TempDir File tempDir) throws IOException {
-        // Create structure:
-        // tempDir/
-        //    fileA.txt
-        //    subDir/
-        //       nestedDir/
-        //          fileB.txt
+    public void testPrintTree_SimpleStructure_NoColors(@TempDir File tempDir) throws IOException {
+        // Arrange
+        File folder = new File(tempDir, "folder");
+        assertTrue(folder.mkdir(), "Folder should be created");
 
-    // Create directories and files
-    File subDir = new File(tempDir, "subDir");
-    assertTrue(subDir.mkdir(), "subDir should be created");
+        File fileA = new File(folder, "A.txt");
+        File fileB = new File(folder, "B.txt");
+        assertTrue(fileA.createNewFile(), "A.txt should be created");
+        assertTrue(fileB.createNewFile(), "B.txt should be created");
 
-    File nestedDir = new File(subDir, "nestedDir");
-    assertTrue(nestedDir.mkdir(), "nestedDir should be created");
+        // Capture output
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(baos);
 
-    File fileA = new File(tempDir, "fileA.txt");
-    assertTrue(fileA.createNewFile(), "fileA.txt should be created");
+        // Create TruffulaPrinter instance (no colors)
+        TruffulaOptions options = new TruffulaOptions(folder, false, false);
+        TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
 
-    File fileB = new File(nestedDir, "fileB.txt");
-    assertTrue(fileB.createNewFile(), "fileB.txt should be created");
+        // Act
+        printer.printTree();
 
-    // Capture output using a PrintStream
-    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-    PrintStream printStream = new PrintStream(outputStream);
+        // Assert
+        String output = baos.toString();
+        String nl = System.lineSeparator();
 
-    // Set up TruffulaOptions and TruffulaPrinter
-    TruffulaOptions options = new TruffulaOptions(tempDir, false, true); // Enable color output
-    TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
+        String expectedOutput =
+                "folder/" + nl +
+                "   A.txt" + nl +
+                "   B.txt" + nl;
 
-    // Run printTree()
-    printer.printTree();
+        assertEquals(expectedOutput, output, "Output should match expected folder structure");
+    }
 
-    // Get output
-    String output = outputStream.toString();
-    System.out.println("Captured Output:\n" + output);
+    @Test
+    public void testPrintTree_NestedStructure_WithColors(@TempDir File tempDir) throws IOException {
+        // **Arrange**
+        File rootFolder = new File(tempDir, "root");
+        assertTrue(rootFolder.mkdir(), "Root folder should be created");
 
-    // Verify that color codes are applied correctly based on indent level
-    String white = ConsoleColor.WHITE.toString();
-    String purple = ConsoleColor.PURPLE.toString();
-    String yellow = ConsoleColor.YELLOW.toString();
-    String reset = ConsoleColor.RESET.toString();
+        File subFolder = new File(rootFolder, "sub");
+        assertTrue(subFolder.mkdir(), "Sub-folder should be created");
 
-    // Assert using trimmed output to avoid formatting mismatches
-    assertTrue(output.replaceAll("\\s+", "").contains(white + "subDir/"), "SubDir should be white (root level)");
-    assertTrue(output.replaceAll("\\s+", "").contains(purple + "nestedDir/"), "NestedDir should be purple (level 1)");
-    assertTrue(output.replaceAll("\\s+", "").contains(yellow + "fileB.txt"), "fileB.txt should be yellow (level 2)");
-    assertTrue(output.contains(reset), "Output should reset color after printing");
+        File fileX = new File(subFolder, "X.txt");
+        File fileY = new File(subFolder, "Y.txt");
+        assertTrue(fileX.createNewFile(), "X.txt should be created");
+        assertTrue(fileY.createNewFile(), "Y.txt should be created");
+
+        // Capture output
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(baos);
+
+        // Create TruffulaPrinter instance (With colors)
+        TruffulaOptions options = new TruffulaOptions(rootFolder, false, true);
+        TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
+
+        // **Act**
+        printer.printTree();
+
+        // **Assert**
+        String output = baos.toString();
+        String nl = System.lineSeparator();
+
+        // Expected output with color codes
+        String white = ConsoleColor.WHITE.getCode();
+        String purple = ConsoleColor.PURPLE.getCode();
+        String yellow = ConsoleColor.YELLOW.getCode();
+        String reset = ConsoleColor.RESET.getCode();
+
+        String expectedOutput =
+                white + "root/" + nl + reset +
+                purple + "   sub/" + nl + reset +
+                yellow + "      X.txt" + nl + reset +
+                yellow + "      Y.txt" + nl + reset;
+
+        assertEquals(expectedOutput, output, "Output should match expected nested folder structure with colors");
     }
 }
