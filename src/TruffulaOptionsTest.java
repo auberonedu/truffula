@@ -84,15 +84,12 @@ public class TruffulaOptionsTest {
   }
     
   @Test
-  void testPathArgumentMissing() {
-    // no path
-    // TODO: write this test
+  void testPathArgumentMissing(@TempDir File tempDir) throws FileNotFoundException {
+      String[] args = {"-nc", "-h"};
+  
+      assertThrows(FileNotFoundException.class, () -> {
+        new TruffulaOptions(args);
+      });
 
-
-  }
-
-  @Test
-  void testPathIsLast() {
-    // TODO: write this test
   }
 }
