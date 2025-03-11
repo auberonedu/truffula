@@ -133,12 +133,12 @@ class ColorPrinterTest {
 
   @Test
   void testPrintCurrentColorWithColorChangesSimple() {
-  
+   // TODO: write this test
   }
 
   @Test
   void testPrintCurrentColorWithColorChangesComplex() {
-  
+  // TODO: write this test
   }
 
 }

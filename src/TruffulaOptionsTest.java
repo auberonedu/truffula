@@ -86,12 +86,13 @@ public class TruffulaOptionsTest {
   @Test
   void testPathArgumentMissing() {
     // no path
+    // TODO: write this test
 
 
   }
 
   @Test
   void testPathIsLast() {
-    
+    // TODO: write this test
   }
 }
