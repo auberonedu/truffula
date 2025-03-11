@@ -83,8 +83,6 @@ public class TruffulaOptionsTest {
       });
   }
     
-  
-
   @Test
   void testPathArgumentMissing() {
     // no path

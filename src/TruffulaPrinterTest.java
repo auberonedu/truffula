@@ -91,7 +91,6 @@ public class TruffulaPrinterTest {
         assertEquals(expected.toString(), output);
     }
 
-
     @Test
     public void testPrintTree_SimpleTest_WithChildrenAndColor(@TempDir File tempDir) throws IOException {
         File myFolder = new File(tempDir, "myFolder");
@@ -140,7 +139,6 @@ public class TruffulaPrinterTest {
 
         assertEquals(expected.toString(), output);
     }
-
 
     @Test
     public void testPrintTree_SimpleTest_WithGrandChildrenAndNoColor(@TempDir File tempDir) throws IOException {
@@ -226,6 +224,7 @@ public class TruffulaPrinterTest {
         // Assert that the output matches the expected output exactly
         assertEquals(expected.toString(), output);
     }
+    
     @Test
     public void testPrintTree_SimpleTest_WithGrandChildrenAndColor(@TempDir File tempDir) throws IOException {
         // Build the example directory structure:
@@ -372,6 +371,7 @@ public class TruffulaPrinterTest {
         // Assert that the output matches the expected output exactly
         assertEquals(expected.toString(), output);
     }
+    
     @Test
     public void testPrintTree_AlphabeticalSortingWithColor(@TempDir File tempDir) throws IOException {
         // Create "testFolder"
@@ -432,7 +432,6 @@ public class TruffulaPrinterTest {
         // Assert that the output matches the expected output exactly
         assertEquals(expected.toString(), output);
     }
-
 
     @Test
     public void testPrintTree_ExactOutput_WithCustomPrintStream(@TempDir File tempDir) throws IOException {
