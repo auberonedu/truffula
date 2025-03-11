@@ -147,8 +147,14 @@ public class TruffulaPrinter {
  
     // loop through directory sub files/folders
     for (File child : children) {
-      // Determine the color for a level based on modulus result
+      // check if hidden files should be displayed
+      if (!options.isShowHidden() && child.isHidden()) {
+        continue;
+      }
+
+      // check if colors should be used
       if (options.isUseColor()) {
+        // Determine the color for a level based on modulus result
         ConsoleColor color = colorSequence.get(levelDepth % colorSequence.size());
         out.setCurrentColor(color);
       }

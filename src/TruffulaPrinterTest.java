@@ -315,7 +315,7 @@ public class TruffulaPrinterTest {
     }
 
     @Test
-    public void testPrintTree_ExactOutput_WithColorsEnabled(@TempDir File tempDir) throws IOException {
+    public void testPrintTree_ExactOutput_WithColorsEnabledAndHiddenFiles(@TempDir File tempDir) throws IOException {
         // Build the example directory structure:
         // myFolder/
         //    Apple.txt
@@ -343,7 +343,7 @@ public class TruffulaPrinterTest {
         kiwi.createNewFile();
 
         // Set up TruffulaOptions with showHidden = false and useColor = false
-        TruffulaOptions options = new TruffulaOptions(myFolder, false, true);
+        TruffulaOptions options = new TruffulaOptions(myFolder, true, true);
 
         // Capture output using a custom PrintStream
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
