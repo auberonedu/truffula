@@ -125,16 +125,13 @@ public class TruffulaPrinter {
 
   private void printTree(File root) {
     // set color sequence
-    if (options.isUseColor()){
+    if (options.isUseColor()) {
       this.colorSequence = DEFAULT_COLOR_SEQUENCE;
-    }
-    else {
+    } else {
       colorSequence = new ArrayList<>(List.of(ConsoleColor.WHITE));
     }
-    
-    printTree(root, "", 0);
-    
 
+    printTree(root, "", 0);
   }
 
   private void printTree(File root, String threeSpaces, int colorIndex) {
@@ -142,19 +139,19 @@ public class TruffulaPrinter {
     out.setCurrentColor(colorSequence.get(colorIndex));
 
     // if not at end of color sequence up color index
-    if (colorIndex + 1 < colorSequence.size()){
+    if (colorIndex + 1 < colorSequence.size()) {
       colorIndex++;
     }
 
     // if at end of color sequence reset color index
-    else colorIndex = 0;
-
+    else {
+      colorIndex = 0;
+    }
 
     // Check if root is a file or a directory - print accordingly
     if (root.isDirectory()) {
       out.println(threeSpaces + root.getName() + "/");
-    } 
-    else {
+    } else {
       out.println(threeSpaces + root.getName());
     }
 
@@ -166,21 +163,7 @@ public class TruffulaPrinter {
       return;
     }
 
-    // Check for color
-    // If true - Rotate through color for each directory level else print in white for false - WIP
-    // if (options.isUseColor() == true) {
-    //   // Do something to start color rotation
-    //   // out.setCurrentColor(); // Maybe? Not sure what to put in ()
-    //   // I feel like getCurrentColor will be needed at some point to check when it should rotate to next color
-    
-      
-    // }
-    // else {
-    //   Keep the color white
-    //   out.setCurrentColor(ConsoleColor.WHITE);
-    // }
-
-    // traverse - Trying out if this works for wave 6 - I think it does since I moved around some files in Test and they still passed
+    // traverse
     for (var file : AlphabeticalFileSorter.sort(root.listFiles())) {
       printTree(file, threeSpaces, colorIndex);
     }
