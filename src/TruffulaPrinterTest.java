@@ -304,7 +304,214 @@ public class TruffulaPrinterTest {
     }
     
     // test to skip hidden files
+    @Test
+    public void testPrintTreeSkipHiddenFilesWithColor(@TempDir File tempDir) throws IOException {
+        // Build the following directory structure:
+        // testFolder/
+        //    .hidden.txt
+        //    subDir/
+        //       .hiddenSub.txt
+        //       file1.txt
+        //    visible.txt
+
+        // Create "testFolder"
+        File testFolder = new File(tempDir, "testFolder");
+        assertTrue(testFolder.mkdir(), "testFolder should be created");
+
+        // Create files in testFolder
+        File hiddenFile = new File(testFolder, ".hidden.txt");
+        File visibleFile = new File(testFolder, "visible.txt");
+        hiddenFile.createNewFile();
+        visibleFile.createNewFile();
+
+        // Create subdirectory "subDir"
+        File subDir = new File(testFolder, "subDir");
+        assertTrue(subDir.mkdir(), "subDir should be created");
+
+        // Create files in subDir
+        File hiddenSubFile = new File(subDir, ".hiddenSub.txt");
+        File file1 = new File(subDir, "file1.txt");
+        hiddenSubFile.createNewFile();
+        file1.createNewFile();
+
+        // Set up TruffulaOptions with showHidden = true and useColor = true
+        TruffulaOptions options = new TruffulaOptions(testFolder, false, true);
+
+        // Capture output using a custom PrintStream
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(baos);
+
+        // Instantiate TruffulaPrinter with the custom PrintStream
+        TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
+
+        // Call printTree and output will go to printStream
+        printer.printTree();
+
+        // Retrieve printed output
+        String output = baos.toString();
+        String nl = System.lineSeparator();
+
+        // Define the ANSI escape codes for the colors used.
+        // In the printer, level 0 is white, level 1 is purple, level 2 is yellow.
+        String reset = "\033[0m";
+        String white = "\033[0;37m";
+        String purple = "\033[0;35m";
+        String yellow = "\033[0;33m";
+
+        // Build expected output according to the printer's recursion:
+        // testFolder/ (white)
+        //    .hidden.txt (purple)
+        //    subDir/ (purple)
+        //       .hiddenSub.txt (yellow)
+        //       file1.txt (yellow)
+        //    visible.txt (purple)
+        StringBuilder expected = new StringBuilder();
+        expected.append(white).append("testFolder/").append(nl).append(reset);
+        expected.append(purple).append("   subDir/").append(nl).append(reset);
+        expected.append(yellow).append("      file1.txt").append(nl).append(reset);
+        expected.append(purple).append("   visible.txt").append(nl).append(reset);
+
+        // Assert that the output matches the expected output exactly.
+        assertEquals(expected.toString(), output);
+    }
+
+    // show hidden no color
+    @Test
+    public void testPrintTreeWithHiddenFilesNoColor(@TempDir File tempDir) throws IOException {
+        // Build the following directory structure:
+        // testFolder/
+        //    .hidden.txt
+        //    subDir/
+        //       .hiddenSub.txt
+        //       file1.txt
+        //    visible.txt
+
+        // Create "testFolder"
+        File testFolder = new File(tempDir, "testFolder");
+        assertTrue(testFolder.mkdir(), "testFolder should be created");
+
+        // Create files in testFolder
+        File hiddenFile = new File(testFolder, ".hidden.txt");
+        File visibleFile = new File(testFolder, "visible.txt");
+        hiddenFile.createNewFile();
+        visibleFile.createNewFile();
+
+        // Create subdirectory "subDir"
+        File subDir = new File(testFolder, "subDir");
+        assertTrue(subDir.mkdir(), "subDir should be created");
+
+        // Create files in subDir
+        File hiddenSubFile = new File(subDir, ".hiddenSub.txt");
+        File file1 = new File(subDir, "file1.txt");
+        hiddenSubFile.createNewFile();
+        file1.createNewFile();
+
+        // Set up TruffulaOptions with showHidden = true and useColor = true
+        TruffulaOptions options = new TruffulaOptions(testFolder, true, false);
+
+        // Capture output using a custom PrintStream
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(baos);
+
+        // Instantiate TruffulaPrinter with the custom PrintStream
+        TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
+
+        // Call printTree and output will go to printStream
+        printer.printTree();
+
+        // Retrieve printed output
+        String output = baos.toString();
+        String nl = System.lineSeparator();
+
+        String white = "\033[0;37m";
+        String reset = "\033[0m";
+
+        // Build expected output according to the printer's recursion:
+        // testFolder/ (white)
+        //    .hidden.txt (purple)
+        //    subDir/ (purple)
+        //       .hiddenSub.txt (yellow)
+        //       file1.txt (yellow)
+        //    visible.txt (purple)
+        StringBuilder expected = new StringBuilder();
+        expected.append(white).append("testFolder/").append(nl).append(reset);
+        expected.append(white).append("   .hidden.txt").append(nl).append(reset);
+        expected.append(white).append("   subDir/").append(nl).append(reset);
+        expected.append(white).append("      .hiddenSub.txt").append(nl).append(reset);
+        expected.append(white).append("      file1.txt").append(nl).append(reset);
+        expected.append(white).append("   visible.txt").append(nl).append(reset);
+
+        // Assert that the output matches the expected output exactly.
+        assertEquals(expected.toString(), output);
+    }
 
     // test basics (no color no hidden)
+    @Test
+    public void testPrintTreeSkipHiddenFilesNoColor(@TempDir File tempDir) throws IOException {
+        // Build the following directory structure:
+        // testFolder/
+        //    .hidden.txt
+        //    subDir/
+        //       .hiddenSub.txt
+        //       file1.txt
+        //    visible.txt
 
+        // Create "testFolder"
+        File testFolder = new File(tempDir, "testFolder");
+        assertTrue(testFolder.mkdir(), "testFolder should be created");
+
+        // Create files in testFolder
+        File hiddenFile = new File(testFolder, ".hidden.txt");
+        File visibleFile = new File(testFolder, "visible.txt");
+        hiddenFile.createNewFile();
+        visibleFile.createNewFile();
+
+        // Create subdirectory "subDir"
+        File subDir = new File(testFolder, "subDir");
+        assertTrue(subDir.mkdir(), "subDir should be created");
+
+        // Create files in subDir
+        File hiddenSubFile = new File(subDir, ".hiddenSub.txt");
+        File file1 = new File(subDir, "file1.txt");
+        hiddenSubFile.createNewFile();
+        file1.createNewFile();
+
+        // Set up TruffulaOptions with showHidden = true and useColor = true
+        TruffulaOptions options = new TruffulaOptions(testFolder, false, false);
+
+        // Capture output using a custom PrintStream
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(baos);
+
+        // Instantiate TruffulaPrinter with the custom PrintStream
+        TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
+
+        // Call printTree and output will go to printStream
+        printer.printTree();
+
+        // Retrieve printed output
+        String output = baos.toString();
+        String nl = System.lineSeparator();
+
+        // Define the ANSI escape codes for the colors used.
+        // In the printer, level 0 is white, level 1 is purple, level 2 is yellow.
+        String reset = "\033[0m";
+        String white = "\033[0;37m";
+
+        // Build expected output according to the printer's recursion:
+        // testFolder/ (white)
+        //    .hidden.txt (purple)
+        //    subDir/ (purple)
+        //       .hiddenSub.txt (yellow)
+        //       file1.txt (yellow)
+        //    visible.txt (purple)
+        StringBuilder expected = new StringBuilder();
+        expected.append(white).append("testFolder/").append(nl).append(reset);
+        expected.append(white).append("   subDir/").append(nl).append(reset);
+        expected.append(white).append("      file1.txt").append(nl).append(reset);
+        expected.append(white).append("   visible.txt").append(nl).append(reset);
+
+        // Assert that the output matches the expected output exactly.
+        assertEquals(expected.toString(), output);
+    }
 }
