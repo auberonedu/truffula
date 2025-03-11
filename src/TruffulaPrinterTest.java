@@ -168,11 +168,11 @@ public class TruffulaPrinterTest {
         //            Level4/
         //               File3.txt
         
-        //create a root folder "dataTree"
+        // create a root folder "dataTree"
         File dataTree = new File(tempDir, "DataTree");
         assertTrue(dataTree.mkdir(), "DataTree folder should be created");
 
-        //create nested files and directories
+        // create nested files and directories
         File level1 = new File(dataTree, "Level1");
         assertTrue(level1.mkdir(), "Level1 folder should be created");
 
@@ -185,7 +185,7 @@ public class TruffulaPrinterTest {
         File level4 = new File(level3, "Level4");
         assertTrue(level4.mkdir(), "Level4 folder should be created");
 
-        //create files at different levels
+        // create files at different levels
         File file1 = new File(level1, "File1.txt");
         File file2 = new File(level3, "File2.txt");
         File file3 = new File(level4, "File3.txt");
@@ -209,11 +209,11 @@ public class TruffulaPrinterTest {
 
         // define ANSI color codes
         String reset = "\033[0m";
-        String white = "\033[0;37m"; 
-        String purple = "\033[0;35m"; 
-        String yellow = "\033[0;33m"; 
+        String white = "\033[0;37m";
+        String purple = "\033[0;35m";
+        String yellow = "\033[0;33m";
 
-        //Building the output expected
+        // Building the output expected
         StringBuilder expected = new StringBuilder();
         expected.append(white).append("DataTree/").append(nl).append(reset);
         expected.append(purple).append("   Level1/").append(nl).append(reset);
@@ -230,39 +230,75 @@ public class TruffulaPrinterTest {
 
     @Test
     public void testPrintTree_singleFileHandler(@TempDir File tempDir) throws IOException {
-    //creating root folder "SingleFileTest"
-    File singleFileTest = new File(tempDir, "SingleFileTest");
-    assertTrue(singleFileTest.mkdir(), "SingleFileTest folder should be created");
-    
-    //creating a single file
-    File readme = new File(singleFileTest, "README.md");
-    readme.createNewFile();
 
-    // Capture output
-    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    PrintStream printStream = new PrintStream(baos);
+        // creating root folder "SingleFileTest"
+        File singleFileTest = new File(tempDir, "SingleFileTest");
+        assertTrue(singleFileTest.mkdir(), "SingleFileTest folder should be created");
 
-    // Initialize TruffulaPrinter
-    TruffulaOptions options = new TruffulaOptions(singleFileTest, false, true);
-    TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
+        // creating a single file
+        File readme = new File(singleFileTest, "README.md");
+        readme.createNewFile();
 
-    printer.printTree();
+        // Capture output
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(baos);
 
-    // Get actual output
-    String output = baos.toString();
-    String nl = System.lineSeparator();
+        // Initialize TruffulaPrinter
+        TruffulaOptions options = new TruffulaOptions(singleFileTest, false, true);
+        TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
 
-     // define ANSI color codes
-     String reset = "\033[0m";
-     String white = "\033[0;37m"; 
-     String purple = "\033[0;35m"; 
-    
-     //build the string to expected output
-     StringBuilder expected = new StringBuilder();
-     expected.append(white).append("SingleFileTest/").append(nl).append(reset);
-     expected.append(purple).append("   README.md").append(nl).append(reset);
+        printer.printTree();
 
-      // assert that the output matches the expected output
-      assertEquals(expected.toString(), output);
+        // Get actual output
+        String output = baos.toString();
+        String nl = System.lineSeparator();
+
+        // define ANSI color codes
+        String reset = "\033[0m";
+        String white = "\033[0;37m";
+        String purple = "\033[0;35m";
+
+        // build the string to expected output
+        StringBuilder expected = new StringBuilder();
+        expected.append(white).append("SingleFileTest/").append(nl).append(reset);
+        expected.append(purple).append("   README.md").append(nl).append(reset);
+
+        // assert that the output matches the expected output
+        assertEquals(expected.toString(), output);
+    }
+
+    @Test
+    public void testPrintTree_EmptyDirectory(@TempDir File tempDir) {
+        // creating an empty directory
+        // emptyFolder/
+
+        File emptyFolder = new File(tempDir, "EmptyFolder");
+        assertTrue(emptyFolder.mkdir(), "EmptyFolder should be created");
+
+        // Capture output
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(baos);
+
+        // Initialize TruffulaPrinter
+        TruffulaOptions options = new TruffulaOptions(emptyFolder, false, true);
+        TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
+
+        printer.printTree();
+
+        // Get actual output
+        String output = baos.toString();
+        String nl = System.lineSeparator();
+
+        // define ANSI color codes
+        String reset = "\033[0m";
+        String white = "\033[0;37m"; 
+
+
+        // Expected output (only root directory)
+        StringBuilder expected = new StringBuilder();
+        expected.append(white).append("EmptyFolder/").append(nl).append(reset);
+
+        // Assert that the output matches the expected output
+        assertEquals(expected.toString(), output);
     }
 }

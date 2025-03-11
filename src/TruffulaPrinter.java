@@ -134,7 +134,7 @@ public class TruffulaPrinter {
 
     if (files == null) return;
 
-    // sort files alphabetically
+    // sort files alphabetically ( we already did the sorting in the previous wave)
     files = AlphabeticalFileSorter.sort(files);
 
     ConsoleColor color = LevelColor(level);
