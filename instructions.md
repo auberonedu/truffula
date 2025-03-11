@@ -97,7 +97,7 @@ JAR is short for "Java Archive". It's a collection of our compiled code that we 
 Make sure you are in the root of the repository, then compile your code:
 
 ```
-javac -d target src/App.java src/ColorPrinter.java src/ConsoleColor.java src/TruffulaOptions.java src/TruffulaPrinter.java 
+javac -d target src/App.java src/ColorPrinter.java src/ConsoleColor.java src/TruffulaOptions.java src/TruffulaPrinter.java src/AlphabeticalFileSorter.java 
 ```
 
 This places the compiled files in a new directory called `target`. You should see `target` directory be created with a bunch of `.class` files. `.class` files are compiled Java files. The `-d target` is responsible for specifying the name of the directory where you want the compiled files.
