@@ -142,8 +142,8 @@ public class TruffulaPrinterTest {
     }
 
     @Test
-    public void testPrintTree_NestedStructure_WithColors(@TempDir File tempDir) throws IOException {
-        // **Arrange**
+    public void testPrintTree_WithColors(@TempDir File tempDir) throws IOException {
+        // Arrange
         File rootFolder = new File(tempDir, "root");
         assertTrue(rootFolder.mkdir(), "Root folder should be created");
 
@@ -163,10 +163,10 @@ public class TruffulaPrinterTest {
         TruffulaOptions options = new TruffulaOptions(rootFolder, false, true);
         TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
 
-        // **Act**
+        // Act
         printer.printTree();
 
-        // **Assert**
+        // Assert
         String output = baos.toString();
         String nl = System.lineSeparator();
 
@@ -177,14 +177,24 @@ public class TruffulaPrinterTest {
         String reset = ConsoleColor.RESET.getCode();
 
         String expectedOutput =
-                white + "root/" + nl + reset +
-                purple + "   sub/" + nl + reset +
-                yellow + "      X.txt" + nl + reset +
-                yellow + "      Y.txt" + nl + reset;
+            white + "root/" + nl + reset +
+            purple + "   sub/" + nl + reset +
+            yellow + "      X.txt" + nl + reset +
+            yellow + "      Y.txt" + nl + reset;
 
         assertEquals(expectedOutput, output, "Output should match expected nested folder structure with colors");
     }
 
+    @Test
+    public void testPrintTree_ColoredTextNoColors() {
+        TruffulaOptions options = new TruffulaOptions(new File("."), false, false);
+        TruffulaPrinter printer = new TruffulaPrinter(options);
+    
+        assertEquals("A.txt", printer.coloredText("A.txt", 0));
+        assertEquals("   A.txt", printer.coloredText("A.txt", 1));
+        assertEquals("      B.txt", printer.coloredText("B.txt", 2));
+    }
+    
     @Test
     public void testPrintIndentedSpaces() {
         assertEquals("A.txt", TruffulaPrinter.printIndentedSpaces("A.txt", 0));
@@ -192,5 +202,86 @@ public class TruffulaPrinterTest {
         assertEquals("      A.txt", TruffulaPrinter.printIndentedSpaces("A.txt", 2));
     }
 
-    
+        @Test
+        public void testPrintTree_EmptyDirectory(@TempDir File tempDir) throws IOException {
+        // Arrange
+        File emptyDir = new File(tempDir, "emptyDir");
+        assertTrue(emptyDir.mkdir(), "emptyDir should be created");
+
+        // Capture output
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(baos);
+
+        // Set up TruffulaOptions and TruffulaPrinter
+        TruffulaOptions options = new TruffulaOptions(emptyDir, false, true);
+        TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
+
+        // Act
+        printer.printTree();
+
+        // Assert
+        String output = baos.toString();
+        String nl = System.lineSeparator();
+        String expectedOutput = ConsoleColor.WHITE.getCode() + "emptyDir/" + nl + ConsoleColor.RESET.getCode();
+
+        assertEquals(expectedOutput, output, "Output should only contain the root directory name");
+    }
+
+    @Test
+    public void testPrintTree_SingleFileInRoot(@TempDir File tempDir) throws IOException {
+        // Arrange
+        File rootDir = new File(tempDir, "rootDir");
+        assertTrue(rootDir.mkdir(), "rootDir should be created");
+
+        File singleFile = new File(rootDir, "file.txt");
+        assertTrue(singleFile.createNewFile(), "file.txt should be created");
+
+        // Capture output
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(baos);
+
+        // Set up TruffulaOptions and TruffulaPrinter
+        TruffulaOptions options = new TruffulaOptions(rootDir, false, true);
+        TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
+
+        // Act
+        printer.printTree();
+
+        // Assert
+        String output = baos.toString();
+        String nl = System.lineSeparator();
+        String expectedOutput = ConsoleColor.WHITE.getCode() + "rootDir/" + nl + ConsoleColor.RESET.getCode() +
+                                ConsoleColor.PURPLE.getCode() + "   file.txt" + nl + ConsoleColor.RESET.getCode();
+
+        assertEquals(expectedOutput, output, "Output should contain the root directory and the single file");
+    }
+
+    @Test
+    public void testPrintTree_SingleSubdirectory(@TempDir File tempDir) {
+        // Arrange
+        File rootDir = new File(tempDir, "rootDir");
+        assertTrue(rootDir.mkdir(), "rootDir should be created");
+
+        File subDir = new File(rootDir, "subDir");
+        assertTrue(subDir.mkdir(), "subDir should be created");
+
+        // Capture output
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(baos);
+
+        // Set up TruffulaOptions and TruffulaPrinter
+        TruffulaOptions options = new TruffulaOptions(rootDir, false, true);
+        TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
+
+        // Act
+        printer.printTree();
+
+        // Assert
+        String output = baos.toString();
+        String nl = System.lineSeparator();
+        String expectedOutput = ConsoleColor.WHITE.getCode() + "rootDir/" + nl + ConsoleColor.RESET.getCode() +
+                                ConsoleColor.PURPLE.getCode() + "   subDir/" + nl + ConsoleColor.RESET.getCode();
+
+        assertEquals(expectedOutput, output, "Output should contain the root directory and the subdirectory");
+    }
 }
