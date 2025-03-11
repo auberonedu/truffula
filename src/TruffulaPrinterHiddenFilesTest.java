@@ -106,8 +106,6 @@ public class TruffulaPrinterHiddenFilesTest {
         assertEquals(expected.toString(), output);
     }
 
-
-
     @Test
     public void testPrintTree_WithHiddenFiles(@TempDir File tempDir) throws IOException {
         // Build the following directory structure:
@@ -303,7 +301,10 @@ public class TruffulaPrinterHiddenFilesTest {
         assertTrue(output.contains(ConsoleColor.PURPLE.toString() + "   subFolder2/"), "subFolder2 should be printed in purple");
         assertTrue(output.contains(ConsoleColor.YELLOW.toString() + "      file1.txt"), "file1.txt should be printed in yellow");
         assertTrue(output.contains(ConsoleColor.YELLOW.toString() + "      file2.txt"), "file2.txt should be printed in yellow");
-
     }
     
+    // test to skip hidden files
+
+    // test basics (no color no hidden)
+
 }
