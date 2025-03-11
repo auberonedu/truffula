@@ -197,7 +197,7 @@ truffula/
   }
 
   public String coloredText(String name, int indentLevel) {
-    String indent = "   ".repeat(indentLevel);
+    String indent = printIndentedSpaces(name, indentLevel);
 
     // Choose color based on indentation level
     ConsoleColor color;
@@ -211,6 +211,7 @@ truffula/
       default:
         color = ConsoleColor.YELLOW;
       }
-    return color.getCode() + indent + name + ConsoleColor.RESET.getCode();
+      out.setCurrentColor(color);
+      return indent;
   }
 } 
