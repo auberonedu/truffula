@@ -120,6 +120,8 @@ public class TruffulaOptions  {
         else if (currentString.equals("-h")) {
           thisHidden = true;
         }
+        // TODO: handle a color argument like ["red", "orange", "yellow"]
+        // assign a new arraylist of given colors or empty array list if no given colors
         else {
           throw new IllegalArgumentException(currentString + "is not a valid flag");
         }

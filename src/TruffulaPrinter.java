@@ -125,6 +125,7 @@ public class TruffulaPrinter {
   private void printTree(File root) {
     // set color sequence
     if (options.isUseColor()) {
+      // TODO: if given color array list is not empty -> assign that to color sequence, else use default color sequence
       this.colorSequence = DEFAULT_COLOR_SEQUENCE;
     } else {
       colorSequence = new ArrayList<>(List.of(ConsoleColor.WHITE));
