@@ -284,4 +284,12 @@ public class TruffulaPrinterTest {
 
         assertEquals(expectedOutput, output, "Output should contain the root directory and the subdirectory");
     }
+
+    @Test
+    public void testPrintTree_MultipleNestedSubdirectories(@TempDir File tempDir) throws IOException {
+    }
+
+    @Test
+    public void testPrintTree_MixedFileTypes(@TempDir File tempDir) throws IOException {
+    }
 }
