@@ -260,7 +260,6 @@ public class TruffulaPrinterTest {
         assertEquals(expected.toString(), output);
     }
 
-    // Note: Test not working yet because TruffulaOptions useColor:false isn't working
     @Test
     public void testPrintTree_ExactOutput_WithNoColors(@TempDir File tempDir) throws IOException {
         // Build the example directory structure:
@@ -309,6 +308,138 @@ public class TruffulaPrinterTest {
         expected.append(reset).append(white).append("   Apple.txt").append(nl);
         expected.append(reset).append(white).append("   Banana.txt").append(nl);
         expected.append(reset).append(white).append("   RecipeFolder/").append(nl);
+        expected.append(reset);
+
+        // Assert that the output matches the expected output exactly
+        assertEquals(expected.toString(), output);
+    }
+
+    @Test
+    public void testPrintTree_ExactOutput_WithColorsEnabled(@TempDir File tempDir) throws IOException {
+        // Build the example directory structure:
+        // myFolder/
+        //    Apple.txt
+        //    Banana.txt
+        //    RecipeFolder/
+        //       Kiwi.txt
+        //
+
+        // Create "myFolder"
+        File myFolder = new File(tempDir, "myFolder");
+        assertTrue(myFolder.mkdir(), "myFolder should be created");
+
+        // Create visible files in myFolder
+        File apple = new File(myFolder, "Apple.txt");
+        File banana = new File(myFolder, "Banana.txt");
+        apple.createNewFile();
+        banana.createNewFile();
+
+        // Create subdirectory "RecipeFolder" in myFolder
+        File recipeFolder = new File(myFolder, "RecipeFolder");
+        assertTrue(recipeFolder.mkdir(), "RecipeFolder directory should be created");
+
+        // Create visible file in RecipeFolder
+        File kiwi = new File(recipeFolder, "Kiwi.txt");
+        kiwi.createNewFile();
+
+        // Set up TruffulaOptions with showHidden = false and useColor = false
+        TruffulaOptions options = new TruffulaOptions(myFolder, false, true);
+
+        // Capture output using a custom PrintStream
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(baos);
+
+        // Instantiate TruffulaPrinter with custom PrintStream
+        TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
+
+        // Call printTree (output goes to printStream)
+        printer.printTree();
+
+        // Retrieve printed output
+        String output = baos.toString();
+        String nl = System.lineSeparator();
+
+        //// Build expected output with exact colors and indentation
+        String reset = "\033[0m";
+        String white = "\033[0;37m";
+        String purple = "\033[0;35m";
+        String yellow = "\033[0;33m";
+
+        StringBuilder expected = new StringBuilder();
+        expected.append(white).append("myFolder/").append(nl);
+        expected.append(reset).append(purple).append("   Apple.txt").append(nl);
+        expected.append(reset).append(purple).append("   Banana.txt").append(nl);
+        expected.append(reset).append(purple).append("   RecipeFolder/").append(nl);
+        expected.append(reset).append(yellow).append("      Kiwi.txt").append(nl);
+        expected.append(reset);
+
+        // Assert that the output matches the expected output exactly
+        assertEquals(expected.toString(), output);
+    }
+
+    @Test
+    public void testPrintTree_ExactOutput_WithAlphabeticalSorting_Case_Insensitive(@TempDir File tempDir) throws IOException {
+        // Build the example directory structure:
+        // aFolder/
+        //    a.txt
+        //    Z.txt
+        //    A.txt
+        //    BFolder/
+        //    cFolder/
+        //    bFolder/
+
+        // Create "aFolder"
+        File aFolder = new File(tempDir, "aFolder");
+        assertTrue(aFolder.mkdir(), "aFolder should be created");
+
+        // Create visible files in myFolder
+        File a = new File(aFolder, "a.txt");
+        File Z = new File(aFolder, "Z.txt");
+        File apple = new File(aFolder, "apple.txt");
+        a.createNewFile();
+        Z.createNewFile();
+        apple.createNewFile();
+
+        // Create subdirectory "bFolder" in aFolder
+        File bFolder = new File(aFolder, "bFolder");
+        assertTrue(bFolder.mkdir(), "bFolder directory should be created");
+        // Create subdirectory "cFolder" in aFolder
+        File cFolder = new File(aFolder, "cFolder");
+        assertTrue(cFolder.mkdir(), "cFolder directory should be created");
+        // Create subdirectory "dFolder" in aFolder
+        File dFolder = new File(aFolder, "dFolder");
+        assertTrue(dFolder.mkdir(), "dFolder directory should be created");
+
+        // Set up TruffulaOptions with showHidden = false and useColor = true
+        TruffulaOptions options = new TruffulaOptions(aFolder, false, true);
+
+        // Capture output using a custom PrintStream
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(baos);
+
+        // Instantiate TruffulaPrinter with custom PrintStream
+        TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
+
+        // Call printTree (output goes to printStream)
+        printer.printTree();
+
+        // Retrieve printed output
+        String output = baos.toString();
+        String nl = System.lineSeparator();
+
+        //// Build expected output with exact colors and indentation
+        String reset = "\033[0m";
+        String white = "\033[0;37m";
+        String purple = "\033[0;35m";
+
+        StringBuilder expected = new StringBuilder();
+        expected.append(white).append("aFolder/").append(nl);
+        expected.append(reset).append(purple).append("   a.txt").append(nl);
+        expected.append(reset).append(purple).append("   apple.txt").append(nl);
+        expected.append(reset).append(purple).append("   bFolder/").append(nl);
+        expected.append(reset).append(purple).append("   cFolder/").append(nl);
+        expected.append(reset).append(purple).append("   dFolder/").append(nl);
+        expected.append(reset).append(purple).append("   Z.txt").append(nl);
         expected.append(reset);
 
         // Assert that the output matches the expected output exactly
