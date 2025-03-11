@@ -133,6 +133,8 @@ public class TruffulaPrinter {
       return;
     }
 
+    AlphabeticalFileSorter.sort(files);
+
     for (File file : files) {
       //Skip hidden files folders if the option is set to not show hidden items.
       if (!options.isShowHidden() && file.isHidden()) {
@@ -140,11 +142,11 @@ public class TruffulaPrinter {
       }
 
       // wave5 color cycling code
-      ConsoleColor currentColor = DEFAULT_COLOR_SEQUENCE.get(level % DEFAULT_COLOR_SEQUENCE.size());
+      ConsoleColor currentColor = colorSequence.get(level % DEFAULT_COLOR_SEQUENCE.size());
       out.setCurrentColor(currentColor);
 
       StringBuilder sb = new StringBuilder();
-      
+
       // Add indentation (3 spaces per level)
       for (int i = 0; i < level; i++) {
         sb.append("   ");
