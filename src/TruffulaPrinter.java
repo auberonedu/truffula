@@ -138,7 +138,9 @@ public class TruffulaPrinter {
         continue;
       }
 
+      // repeat indendation 3 times
       String indent = " ".repeat(depth * 3);
+
       String fileName = file.getName();
 
       // append a / for directories
@@ -146,8 +148,10 @@ public class TruffulaPrinter {
         fileName = fileName + "/";
       }
 
+      // print the name of the file and the indentation
       out.println(indent + fileName);
 
+      //recurse on method if the file is a directory
       if (file.isDirectory()) {
         printTreeHelper(file, depth + 1);
       }
