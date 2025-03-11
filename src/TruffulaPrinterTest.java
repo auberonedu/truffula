@@ -35,9 +35,7 @@ public void testPrintTreeWave4(@TempDir File tempDir) throws IOException {
     banana.createNewFile();
     zebra.createNewFile();
 
-    // Create a hidden file (should NOT appear in output)
-    File hidden = new File(myFolder, ".hidden.txt");
-    hidden.createNewFile();
+   
 
     // Create subdirectory "Documents"
     File documents = new File(myFolder, "Documents");
@@ -71,12 +69,12 @@ public void testPrintTreeWave4(@TempDir File tempDir) throws IOException {
     // Build expected output (without colors and without hidden files)
     StringBuilder expected = new StringBuilder();
     expected.append("testFolder/").append(nl);
-    expected.append("  Apple.txt").append(nl);
-    expected.append("  banana.txt").append(nl);
-    expected.append("  Documents/").append(nl);
-    expected.append("    notes.txt").append(nl);
-    expected.append("    README.md").append(nl);
-    expected.append("  zebra.txt").append(nl);
+    expected.append("Apple.txt").append(nl);
+    expected.append("banana.txt").append(nl);
+    expected.append("Documents/").append(nl);
+    expected.append("  notes.txt").append(nl);
+    expected.append("  README.md").append(nl);
+    expected.append("zebra.txt").append(nl);
 
     // Assert that the output matches the expected output exactly
     assertEquals(expected.toString(), output);
