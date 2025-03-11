@@ -115,7 +115,7 @@ public class TruffulaPrinter {
 
     int depth = 0;
 
-    out.println(root.getName() + "/");
+    out.println(ConsoleColor.WHITE + root.getName() + "/");
     printTree(root, depth);
     // now we are printing our files!
 
