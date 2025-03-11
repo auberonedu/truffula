@@ -228,5 +228,41 @@ public class TruffulaPrinterTest {
         assertEquals(expected.toString(), output);
     }
 
-    SingleFilehandler
+    @Test
+    public void testPrintTree_singleFileHandler(@TempDir File tempDir) throws IOException {
+    //creating root folder "SingleFileTest"
+    File singleFileTest = new File(tempDir, "SingleFileTest");
+    assertTrue(singleFileTest.mkdir(), "SingleFileTest folder should be created");
+    
+    //creating a single file
+    File readme = new File(singleFileTest, "README.md");
+    readme.createNewFile();
+
+    // Capture output
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    PrintStream printStream = new PrintStream(baos);
+
+    // Initialize TruffulaPrinter
+    TruffulaOptions options = new TruffulaOptions(singleFileTest, false, true);
+    TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
+
+    printer.printTree();
+
+    // Get actual output
+    String output = baos.toString();
+    String nl = System.lineSeparator();
+
+     // define ANSI color codes
+     String reset = "\033[0m";
+     String white = "\033[0;37m"; 
+     String purple = "\033[0;35m"; 
+    
+     //build the string to expected output
+     StringBuilder expected = new StringBuilder();
+     expected.append(white).append("SingleFileTest/").append(nl).append(reset);
+     expected.append(purple).append("   README.md").append(nl).append(reset);
+
+      // assert that the output matches the expected output
+      assertEquals(expected.toString(), output);
+    }
 }
