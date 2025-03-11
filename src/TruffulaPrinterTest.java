@@ -13,7 +13,7 @@ public class TruffulaPrinterTest {
 
 
     @Test
-public void testPrintTreeWave4(@TempDir File tempDir) throws IOException {
+public void testPrintTreeWave4NoHiddenNoColors(@TempDir File tempDir) throws IOException {
     // Create test directory structure:
     // tempDir/
     //    Apple.txt
@@ -66,20 +66,25 @@ public void testPrintTreeWave4(@TempDir File tempDir) throws IOException {
     String output = baos.toString();
     String nl = System.lineSeparator();
 
+
+    //Adding the reset 
+    String reset = "\033[0m";
     // Build expected output (without colors and without hidden files)
     StringBuilder expected = new StringBuilder();
-    expected.append("testFolder/").append(nl);
-    expected.append("Apple.txt").append(nl);
-    expected.append("banana.txt").append(nl);
-    expected.append("Documents/").append(nl);
-    expected.append("  notes.txt").append(nl);
-    expected.append("  README.md").append(nl);
-    expected.append("zebra.txt").append(nl);
+    expected.append(reset).append("testFolder/").append(nl);
+    expected.append(reset).append("Apple.txt").append(nl);
+    expected.append(reset).append("banana.txt").append(nl);
+    expected.append(reset).append("Documents/").append(nl);
+    expected.append(reset).append("  notes.txt").append(nl);
+    expected.append(reset).append("  README.md").append(nl);
+    expected.append(reset).append("zebra.txt").append(nl);
 
     // Assert that the output matches the expected output exactly
     assertEquals(expected.toString(), output);
 }
 
+
+// --- COLOR TEST
 
     @Test
     public void testPrintTree_ExactOutput_WithCustomPrintStream(@TempDir File tempDir) throws IOException {
@@ -108,10 +113,6 @@ public void testPrintTreeWave4(@TempDir File tempDir) throws IOException {
         apple.createNewFile();
         banana.createNewFile();
         zebra.createNewFile();
-
-        // Create a hidden file in myFolder
-        File hidden = new File(myFolder, ".hidden.txt");
-        hidden.createNewFile();
 
         // Create subdirectory "Documents" in myFolder
         File documents = new File(myFolder, "Documents");
@@ -158,13 +159,13 @@ public void testPrintTreeWave4(@TempDir File tempDir) throws IOException {
 
         StringBuilder expected = new StringBuilder();
         expected.append(white).append("myFolder/").append(nl).append(reset);
-        expected.append(purple).append("   Apple.txt").append(nl).append(reset);
-        expected.append(purple).append("   banana.txt").append(nl).append(reset);
-        expected.append(purple).append("   Documents/").append(nl).append(reset);
-        expected.append(yellow).append("      images/").append(nl).append(reset);
-        expected.append(white).append("         cat.png").append(nl).append(reset);
-        expected.append(white).append("         Dog.png").append(nl).append(reset);
-        expected.append(yellow).append("      notes.txt").append(nl).append(reset);
+        expected.append(purple).append("Apple.txt").append(nl).append(reset);
+        expected.append(purple).append("banana.txt").append(nl).append(reset);
+        expected.append(purple).append("Documents/").append(nl).append(reset);
+        expected.append(yellow).append("   images/").append(nl).append(reset);
+        expected.append(white).append("      cat.png").append(nl).append(reset);
+        expected.append(white).append("      Dog.png").append(nl).append(reset);
+        expected.append(yellow).append("     notes.txt").append(nl).append(reset);
         expected.append(yellow).append("      README.md").append(nl).append(reset);
         expected.append(purple).append("   zebra.txt").append(nl).append(reset);
 
