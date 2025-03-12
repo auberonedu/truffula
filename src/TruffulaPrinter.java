@@ -133,6 +133,7 @@ public class TruffulaPrinter {
 
   public void printTree(File root, int depth) {
     File[] files = root.listFiles();
+    AlphabeticalFileSorter.sort(files);
     //colors
     if (options.isUseColor()) {
       for (var file : files) {
