@@ -7,7 +7,9 @@ import java.io.IOException;
 import java.io.PrintStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class TruffulaPrinterTest {
 
@@ -15,17 +17,17 @@ public class TruffulaPrinterTest {
     public void testPrintTree_ExactOutput_WithCustomPrintStream(@TempDir File tempDir) throws IOException {
         // Build the example directory structure:
         // myFolder/
-        //    .hidden.txt
-        //    Apple.txt
-        //    banana.txt
-        //    Documents/
-        //       images/
-        //          Cat.png
-        //          cat.png
-        //          Dog.png
-        //       notes.txt
-        //       README.md
-        //    zebra.txt
+        // .hidden.txt
+        // Apple.txt
+        // banana.txt
+        // Documents/
+        // images/
+        // Cat.png
+        // cat.png
+        // Dog.png
+        // notes.txt
+        // README.md
+        // zebra.txt
 
         // Create "myFolder"
         File myFolder = new File(tempDir, "myFolder");
@@ -64,7 +66,7 @@ public class TruffulaPrinterTest {
         dog.createNewFile();
 
         // Set up TruffulaOptions with showHidden = false and useColor = true
-        TruffulaOptions options = new TruffulaOptions(myFolder, false, true);
+        TruffulaOptions options = new TruffulaOptions(myFolder, true, true);
 
         // Capture output using a custom PrintStream
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -100,5 +102,31 @@ public class TruffulaPrinterTest {
 
         // Assert that the output matches the expected output exactly
         assertEquals(expected.toString(), output);
+    }
+
+    @Test
+    public void testPrintTreeFileCreation(@TempDir File tempDir) throws IOException {
+        // Set up a few files and directories inside the tempDir for testing
+        File dir1 = new File(tempDir, "dir1");
+        dir1.mkdir();
+        File file1 = new File(tempDir, "file1.txt");
+        file1.createNewFile();
+
+        TruffulaOptions options = new TruffulaOptions(tempDir, false, true);  
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(baos);
+
+        // Create an instance of TruffulaPrinter with the required arguments
+        TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
+        
+        // Call the printTree method, passing tempDir
+        printer.printTree();
+        
+        String output = baos.toString();
+
+        assertNotNull(output, "Output should not be null");
+
+        assertTrue(output.contains("dir1"), "Output should contain dir1");
+        assertTrue(output.contains("file1.txt"), "Output should contain file1.txt");
     }
 }
