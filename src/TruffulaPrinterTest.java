@@ -321,6 +321,42 @@ public class TruffulaPrinterTest {
 
     @Test
     public void testPrintTree_MixedFileTypes(@TempDir File tempDir) throws IOException {
-    
+        // Arrange
+    File rootDir = new File(tempDir, "rootDir");
+    assertTrue(rootDir.mkdir(), "rootDir should be created");
+
+    // Create a mix of files with different extensions
+    File txt = new File(rootDir, "file1.txt");
+    File jpg = new File(rootDir, "image.jpg");
+    File md = new File(rootDir, "README.md");
+    File png = new File(rootDir, "photo.png");
+
+    assertTrue(txt.createNewFile(), "file1.txt should be created");
+    assertTrue(jpg.createNewFile(), "image.jpg should be created");
+    assertTrue(md.createNewFile(), "README.md should be created");
+    assertTrue(png.createNewFile(), "photo.png should be created");
+
+    // Capture output
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    PrintStream printStream = new PrintStream(baos);
+
+    // Set up TruffulaOptions and TruffulaPrinter
+    TruffulaOptions options = new TruffulaOptions(rootDir, false, true);
+    TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
+
+    // Act
+    printer.printTree();
+
+    // Assert
+    String output = baos.toString();
+    String nl = System.lineSeparator();
+
+    String expectedOutput = ConsoleColor.WHITE.getCode() + "rootDir/" + nl + ConsoleColor.RESET.getCode() +
+                            ConsoleColor.PURPLE.getCode() + "   file1.txt" + nl + ConsoleColor.RESET.getCode() +
+                            ConsoleColor.PURPLE.getCode() + "   image.jpg" + nl + ConsoleColor.RESET.getCode() +
+                            ConsoleColor.PURPLE.getCode() + "   photo.png" + nl + ConsoleColor.RESET.getCode() +
+                            ConsoleColor.PURPLE.getCode() + "   README.md" + nl + ConsoleColor.RESET.getCode();
+
+    assertEquals(expectedOutput, output, "Output should correctly display files with different extensions");
     }
 }
