@@ -199,6 +199,12 @@ truffula/
   public String coloredText(String name, int indentLevel) {
     String indent = printIndentedSpaces(name, indentLevel);
 
+    //if color is disabled use white 
+    if (!options.isUseColor()) {
+      out.setCurrentColor(ConsoleColor.WHITE);
+      return indent;  // Return with white text 
+    }
+
     // Choose color based on indentation level
     ConsoleColor color;
     switch (indentLevel % 3) {
