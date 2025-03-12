@@ -182,7 +182,7 @@ These steps are for Mac computers. Please skip to the Windows section if on Wind
 1. Copy the following contents to the new `truffula` file (use right click and paste, ctrl-c will likely not work).
    ```
    #!/bin/bash
-   java -jar "~/bin/truffula.jar" "$@"
+   java -jar "$HOME/bin/truffula.jar" "$@"
    ```
    The first line tells the computer that the file should be executed using the Bash shell. The second line describes a command to run the `truffula.jar`. The `@` says to pass along any command line flags. We do this so you can just type `truffula` instead of the whole `java -jar` command.
 1. Exit insert mode by pressing the Escape (esc) key.
