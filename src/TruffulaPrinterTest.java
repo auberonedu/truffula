@@ -5,6 +5,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -66,7 +68,7 @@ public class TruffulaPrinterTest {
         dog.createNewFile();
 
         // Set up TruffulaOptions with showHidden = false and useColor = true
-        TruffulaOptions options = new TruffulaOptions(myFolder, true, true);
+        TruffulaOptions options = new TruffulaOptions(myFolder, false, true);
 
         // Capture output using a custom PrintStream
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -128,5 +130,26 @@ public class TruffulaPrinterTest {
 
         assertTrue(output.contains("dir1"), "Output should contain dir1");
         assertTrue(output.contains("file1.txt"), "Output should contain file1.txt");
+    }
+
+    @Test
+    public void testPrintTreeAlphabetization(@TempDir File tempDir) throws IOException {
+    
+        // create test files in an unsorted order
+        File file1 = new File(tempDir, "zebra.txt");
+        File file2 = new File(tempDir, "lion.txt");
+        File file3 = new File(tempDir, "bear.txt");
+        file1.createNewFile();
+        file2.createNewFile();
+        file3.createNewFile();
+
+        // sort files using AlphabeticalFileSorter
+        File[] files = {file1, file2, file3};
+        File[] sortedFiles = AlphabeticalFileSorter.sort(files);
+
+        // Verify that files are sorted correctly
+        assertEquals("bear.txt", sortedFiles[0].getName());
+        assertEquals("lion.txt", sortedFiles[1].getName());
+        assertEquals("zebra.txt", sortedFiles[2].getName());
     }
 }
