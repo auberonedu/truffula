@@ -644,7 +644,7 @@ public class TruffulaPrinterTest {
         assertTrue(myFolder.mkdir(), "myFolder should be created");
 
         // Create visible files in myFolder
-        File emptyFile = new File(myFolder, ".txt");
+        File emptyFile = new File(myFolder, " .txt");
         File emptyFile2 = new File(myFolder, " .docx");
         File specialFile = new File(myFolder, "$.txt");
         File normalFile = new File(myFolder, "normalFile.txt");
@@ -678,8 +678,8 @@ public class TruffulaPrinterTest {
         StringBuilder expected = new StringBuilder();
         expected.append(white).append("myFolder/").append(nl);
         expected.append(reset).append(white).append("    .docx").append(nl);
+        expected.append(reset).append(white).append("    .txt").append(nl);
         expected.append(reset).append(white).append("   $.txt").append(nl);
-        expected.append(reset).append(white).append("   .txt").append(nl);
         expected.append(reset).append(white).append("   normalFile.txt").append(nl);
         expected.append(reset);
 
