@@ -137,6 +137,26 @@ public class TruffulaOptionsTest {
   }
 
   @Test
+  void testCaseSensitiveFlags(@TempDir File tempDir) {
+    // Arrange: args entered with capital flags
+    String[] args = {"-NC", "-H", tempDir.getAbsolutePath()};
+
+    // Act & Assert: Expect a thrown exception
+    assertThrows(IllegalArgumentException.class, () -> new TruffulaOptions(args));
+  }
+
+  @Test
+  void testRepeatedFlagsWithValidPath(@TempDir File tempDir) throws FileNotFoundException {
+    // Arrange: args entered with multiple repeating flags
+    String[] args = {"-h", "-h", "-nc", "-nc", tempDir.getAbsolutePath()};  
+    TruffulaOptions options = new TruffulaOptions(args);
+    
+    // Act & Assert: Expect intact functionality
+    assertTrue(options.isShowHidden());  
+    assertFalse(options.isUseColor());  
+  }
+
+  @Test
   void testUnknownPath() {
     // Arrange: Pass an unknown directory path
     String[] args = {"/unknown/path/doesnt/exist"};
@@ -149,6 +169,15 @@ public class TruffulaOptionsTest {
   void testInvalidPath() {
     // Arrange: Pass a path that isn't a directory
     String[] args = {"-nc", "-h", "penguin.jpg"};
+
+    // Act & Assert: Expect a thrown exception
+    assertThrows(FileNotFoundException.class, () -> new TruffulaOptions(args));
+  }
+
+  @Test
+  void testFlagsAfterPath() {
+    // Arrange: Pass a path and flags in reversed order
+    String[] args = {"myfolder/subfolder", "-h", "-nc"};
 
     // Act & Assert: Expect a thrown exception
     assertThrows(FileNotFoundException.class, () -> new TruffulaOptions(args));
