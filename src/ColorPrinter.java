@@ -1,13 +1,18 @@
+import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
 /**
- * A utility class for printing colored text to a PrintStream using ANSI escape codes.
+ * A utility class for printing colored text to a PrintStream using ANSI escape
+ * codes.
  * 
- * The ColorPrinter allows setting a current color and printing messages in that color
- * to the specified output stream. The color can be reset after each print or kept active
+ * The ColorPrinter allows setting a current color and printing messages in that
+ * color
+ * to the specified output stream. The color can be reset after each print or
+ * kept active
  * based on the provided parameters.
  * 
- * Colors are managed using the ConsoleColor enum, which defines standard ANSI color codes.
+ * Colors are managed using the ConsoleColor enum, which defines standard ANSI
+ * color codes.
  * 
  * Example Usage:
  * 
@@ -15,7 +20,8 @@ import java.io.PrintStream;
  * printer.setCurrentColor(ConsoleColor.RED);
  * printer.println("This is red text");
  * 
- * The printed text will appear in the terminal with the specified colors if the terminal supports ANSI codes.
+ * The printed text will appear in the terminal with the specified colors if the
+ * terminal supports ANSI codes.
  */
 public class ColorPrinter {
   /**
@@ -38,7 +44,8 @@ public class ColorPrinter {
   }
 
   /**
-   * Sets the current color for the printer. All subsequent print operations will use this color
+   * Sets the current color for the printer. All subsequent print operations will
+   * use this color
    * until it is changed or reset.
    * 
    * @param color the ConsoleColor to set as the current color
@@ -62,7 +69,8 @@ public class ColorPrinter {
    * Optionally resets the color after printing based on the reset parameter.
    * 
    * @param message the message to print
-   * @param reset   if true, resets the color after printing; if false, keeps the current color
+   * @param reset   if true, resets the color after printing; if false, keeps the
+   *                current color
    */
   public void println(String message, boolean reset) {
     print(message + System.lineSeparator(), reset);
@@ -83,10 +91,15 @@ public class ColorPrinter {
    * Optionally resets the color after printing based on the reset parameter.
    * 
    * @param message the message to print
-   * @param reset   if true, resets the color after printing; if false, keeps the current color
+   * @param reset   if true, resets the color after printing; if false, keeps the
+   *                current color
    */
   public void print(String message, boolean reset) {
-    // TODO: Implement this!
+    if (reset == true) {
+      printStream.print(currentColor + message + ConsoleColor.RESET);
+    } else {
+      printStream.print(currentColor + message);
+    }
   }
 
   /**
@@ -108,5 +121,11 @@ public class ColorPrinter {
   public ColorPrinter(PrintStream printStream, ConsoleColor color) {
     this.printStream = printStream;
     this.currentColor = color;
+  }
+
+  public static void main(String[] args) {
+
+    ColorPrinter printer = new ColorPrinter(System.out, ConsoleColor.CYAN);
+    printer.println("hi");
   }
 }
