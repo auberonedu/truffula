@@ -1,5 +1,6 @@
 import java.io.PrintStream;
 import java.util.List;
+import java.io.File;
 
 /**
  * TruffulaPrinter is responsible for printing a directory tree structure
@@ -112,7 +113,58 @@ public class TruffulaPrinter {
     // DO NOT USE SYSTEM.OUT.PRINTLN
     // USE out.println instead (will use your ColorPrinter)
 
-    out.println("printTree was called!");
-    out.println("My options are: " + options);
+    // set the output color to WHITE for the root directory
+    out.setCurrentColor(ConsoleColor.WHITE);
+
+    // Print the root directory name followed by a slash no indentation at level 0
+    out.println(options.getRoot().getName() + "/");
+
+    // Begin the recursive printing at level 1
+    printTreeHelper(options.getRoot(), 1);
   }
+
+  private void printTreeHelper(File directory, int level) {
+    if (directory == null || !directory.isDirectory()) {
+      return;
+    }
+    File[] files = directory.listFiles();
+
+    if (files == null) {
+      return;
+    }
+
+    AlphabeticalFileSorter.sort(files);
+
+    for (File file : files) {
+      //Skip hidden files folders if the option is set to not show hidden items.
+      if (!options.isShowHidden() && file.isHidden()) {
+        continue;
+      }
+
+      if (options.isUseColor()) {
+        // wave5 color cycling code
+        ConsoleColor currentColor = colorSequence.get(level % DEFAULT_COLOR_SEQUENCE.size());
+        out.setCurrentColor(currentColor);
+      }
+
+      StringBuilder sb = new StringBuilder();
+
+      // Add indentation (3 spaces per level)
+      for (int i = 0; i < level; i++) {
+        sb.append("   ");
+      }
+      // Append the file or directory name
+      sb.append(file.getName());
+      // Append a slash if it's a directory
+      if (file.isDirectory()) {
+        sb.append("/");
+      }
+      out.println(sb.toString());
+      // Recursively print subdirectories
+      if (file.isDirectory()) {
+        printTreeHelper(file, level + 1);
+      }
+    }
+  }
+
 }
