@@ -445,4 +445,61 @@ public class TruffulaPrinterTest {
         // Assert that the output matches the expected output exactly
         assertEquals(expected.toString(), output);
     }
+    
+    @Test
+    public void testPrintTree_WithEmptyFileNames(@TempDir File tempDir) throws IOException {
+        // Build the example directory structure:
+        // myFolder/
+        //    .txt
+        //     .docx
+        //    $.txt
+        //    normalFile.txt
+
+        // Create myFolder and files with special or empty filenames
+        File myFolder = new File(tempDir, "myFolder");
+        assertTrue(myFolder.mkdir(), "myFolder should be created");
+
+        // Create visible files in myFolder
+        File emptyFile = new File(myFolder, ".txt");
+        File emptyFile2 = new File(myFolder, " .docx");
+        File specialFile = new File(myFolder, "$.txt");
+        File normalFile = new File(myFolder, "normalFile.txt");
+
+        emptyFile.createNewFile();
+        emptyFile2.createNewFile();
+        specialFile.createNewFile();
+        normalFile.createNewFile();
+
+        // Set up TruffulaOptions with showHidden = false and useColor = false
+        TruffulaOptions options = new TruffulaOptions(myFolder, false, false);
+
+        // Capture output using a custom PrintStream
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(baos);
+
+        // Instantiate TruffulaPrinter with custom PrintStream
+        TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
+        
+        // Call printTree (output goes to printStream)
+        printer.printTree();
+        
+        // Retrieve printed output
+        String output = baos.toString();
+        String nl = System.lineSeparator();
+
+        // Build expected output with exact colors and indentation
+        String reset = "\033[0m";
+        String white = "\033[0;37m";
+
+        StringBuilder expected = new StringBuilder();
+        expected.append(white).append("myFolder/").append(nl);
+        expected.append(reset).append(white).append("    .docx").append(nl);
+        expected.append(reset).append(white).append("   $.txt").append(nl);
+        expected.append(reset).append(white).append("   .txt").append(nl);
+        expected.append(reset).append(white).append("   normalFile.txt").append(nl);
+        expected.append(reset);
+
+        // Assert that the output matches the expected output exactly
+        assertEquals(expected.toString(), output);
+    }
 }
