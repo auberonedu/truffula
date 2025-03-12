@@ -102,9 +102,57 @@ public class TruffulaOptions  {
    */
   public TruffulaOptions(String[] args) throws IllegalArgumentException, FileNotFoundException {
     // TODO: Replace the below lines with your implementation
-    root = null;
-    showHidden = false;
-    useColor = false;
+    File root = null;
+    boolean showHidden = false;
+    boolean useColor = true; //Change to true, default to the color being used
+
+    // Checks if the arguments are empty
+    if (args == null || args.length == 0) {
+      throw new IllegalArgumentException("No arguments found. A path is required.");
+    }
+
+    // Parses the flags
+    for (int i = 0; i < args.length - 1; i++) {
+      String argument = args[i];
+      switch (argument) {
+        case "-h":
+          showHidden = true;
+          break;
+        case "-nc":
+          useColor = false;
+          break;
+        default:
+          // Throws exception when there's a flag
+          throw new IllegalArgumentException("Unknown flag: " + argument);
+      }
+    }
+
+    // Checks if last argument is a path
+    String path = args[args.length - 1];
+    root = new File(path).getAbsoluteFile(); // root = new File(path).getParentFile();
+    // root.getParentFile(); //testcase 2
+
+    // Check if the path exists and is a directory
+    if (!root.exists()) {
+        throw new FileNotFoundException("The directory does not exist: " + path);
+    }
+    // check if path is empty
+    if (path.isEmpty()) {
+      throw new IllegalArgumentException("No arguments found!" + path);
+    }
+    // checks if the last argument is a flag and not a path
+    if (path.startsWith("-")) {
+      throw new IllegalArgumentException("A path is required, but found a flag instead: " + path);
+    }
+    // check if root doesn't exists
+    if (!root.isDirectory()) {
+        throw new FileNotFoundException("The path is not a directory: " + path);
+    }
+
+    // Parsed values assigned to its instance variables
+    this.root = root;
+    this.showHidden = showHidden;
+    this.useColor = useColor;
   }
 
   /**

@@ -86,7 +86,31 @@ public class ColorPrinter {
    * @param reset   if true, resets the color after printing; if false, keeps the current color
    */
   public void print(String message, boolean reset) {
-    // TODO: Implement this!
+  
+    /*
+     Hey team! here's some comments about the print method if 
+     you're curious, I'll add it here as a pseudocode
+
+     IF --> check if currentColor isn't RESET, use the enum
+          we want to print the currentColor before the print
+      
+     PRINT --> the message, example: "This is red text"
+
+     IF --> the current Color IS a reset, then 
+     it'll reset the color to default
+          print the RESET code here, use the enum
+     */
+
+    System.out.println();
+    if (currentColor != ConsoleColor.RESET) {
+      printStream.print(currentColor.getCode());
+    }
+    
+    printStream.print(message);
+
+    if (reset) {
+      printStream.print(ConsoleColor.RESET.getCode());
+    }
   }
 
   /**
@@ -108,5 +132,13 @@ public class ColorPrinter {
   public ColorPrinter(PrintStream printStream, ConsoleColor color) {
     this.printStream = printStream;
     this.currentColor = color;
+  }
+  
+  public static void main(String[] args) {
+
+    ColorPrinter printer = new ColorPrinter(System.out);
+    printer.setCurrentColor(ConsoleColor.RED);
+    printer.println("This is red text");
+
   }
 }

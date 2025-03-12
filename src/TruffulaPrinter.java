@@ -1,3 +1,4 @@
+import java.io.File;
 import java.io.PrintStream;
 import java.util.List;
 
@@ -102,17 +103,121 @@ public class TruffulaPrinter {
    *       README.md
    *    zebra.txt
    */
-  public void printTree() {
-    // TODO: Implement this!
-    // REQUIRED: ONLY use java.io, DO NOT use java.nio
-    
-    // Hints:
-    // - Add a recursive helper method
-    // - For Wave 6: Use AlphabeticalFileSorter
-    // DO NOT USE SYSTEM.OUT.PRINTLN
-    // USE out.println instead (will use your ColorPrinter)
+    /*
+truffula/
+   lib/
+   src/
+      folder1/
+         file1.java
+         file2.java
+         file3.java
+      alphabeicalFileSorter.java
+      App.java
+      ColorPrinter.java
+      ...
+    .gitignore
+    instructions.md
+    LISENCE
+    README.md
 
-    out.println("printTree was called!");
-    out.println("My options are: " + options);
+    */
+
+  public void printTree() {
+  //   // TODO: Implement this!
+  //   // REQUIRED: ONLY use java.io, DO NOT use java.nio
+    
+  //   // Hints:
+  //   // - Add a recursive helper method
+  //   // - For Wave 6: Use AlphabeticalFileSorter
+  //   // DO NOT USE SYSTEM.OUT.PRINTLN
+  //   // USE out.println instead (will use your ColorPrinter)
+    // out.println("printTree was called!");
+    // out.println("My options are: " + options);
+
+    /*
+    PRINT TREE METHOD
+      get the root directory  
+      then call recursively to the printTreeMethodHelper
+     */
+
+    File root = options.getRoot();
+    // We had issue here where it duplicates the name of the root directory. This prints root once.
+    out.println(coloredText(root.getName() + "/", 0)); 
+    printTreeMethodHelper(root,1);
+  }
+
+  public void printTreeMethodHelper(File currentDirectory, int indentLevel) {
+  /*
+  WAVE 4: PSUEDO CODE AND IMPLEMENTATION
+
+    In this directory we're going to pass in the directory and the indentLevel
+    Consider the base case
+      if directory is null or if the directory isn't a directory or doesn't exists
+      simply return 
+    Logic
+      Create concactnation of indent sn string based on the level
+        something like, indent = "   " repeated indentLevel times
+  
+      then print the directory with the proper indentation => directory + "/"
+      
+      after that get the list of files and directories
+
+      loop
+        
+      loop 
+
+      print the file name with the proper intentations
+    */
+    
+    if (currentDirectory == null || !currentDirectory.exists()) return;
+
+    // To list the files and directories in the current directory
+    File[] files = AlphabeticalFileSorter.sort(currentDirectory.listFiles());
+    if (files == null) return;
+
+    for (File file : files) {
+    // if (file.isHidden() && !options.isShowHidden()) {
+    //   continue;
+    // }
+
+    // This prints the root once
+    out.println(coloredText(file.getName() + (file.isDirectory() ? "/" : ""), indentLevel));
+    if (file.isDirectory()) {
+      printTreeMethodHelper(file, indentLevel + 1); // Recursive call for directories
+    }
   }
 }
+
+  public static String printIndentedSpaces(String name, int indentLevel){
+    StringBuilder indent = new StringBuilder();
+    for (int i = 0; i < indentLevel; i++) {
+      indent.append("   "); 
+    }
+    return indent.toString() + name;
+  }
+
+  public String coloredText(String name, int indentLevel) {
+    String indent = printIndentedSpaces(name, indentLevel);
+
+    //if color is disabled use white 
+    if (!options.isUseColor()) {
+      out.setCurrentColor(ConsoleColor.WHITE);
+      return indent;  // Return with white text 
+    }
+
+    // Choose color based on indentation level
+    ConsoleColor color;
+    switch (indentLevel % 3) {
+      case 0:
+        color = ConsoleColor.WHITE;
+        break;
+      case 1:
+        color = ConsoleColor.PURPLE;
+        break;
+      default:
+        color = ConsoleColor.YELLOW;
+      }
+      out.setCurrentColor(color);
+      return indent;
+  }
+} 
