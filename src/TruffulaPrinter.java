@@ -119,9 +119,10 @@ public class TruffulaPrinter {
     // USE out.println instead (will use your ColorPrinter)
 
     // . represent the current directory
-    File root = new File(".");
 
+    File root = new File(".");
     printTreeHelper(root, 0);
+
   }
 
   public void printTreeHelper(File directory, int depth) {
@@ -132,31 +133,34 @@ public class TruffulaPrinter {
 
     File[] files = directory.listFiles();
 
-    // check if hidden files should be shown or not
-    for (File file : files) {
-      if (!options.isShowHidden() && file.isHidden()) {
-        continue;
+    if (files != null) {
+      // check if hidden files should be shown or not
+      for (File file : files) {
+        if (!options.isShowHidden() && file.isHidden()) {
+          continue;
+        }
+
+        // repeat indendation 3 times
+        String indent = " ".repeat(depth * 3);
+
+        String fileName = file.getName();
+
+        // append a / for directories
+        if (file.isDirectory()) {
+          fileName = fileName + "/";
+        }
+
+        // print the name of the file and the indentation
+        out.println(indent + fileName);
+
+        // recurse on method if the file is a directory
+        if (file.isDirectory()) {
+          printTreeHelper(file, depth + 1);
+        }
+
       }
-
-      // repeat indendation 3 times
-      String indent = " ".repeat(depth * 3);
-
-      String fileName = file.getName();
-
-      // append a / for directories
-      if (file.isDirectory()) {
-        fileName = fileName + "/";
-      }
-
-      // print the name of the file and the indentation
-      out.println(indent + fileName);
-
-      //recurse on method if the file is a directory
-      if (file.isDirectory()) {
-        printTreeHelper(file, depth + 1);
-      }
-
     }
 
   }
+
 }
