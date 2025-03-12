@@ -118,9 +118,9 @@ public class TruffulaPrinter {
     // DO NOT USE SYSTEM.OUT.PRINTLN
     // USE out.println instead (will use your ColorPrinter)
 
-    // . represent the current directory
+    // get the root directory
+    File root = options.getRoot();
 
-    File root = new File(".");
     printTreeHelper(root, 0);
 
   }
@@ -139,6 +139,7 @@ public class TruffulaPrinter {
         if (!options.isShowHidden() && file.isHidden()) {
           continue;
         }
+        
 
         // repeat indendation 3 times
         String indent = " ".repeat(depth * 3);
