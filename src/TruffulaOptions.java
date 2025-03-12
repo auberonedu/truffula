@@ -101,10 +101,56 @@ public class TruffulaOptions  {
    * @throws FileNotFoundException if the directory cannot be found or if the path points to a file
    */
   public TruffulaOptions(String[] args) throws IllegalArgumentException, FileNotFoundException {
-    // TODO: Replace the below lines with your implementation
-    root = null;
-    showHidden = false;
-    useColor = false;
+    if (args.length == 0 || args.length > 3) {
+      throw new IllegalArgumentException("Missing arguments or too many flags.");
+    }
+
+    boolean showHiddenToggle = false;
+    boolean setHidden = false;
+    boolean useColorToggle = true;
+    boolean setColor = false;
+    File path = new File(args[args.length - 1]);
+
+    if (!path.exists()) {
+      throw new FileNotFoundException("File/directory not found.");
+    } else if (!path.isDirectory()) {
+      throw new IllegalArgumentException("File is not a directory.");
+    }
+
+    root = path;
+
+    if (args.length > 1) {
+      for (int i = 0; i < args.length - 1; i++) {
+        String flag = args[i];
+        if (flag.equals("-h")) {
+          if (setHidden == true) {
+            throw new IllegalArgumentException("Can only set flag once.");
+          }
+          showHiddenToggle = true;
+          setHidden = true;
+        } else if (flag.equals("-nc")) {
+          if (setColor == true) {
+            throw new IllegalArgumentException("Can only set flag once.");
+          }
+          useColorToggle = false;
+          setColor = true;
+        } else {
+          throw new IllegalArgumentException("Command contains unknown/invalid flags.");
+        }
+      }
+    }
+
+    if (showHiddenToggle) { 
+      showHidden = true;
+    } else {
+      showHidden = false;
+    }
+
+    if (useColorToggle) { 
+      useColor = true;
+    } else {
+      useColor = false;
+    }
   }
 
   /**
