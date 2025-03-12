@@ -287,9 +287,40 @@ public class TruffulaPrinterTest {
 
     @Test
     public void testPrintTree_MultipleNestedSubdirectories(@TempDir File tempDir) throws IOException {
+        // Arrange
+        File rootDir = new File(tempDir, "rootDir");
+        assertTrue(rootDir.mkdir(), "rootDir should be created");
+    
+        // Create empty subdirectories inside rootDir
+        File subDir1 = new File(rootDir, "subDir1");
+        File subDir2 = new File(rootDir, "subDir2");
+        assertTrue(subDir1.mkdir(), "subDir1 should be created");
+        assertTrue(subDir2.mkdir(), "subDir2 should be created");
+    
+        // Capture output
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(baos);
+    
+        // Set up TruffulaOptions and TruffulaPrinter
+        TruffulaOptions options = new TruffulaOptions(rootDir, false, true);
+        TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
+    
+        // Act
+        printer.printTree();
+    
+        // Assert
+        String output = baos.toString();
+        String nl = System.lineSeparator();
+    
+        String expectedOutput = ConsoleColor.WHITE.getCode() + "rootDir/" + nl + ConsoleColor.RESET.getCode() +
+                                ConsoleColor.PURPLE.getCode() + "   subDir1/" + nl + ConsoleColor.RESET.getCode() +
+                                ConsoleColor.PURPLE.getCode() + "   subDir2/" + nl + ConsoleColor.RESET.getCode();
+    
+        assertEquals(expectedOutput, output, "Output should correctly show the empty subdirectories");
     }
 
     @Test
     public void testPrintTree_MixedFileTypes(@TempDir File tempDir) throws IOException {
+    
     }
 }
