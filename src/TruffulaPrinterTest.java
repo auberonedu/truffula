@@ -105,7 +105,7 @@ public class TruffulaPrinterTest {
     }
 
     @Test
-    public void testPrintTreeFileCreation(@TempDir File tempDir) throws IOException {
+    public void testPrintTree(@TempDir File tempDir) throws IOException {
         // Set up a few files and directories inside the tempDir for testing
         File dir1 = new File(tempDir, "dir1");
         dir1.mkdir();
@@ -116,10 +116,10 @@ public class TruffulaPrinterTest {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         PrintStream printStream = new PrintStream(baos);
 
-        // Create an instance of TruffulaPrinter with the required arguments
+        // Create an instance of TruffulaPrinter
         TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
         
-        // Call the printTree method, passing tempDir
+        // Call the printTree method
         printer.printTree();
         
         String output = baos.toString();
