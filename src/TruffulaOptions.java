@@ -118,6 +118,7 @@ public class TruffulaOptions  {
             break;
           case "-nc":
             useColor = false;
+            break;
           default:
             throw new IllegalArgumentException(args[i]+" is not a valid argument.");
             
