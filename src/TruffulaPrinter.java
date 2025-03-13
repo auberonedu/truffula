@@ -1,3 +1,4 @@
+import java.io.File;
 import java.io.PrintStream;
 import java.util.List;
 
@@ -112,7 +113,60 @@ public class TruffulaPrinter {
     // DO NOT USE SYSTEM.OUT.PRINTLN
     // USE out.println instead (will use your ColorPrinter)
 
-    out.println("printTree was called!");
-    out.println("My options are: " + options);
+    // out.println("printTree was called!");
+    // out.println("My options are: " + options);
+    out.println(options.getRoot().getName() + "/");
+    printTreeHelper(options.getRoot(), 1);
+  }
+
+  // Helper method with param levelDepth for storing level depth
+  // Create a file array to store the files from File dir using listFiles
+  // Base Case: check if dir is null, if so return 
+  // Second Base Case: Check if dir has no children, if so print only dir and return
+  // For loop: Loop the children of dir using list files.
+  //    Increment levelDepth by one
+  //    Check if child is a directory using .isDirectory(), if so
+  //    out.println("indent" * levelDepth + child.getName()) and recurse
+  //    helper method with level depth.
+  //    Else out.println("indent" * levelDepth + child.getName()).
+
+  private void printTreeHelper(File dir, int levelDepth) {
+    // base case: if dir null or doesn't exist, return
+    if (dir == null || !dir.exists()) return;
+
+    // indentation thats repeated based on how deep it is in folder level
+    String indent = "   ".repeat(levelDepth);
+
+    File[] children = dir.listFiles();
+
+    // if the directory has no children, then return
+    if (children == null) return;
+
+   // Sort the children by name alphabetically by using AlphabeticalFileSorter class
+    AlphabeticalFileSorter.sort(children);
+ 
+    // loop through directory sub files/folders
+    for (File child : children) {
+      // check if hidden files should be displayed
+      if (!options.isShowHidden() && child.isHidden()) {
+        continue;
+      }
+
+      // check if colors should be used
+      if (options.isUseColor()) {
+        // Determine the color for a level based on modulus result
+        ConsoleColor color = colorSequence.get(levelDepth % colorSequence.size());
+        out.setCurrentColor(color);
+      }
+
+      // if child is a directory print appropriately and recurse 1 lvl deeper
+      // else, just print subfile name with indentation
+      if (child.isDirectory()) {
+        out.println(indent + child.getName() + "/");
+        printTreeHelper(child, levelDepth + 1);
+      } else {
+        out.println(indent + child.getName());
+      }
+    }
   }
 }
