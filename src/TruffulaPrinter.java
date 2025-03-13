@@ -1,5 +1,8 @@
+import java.io.Console;
+import java.io.File;
 import java.io.PrintStream;
 import java.util.List;
+import java.util.*;
 
 /**
  * TruffulaPrinter is responsible for printing a directory tree structure
@@ -104,15 +107,65 @@ public class TruffulaPrinter {
    */
   public void printTree() {
     // TODO: Implement this!
-    // REQUIRED: ONLY use java.io, DO NOT use java.nio
     
     // Hints:
     // - Add a recursive helper method
     // - For Wave 6: Use AlphabeticalFileSorter
     // DO NOT USE SYSTEM.OUT.PRINTLN
     // USE out.println instead (will use your ColorPrinter)
+    // getName() ==> returns the name of the file or directory denoted by this abstract path name
+    // isDirectory() ==> Tests whether the file denoted by this abstract pathname is a directory.
+    // isHidden() ==> Tests whether the file named by this abstract pathname is a hidden file.
+    out.setCurrentColor(ConsoleColor.WHITE);
+    out.println(options.getRoot().getName()+ "/");
+    printTreeHelper(options.getRoot(), 1);
 
-    out.println("printTree was called!");
-    out.println("My options are: " + options);
+    //out.println("printTree was called!");
+    //out.println("My options are: " + options);
+  }
+
+  private void printTreeHelper(File directory, int level) {
+    if (directory == null || !directory.isDirectory()) return;
+    
+    
+    File[] files = directory.listFiles();
+    if(files != null){
+
+      files = AlphabeticalFileSorter.sort(files);
+
+      for(File file : files){
+        //StringBuilder str = new StringBuilder();
+        String indent = "   ".repeat(level);
+        if (options.isUseColor()) {
+          ConsoleColor color = getColorForLevel(level);
+          out.setCurrentColor(color);
+        } else {
+            
+            out.setCurrentColor(ConsoleColor.WHITE);
+        }
+
+        out.println(indent + (file.isDirectory() ? file.getName() + "/" : file.getName()));
+
+
+        if(file.isDirectory()){
+          printTreeHelper(file, level +1);
+        }
+      }
+    }
+  }
+  
+
+  private ConsoleColor getColorForLevel(int level) {
+    // Cycle through the colors based on the level of the directory
+    switch (level % 3) {
+        case 0:
+            return ConsoleColor.WHITE; //root white and child of yellow white
+        case 1:
+            return ConsoleColor.PURPLE; 
+        case 2:
+            return ConsoleColor.YELLOW;  
+        default:
+            return ConsoleColor.WHITE;  
+    }
   }
 }

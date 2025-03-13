@@ -1,3 +1,4 @@
+import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
 /**
@@ -27,6 +28,41 @@ public class ColorPrinter {
    * The PrintStream to which the colored output will be written.
    */
   private final PrintStream printStream;
+
+  // main args recommended in part one everythign is working fine not sure why test breaks
+  public static void main(String[] args) {
+
+    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    PrintStream printStream = new PrintStream(outputStream);
+    ColorPrinter printer = new ColorPrinter(printStream);
+    //ColorPrinter printer = new ColorPrinter(System.out);
+
+    // Test printing in different colors and resets in the console
+    printer.setCurrentColor(ConsoleColor.RED);
+    printer.println("This is a red message.");
+    printer.println("color should have reset on newline");
+
+    printer.setCurrentColor(ConsoleColor.GREEN);
+    printer.println("This is a green message.");
+
+    printer.println("color reset on  newline");
+
+    printer.setCurrentColor(ConsoleColor.YELLOW);
+    printer.println("This is a yellow message.", false); 
+
+    printer.print
+    ("still yellow no new line after ",true);
+
+    printer.println ("color reset on sameline");
+
+    printer.setCurrentColor(ConsoleColor.BLUE);
+    printer.print("This is a blue message on a newline");
+    printer.print(" color reset not on newline");
+
+  
+
+    System.out.println(outputStream);
+  }
 
   /**
    * Returns the current color set for the printer.
@@ -86,9 +122,15 @@ public class ColorPrinter {
    * @param reset   if true, resets the color after printing; if false, keeps the current color
    */
   public void print(String message, boolean reset) {
-    // TODO: Implement this!
+  //  if(currentColor == ConsoleColor.RESET || currentColor == ConsoleColor.WHITE){
+  //    printStream.print(message);}
+    if(reset){
+      printStream.print(currentColor + message + ConsoleColor.RESET);
+      setCurrentColor(ConsoleColor.RESET);
+    } else {
+        printStream.print(currentColor + message);
+    }
   }
-
   /**
    * Constructs a ColorPrinter with the specified PrintStream.
    * The default color is set to ConsoleColor.WHITE.
