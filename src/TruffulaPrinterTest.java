@@ -129,7 +129,7 @@ public class TruffulaPrinterTest {
         String white = "\033[0;37m";
 
         StringBuilder expected = new StringBuilder();
-        expected.append(white).append("myFolder/").append(nl).append(reset);
+        expected.append(white).append("emptyFolder/").append(nl).append(reset);
 
         // Assert that the output matches the expected output exactly
         assertEquals(expected.toString(), output);
@@ -250,5 +250,130 @@ public class TruffulaPrinterTest {
         assertTrue(output.contains(expectedError), output);
     }
 
-    
+    @Test
+        public void testPrintTree_SingleFile(@TempDir File tempDir) throws IOException {
+        // Create "myFolder" with a single file
+        File myFolder = new File(tempDir, "myFolder");
+        assertTrue(myFolder.mkdir(), "myFolder should be created");
+
+        File singleFile = new File(myFolder, "file.txt");
+        singleFile.createNewFile();
+
+        // Set up TruffulaOptions with showHidden = false and useColor = true
+        TruffulaOptions options = new TruffulaOptions(myFolder, false, true);
+
+        // Capture output using a custom PrintStream
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(baos);
+
+        // Instantiate TruffulaPrinter with custom PrintStream
+        TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
+
+        // Call printTree (output goes to printStream)
+        printer.printTree();
+
+        // Retrieve printed output
+        String output = baos.toString();
+        String nl = System.lineSeparator();
+
+        // Build expected output
+        String reset = "\033[0m";
+        String white = "\033[0;37m";
+        StringBuilder expected = new StringBuilder();
+        expected.append(white).append("myFolder/").append(nl).append(reset);
+        expected.append(white).append("   file.txt").append(nl).append(reset);
+
+        // Assert that the output matches the expected output exactly
+        assertEquals(expected.toString(), output);
+    }
+
+    @Test
+    public void testPrintTree_NoSubdirectories(@TempDir File tempDir) throws IOException {
+        // Create "myFolder" with multiple files
+        File myFolder = new File(tempDir, "myFolder");
+        assertTrue(myFolder.mkdir(), "myFolder should be created");
+
+        File file1 = new File(myFolder, "file1.txt");
+        File file2 = new File(myFolder, "file2.txt");
+        File file3 = new File(myFolder, "file3.txt");
+        file1.createNewFile();
+        file2.createNewFile();
+        file3.createNewFile();
+
+        // Set up TruffulaOptions with showHidden = false and useColor = true
+        TruffulaOptions options = new TruffulaOptions(myFolder, false, true);
+
+        // Capture output using a custom PrintStream
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(baos);
+
+        // Instantiate TruffulaPrinter with custom PrintStream
+        TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
+
+        // Call printTree (output goes to printStream)
+        printer.printTree();
+
+        // Retrieve printed output
+        String output = baos.toString();
+        String nl = System.lineSeparator();
+
+        // Build expected output
+        String reset = "\033[0m";
+        String white = "\033[0;37m";
+        StringBuilder expected = new StringBuilder();
+        expected.append(white).append("myFolder/").append(nl).append(reset);
+        expected.append(white).append("   file1.txt").append(nl).append(reset);
+        expected.append(white).append("   file2.txt").append(nl).append(reset);
+        expected.append(white).append("   file3.txt").append(nl).append(reset);
+
+        // Assert that the output matches the expected output exactly
+        assertEquals(expected.toString(), output);
+    }
+
+    @Test
+    public void testPrintTree_NestedSubdirectories(@TempDir File tempDir) throws IOException {
+        // Create nested directory structure with files
+        File myFolder = new File(tempDir, "myFolder");
+        assertTrue(myFolder.mkdir(), "myFolder should be created");
+
+        File subDir1 = new File(myFolder, "subDir1");
+        assertTrue(subDir1.mkdir(), "subDir1 should be created");
+
+        File subDir2 = new File(subDir1, "subDir2");
+        assertTrue(subDir2.mkdir(), "subDir2 should be created");
+
+        File file1 = new File(subDir2, "file1.txt");
+        file1.createNewFile();
+
+        // Set up TruffulaOptions with showHidden = false and useColor = true
+        TruffulaOptions options = new TruffulaOptions(myFolder, false, true);
+
+        // Capture output using a custom PrintStream
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(baos);
+
+        // Instantiate TruffulaPrinter with custom PrintStream
+        TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
+
+        // Call printTree (output goes to printStream)
+        printer.printTree();
+
+        // Retrieve printed output
+        String output = baos.toString();
+        String nl = System.lineSeparator();
+
+        // Build expected output
+        String reset = "\033[0m";
+        String white = "\033[0;37m";
+        String purple = "\033[0;35m";
+        String yellow = "\033[0;33m";
+        StringBuilder expected = new StringBuilder();
+        expected.append(white).append("myFolder/").append(nl).append(reset);
+        expected.append(purple).append("   subDir1/").append(nl).append(reset);
+        expected.append(yellow).append("      subDir2/").append(nl).append(reset);
+        expected.append(white).append("         file1.txt").append(nl).append(reset);
+
+        // Assert that the output matches the expected output exactly
+        assertEquals(expected.toString(), output);
+    }
 }
