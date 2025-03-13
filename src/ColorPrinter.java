@@ -87,6 +87,15 @@ public class ColorPrinter {
    */
   public void print(String message, boolean reset) {
     // TODO: Implement this!
+
+    //print message with the current color
+    printStream.print(currentColor.getCode() + message);
+
+    // if reset is true, reset color back to default terminal color (\033[0m)
+    if(reset){
+      printStream.print(ConsoleColor.RESET.getCode());
+    }
+    
   }
 
   /**

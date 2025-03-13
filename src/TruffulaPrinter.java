@@ -1,3 +1,4 @@
+import java.io.File;
 import java.io.PrintStream;
 import java.util.List;
 
@@ -7,17 +8,17 @@ import java.util.List;
  * in a case-insensitive manner and cycling through colors for visual clarity.
  */
 public class TruffulaPrinter {
-  
+
   /**
    * Configuration options that determine how the tree is printed.
    */
   private TruffulaOptions options;
-  
+
   /**
    * The sequence of colors to use when printing the tree.
    */
   private List<ConsoleColor> colorSequence;
-  
+
   /**
    * The output printer for displaying the tree.
    */
@@ -27,8 +28,7 @@ public class TruffulaPrinter {
    * Default color sequence used when no custom colors are provided.
    */
   private static final List<ConsoleColor> DEFAULT_COLOR_SEQUENCE = List.of(
-      ConsoleColor.WHITE, ConsoleColor.PURPLE, ConsoleColor.YELLOW
-  );
+      ConsoleColor.WHITE, ConsoleColor.PURPLE, ConsoleColor.YELLOW);
 
   /**
    * Constructs a TruffulaPrinter with the given options, using the default
@@ -44,7 +44,7 @@ public class TruffulaPrinter {
    * Constructs a TruffulaPrinter with the given options and color sequence,
    * using the default output stream.
    *
-   * @param options the configuration options for printing the tree
+   * @param options       the configuration options for printing the tree
    * @param colorSequence the sequence of colors to use when printing
    */
   public TruffulaPrinter(TruffulaOptions options, List<ConsoleColor> colorSequence) {
@@ -55,7 +55,7 @@ public class TruffulaPrinter {
    * Constructs a TruffulaPrinter with the given options and output stream,
    * using the default color sequence.
    *
-   * @param options the configuration options for printing the tree
+   * @param options   the configuration options for printing the tree
    * @param outStream the output stream to print to
    */
   public TruffulaPrinter(TruffulaOptions options, PrintStream outStream) {
@@ -63,10 +63,11 @@ public class TruffulaPrinter {
   }
 
   /**
-   * Constructs a TruffulaPrinter with the given options, output stream, and color sequence.
+   * Constructs a TruffulaPrinter with the given options, output stream, and color
+   * sequence.
    *
-   * @param options the configuration options for printing the tree
-   * @param outStream the output stream to print to
+   * @param options       the configuration options for printing the tree
+   * @param outStream     the output stream to print to
    * @param colorSequence the sequence of colors to use when printing
    */
   public TruffulaPrinter(TruffulaOptions options, PrintStream outStream, List<ConsoleColor> colorSequence) {
@@ -76,43 +77,121 @@ public class TruffulaPrinter {
   }
 
   /**
-   * WAVE 4: Prints a tree representing the directory structure, with directories and files
+   * WAVE 4: Prints a tree representing the directory structure, with directories
+   * and files
    * sorted in a case-insensitive manner. The tree is displayed with 3 spaces of
    * indentation for each directory level.
    * 
-   * WAVE 5: If hidden files are not to be shown, then no hidden files/folders will be shown.
+   * WAVE 5: If hidden files are not to be shown, then no hidden files/folders
+   * will be shown.
    *
-   * WAVE 6: If color is enabled, the output cycles through colors at each directory level
-   * to visually differentiate them. If color is disabled, all output is displayed in white.
+   * WAVE 6: If color is enabled, the output cycles through colors at each
+   * directory level
+   * to visually differentiate them. If color is disabled, all output is displayed
+   * in white.
    *
-   * WAVE 7: The sorting is case-insensitive. If two files have identical case-insensitive names,
+   * WAVE 7: The sorting is case-insensitive. If two files have identical
+   * case-insensitive names,
    * they are sorted lexicographically (Cat.png before cat.png).
    *
    * Example Output:
    *
    * myFolder/
-   *    Apple.txt
-   *    banana.txt
-   *    Documents/
-   *       images/
-   *          Cat.png
-   *          cat.png
-   *          Dog.png
-   *       notes.txt
-   *       README.md
-   *    zebra.txt
+   * Apple.txt
+   * banana.txt
+   * Documents/
+   * images/
+   * Cat.png
+   * cat.png
+   * Dog.png
+   * notes.txt
+   * README.md
+   * zebra.txt
    */
+
   public void printTree() {
     // TODO: Implement this!
     // REQUIRED: ONLY use java.io, DO NOT use java.nio
-    
+
     // Hints:
     // - Add a recursive helper method
     // - For Wave 6: Use AlphabeticalFileSorter
     // DO NOT USE SYSTEM.OUT.PRINTLN
     // USE out.println instead (will use your ColorPrinter)
 
-    out.println("printTree was called!");
-    out.println("My options are: " + options);
+    // get the root directory
+
+    File root = options.getRoot();
+    boolean useColor = options.isUseColor();
+
+    if (root == null) {
+      out.println("Root directory is null");
+    }
+
+    if (!root.exists() || !root.isDirectory()) {
+      out.println("Invalid Root");
+    }
+
+    out.println(root.getName() + "/");
+
+    if(useColor){
+    // print root name and set color to white
+    out.setCurrentColor(ConsoleColor.WHITE);
+    }
+      
+
+    // then start at depth 1
+    printTreeHelper(root, 1);
+
   }
+
+  public void printTreeHelper(File directory, int depth) {
+    // if the directory doesn't exist or is null, do nothing
+    if (directory == null || !directory.exists()) {
+      return;
+    }
+
+    // Indentation based on the depth
+    String indent = "   ".repeat(depth);
+
+    // gets list of files and sorts them using AlphabeticalSorter.sort
+    File[] files = directory.listFiles();
+    if (files == null) {
+      return;
+    }
+
+    files = AlphabeticalFileSorter.sort(files);
+    boolean useColor = options.isUseColor();
+
+    // Loop through the files in the directory
+    for (File file : files) {
+      // Skip hidden files if the option is set to not show hidden files
+      if (!options.isShowHidden() && file.isHidden()) {
+        continue;
+      }
+
+      // gets name of file and append "/" for directories
+      String fileName = file.getName();
+      if (file.isDirectory()) {
+        fileName += "/";
+      }
+
+      if(useColor){
+      // use modulo to determine depth
+      int colorIndex = depth % colorSequence.size();
+      out.setCurrentColor(colorSequence.get(colorIndex));
+      } else {
+        out.setCurrentColor(ConsoleColor.RESET);
+      }
+
+      // Print the file/directory name with the appropriate indentation
+      out.println(indent + fileName);
+
+      // if is a directory, recursively print its contents
+      if (file.isDirectory()) {
+        printTreeHelper(file, depth + 1);
+      }
+    }
+  }
+
 }
