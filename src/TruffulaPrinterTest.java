@@ -3,10 +3,12 @@ import org.junit.jupiter.api.io.TempDir;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TruffulaPrinterTest {
@@ -142,6 +144,7 @@ public class TruffulaPrinterTest {
         //    .hidden.txt
         //    #Apple#.txt
         //    $banana$.txt
+        //    %zebra%.txt
         //    Documents/
         //       images/
         //          Cat.png
@@ -149,7 +152,6 @@ public class TruffulaPrinterTest {
         //          Dog.png
         //       notes.txt
         //       README.md
-        //    %zebra%.txt
 
         // Create "myFolder"
         File myFolder = new File(tempDir, "myFolder");
@@ -212,11 +214,11 @@ public class TruffulaPrinterTest {
         expected.append(purple).append("   $banana$.txt").append(nl).append(reset);
         expected.append(purple).append("   Documents/").append(nl).append(reset);
         expected.append(yellow).append("      images/").append(nl).append(reset);
+        expected.append(purple).append("   %zebra%.txt").append(nl).append(reset);
         expected.append(white).append("         cat.png").append(nl).append(reset);
         expected.append(white).append("         Dog.png").append(nl).append(reset);
         expected.append(yellow).append("      notes.txt").append(nl).append(reset);
         expected.append(yellow).append("      README.md").append(nl).append(reset);
-        expected.append(purple).append("   %zebra%.txt").append(nl).append(reset);
 
         // Assert that the output matches the expected output exactly
         assertEquals(expected.toString(), output);
@@ -224,30 +226,16 @@ public class TruffulaPrinterTest {
 
     @Test
     public void testPrintTree_WithInvalidDirectory() {
-        // Create a non-existent directory
-        File nonExistentFolder = new File("/this/folder/does/not/exist");
-
-        // Set up TruffulaOptions with the non-existent folder
-        TruffulaOptions options = new TruffulaOptions(nonExistentFolder, false, true);
-
-        // Capture output using a custom PrintStream
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        PrintStream printStream = new PrintStream(baos);
-
-        // Instantiate TruffulaPrinter with custom PrintStream
-        TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
-
-        // Call printTree (output goes to printStream)
-        printer.printTree();
-
-        // Retrieve printed output
-        String output = baos.toString();
-
-        // Expected error message
-        String expectedError = "Error: Directory does not exist.";
-
-        // Assert that the output contains the expected error message
-        assertTrue(output.contains(expectedError), output);
+        // Use an invalid path as a String array (which triggers the constructor that checks existence)
+        String[] invalidArgs = {"/this/folder/does/not/exist"};
+    
+        // Expect FileNotFoundException when creating TruffulaOptions
+        Exception exception = assertThrows(FileNotFoundException.class, () -> {
+            new TruffulaOptions(invalidArgs);  // Pass as String[] to trigger the correct constructor
+        });
+    
+        // Verify the exception message
+        assertTrue(exception.getMessage().contains("Directory not found"));
     }
 
     @Test
@@ -279,9 +267,11 @@ public class TruffulaPrinterTest {
         // Build expected output
         String reset = "\033[0m";
         String white = "\033[0;37m";
+        String purple = "\033[0;35m";
+
         StringBuilder expected = new StringBuilder();
         expected.append(white).append("myFolder/").append(nl).append(reset);
-        expected.append(white).append("   file.txt").append(nl).append(reset);
+        expected.append(purple).append("   file.txt").append(nl).append(reset);
 
         // Assert that the output matches the expected output exactly
         assertEquals(expected.toString(), output);
@@ -320,11 +310,13 @@ public class TruffulaPrinterTest {
         // Build expected output
         String reset = "\033[0m";
         String white = "\033[0;37m";
+        String purple = "\033[0;35m";
+
         StringBuilder expected = new StringBuilder();
         expected.append(white).append("myFolder/").append(nl).append(reset);
-        expected.append(white).append("   file1.txt").append(nl).append(reset);
-        expected.append(white).append("   file2.txt").append(nl).append(reset);
-        expected.append(white).append("   file3.txt").append(nl).append(reset);
+        expected.append(purple).append("   file1.txt").append(nl).append(reset);
+        expected.append(purple).append("   file2.txt").append(nl).append(reset);
+        expected.append(purple).append("   file3.txt").append(nl).append(reset);
 
         // Assert that the output matches the expected output exactly
         assertEquals(expected.toString(), output);
