@@ -268,7 +268,7 @@ public class TruffulaPrinterTest {
         StringBuilder expected = new StringBuilder();
         expected.append(white).append("emptyDirectory/").append(n1).append(reset);
 
-        assertEquals(expected, output);
+        assertEquals(expected.toString(), output);
     }
 
     @Test // tests when an empty directory is used
@@ -299,7 +299,7 @@ public class TruffulaPrinterTest {
         expected.append(white).append("directory/").append(n1).append(reset);
         expected.append(purple).append("   Mango.txt").append(n1).append(reset);
 
-        assertEquals(expected, output);
+        assertEquals(expected.toString(), output);
     }
 
     @Test // Checks to see that colors are properly disabled
