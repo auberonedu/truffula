@@ -87,4 +87,16 @@ public class TruffulaOptionsTest {
     });
     assertEquals("Provided path is not a directory: " + filePath, exception.getMessage());
   }
+
+  @Test
+  void testPathWithSpaces() throws FileNotFoundException {
+      // Arrange: Create a directory with spaces in the name
+      File validDir = new File("Test Directory with Spaces");
+      if (!validDir.exists()) validDir.mkdir(); 
+
+      // Act & Assert:
+      TruffulaOptions options = new TruffulaOptions(
+        new String[]{validDir.getAbsolutePath()});
+      assertEquals(validDir.getAbsoluteFile(), options.getRoot());
+  }
 }
