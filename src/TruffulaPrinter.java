@@ -108,6 +108,7 @@ public class TruffulaPrinter {
    * README.md
    * zebra.txt
    */
+
   public void printTree() {
     // TODO: Implement this!
     // REQUIRED: ONLY use java.io, DO NOT use java.nio
@@ -119,49 +120,63 @@ public class TruffulaPrinter {
     // USE out.println instead (will use your ColorPrinter)
 
     // get the root directory
-    File root = options.getRoot();
 
-    printTreeHelper(root, 0);
+    File root = options.getRoot();
+ 
+    if(root == null){
+      out.println("Root directory is null");
+    }
+
+    if(!root.exists() || !root.isDirectory()){
+      out.println("Invalid Root");
+    }
+
+    // print root name
+    out.println(root.getName() + "/");
+
+    // then start at depth 1 
+    printTreeHelper(root, 1);
 
   }
 
   public void printTreeHelper(File directory, int depth) {
-    // base case
+    // if the directory doesn't exist or is null, do nothing
     if (directory == null || !directory.exists()) {
       return;
     }
 
+    // Indentation based on the depth
+    String indent = "   ".repeat(depth);
+
+    // gets list of files and sorts them using AlphabeticalSorter.sort
     File[] files = directory.listFiles();
-
-    if (files != null) {
-      // check if hidden files should be shown or not
-      for (File file : files) {
-        if (!options.isShowHidden() && file.isHidden()) {
-          continue;
-        }
-        
-
-        // repeat indendation 3 times
-        String indent = " ".repeat(depth * 3);
-
-        String fileName = file.getName();
-
-        // append a / for directories
-        if (file.isDirectory()) {
-          fileName = fileName + "/";
-        }
-
-        // print the name of the file and the indentation
-        out.println(indent + fileName);
-
-        // recurse on method if the file is a directory
-        if (file.isDirectory()) {
-          printTreeHelper(file, depth + 1);
-        }
-
-      }
+    if (files == null) {
+      return;
     }
 
+    files = AlphabeticalFileSorter.sort(files);
+
+    // Loop through the files in the directory
+    for (File file : files) {
+      // Skip hidden files if the option is set to not show hidden files
+      if (!options.isShowHidden() && file.isHidden()) {
+        continue;
+      }
+
+      // gets name of file and append "/" for directories
+      String fileName = file.getName();
+      if (file.isDirectory()) {
+        fileName += "/"; 
+      }
+
+      // Print the file/directory name with the appropriate indentation
+      out.println(indent + fileName);
+
+      // if is a directory, recursively print its contents
+      if (file.isDirectory()) {
+        printTreeHelper(file, depth + 1); 
+      }
+    }
   }
 
 }
