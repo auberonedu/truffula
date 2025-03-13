@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 
+
 /**
  * Represents configuration options for controlling how a directory tree is displayed.
  * 
@@ -49,9 +50,10 @@ import java.io.FileNotFoundException;
  *     - The path points to a file instead of a directory.
  */
 public class TruffulaOptions  {
-  private final File root;
-  private final boolean showHidden;
-  private final boolean useColor;
+  /* Turning final off of these. */
+  private File root;
+  private boolean showHidden;
+  private boolean useColor;
 
   /**
    * Returns the root directory from which the directory tree will be printed.
@@ -105,6 +107,41 @@ public class TruffulaOptions  {
     root = null;
     showHidden = false;
     useColor = false;
+
+    boolean hasPath = false;
+
+    for(int i = 0; i < args.length; i++) {
+      if(args[i].charAt(0) == '-') {
+        switch(args[i]) {
+          case "-h":
+            showHidden = true;
+            break;
+          case "-nc":
+            useColor = false;
+          default:
+            throw new IllegalArgumentException(args[i]+" is not a valid argument.");
+            
+        }
+      }
+      else {
+        File test = new File(args[i]);
+        if(test.exists()) {
+          hasPath = true;
+          if(test.isDirectory()) {
+            root = test;
+          }
+          else {
+            throw new FileNotFoundException(args[i]+ " points to a file, not a directory.");
+          }
+        }
+        else {
+          throw new FileNotFoundException(args[i]+ " does not exist.");
+        }
+      }
+    }
+    if(hasPath == false) {
+      throw new IllegalArgumentException("Filepath missing.");
+    }
   }
 
   /**
