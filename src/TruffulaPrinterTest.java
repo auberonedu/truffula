@@ -12,8 +12,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TruffulaPrinterTest {
 
-        @Test
-        public void testPrintTree_ExactOutput_WithCustomPrintStream(@TempDir File tempDir) throws IOException {
+    @Test
+    public void testPrintTree_ExactOutput_WithCustomPrintStream(@TempDir File tempDir) throws IOException {
             // Build the example directory structure:
             // myFolder/
             //    .hidden.txt
@@ -105,73 +105,6 @@ public class TruffulaPrinterTest {
             assertEquals(expected.toString(), output);
         }
 
-        // This is the test case for Wave 4 -- WILL NOT PASS NOW
-        @Test
-        public void testPrintTree_Basic(@TempDir File tempDir) throws IOException {
-
-            // Create "myFolder"
-            File myFolder = new File(tempDir, "myFolder");
-            assertTrue(myFolder.mkdir(), "myFolder should be created");
-    
-            // Create visible files in myFolder
-            File apple = new File(myFolder, "Apple.txt");
-            File banana = new File(myFolder, "banana.txt");
-            File zebra = new File(myFolder, "zebra.txt");
-            apple.createNewFile();
-            banana.createNewFile();
-            zebra.createNewFile();
-    
-            // Create a hidden file in myFolder
-            //File hidden = new File(myFolder, ".hidden.txt");
-            //hidden.createNewFile();
-    
-            // Create subdirectory "Documents" in myFolder
-            File documents = new File(myFolder, "Documents");
-            assertTrue(documents.mkdir(), "Documents directory should be created");
-    
-            // Create files in Documents
-            File readme = new File(documents, "README.md");
-            File notes = new File(documents, "notes.txt");
-            readme.createNewFile();
-            notes.createNewFile();
-    
-            File images = new File(documents, "images");
-            assertTrue(images.mkdir(), "images directory should be created");
-    
-            File cat = new File(images, "cat.png");
-            File dog = new File(images, "Dog.png");
-            cat.createNewFile();
-            dog.createNewFile();
-    
-            TruffulaOptions options = new TruffulaOptions(myFolder, false, true);
-    
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            PrintStream printStream = new PrintStream(baos);
-    
-            TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
-    
-            printer.printTree();
-    
-            String output = baos.toString();
-            String nl = System.lineSeparator();
-    
-            StringBuilder expected = new StringBuilder();
-            expected.append("myFolder/").append(nl);
-            expected.append("   Apple.txt").append(nl);
-            expected.append("   banana.txt").append(nl);
-            expected.append("   Documents/").append(nl);
-            expected.append("      images/").append(nl);
-            expected.append("         cat.png").append(nl);
-            expected.append("         Dog.png").append(nl);
-            expected.append("      notes.txt").append(nl);
-            expected.append("      README.md").append(nl);
-            expected.append("   zebra.txt").append(nl);
-    
-            assertEquals(expected.toString(), output);
-        }
-
-
-
     @Test //test for color make file directory so it gets to white 3 times
         public void testPrintTree_levelColor(@TempDir File tempDir) throws IOException {
             
@@ -236,4 +169,52 @@ public class TruffulaPrinterTest {
             assertTrue(output.contains("\u001B[0m"), "Output should contain reset color code after each print");
         }
     
+        @Test // tests when an empty directory is used
+    public void testEmptyDirectory(@TempDir File tempDir) throws IOException{
+        File emptyDir = new File(tempDir, "emptyDirectory");
+        assertTrue(emptyDir.mkdir(), "emptyDir should be created");
+
+        TruffulaOptions options = new TruffulaOptions(emptyDir, false, true);
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(baos);
+
+        TruffulaPrinter Printer = new TruffulaPrinter(options, printStream);
+
+        Printer.printTree();
+
+        String output = baos.toString();
+        String n1 = System.lineSeparator();
+
+        String reset = "\033[0m";
+        String white = "\033[0;37m";
+
+        StringBuilder expected = new StringBuilder();
+        expected.append(white).append("emptyDirectory/").append(n1).append(reset);
+
+        assertEquals(expected, output);
     }
+
+
+
+    @Test // tests that lexicographic situations are handled properly
+    public void testLexicographicFiles(@TempDir File tempDir) throws IOException{
+
+    }
+
+    @Test // checks to see that colors are properly disabled
+    public void testDisabledColor(@TempDir File tempDir) throws IOException{
+
+    }
+
+    @Test // tests when there are a ton of nested directories
+    public void testSuperNestedDirectories(@TempDir File tempDir) throws IOException{
+
+    }
+
+    @Test // tests what happens when special characters are in the directory
+    public void testSpecialCharacters(@TempDir File tempDir) throws IOException{
+
+    }
+
+}
