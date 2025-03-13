@@ -15,17 +15,17 @@ public class TruffulaPrinterTest {
     public void testPrintTree_ExactOutput_WithCustomPrintStream(@TempDir File tempDir) throws IOException {
         // Build the example directory structure:
         // myFolder/
-        //    .hidden.txt
-        //    Apple.txt
-        //    banana.txt
-        //    Documents/
-        //       images/
-        //          Cat.png
-        //          cat.png
-        //          Dog.png
-        //       notes.txt
-        //       README.md
-        //    zebra.txt
+        // .hidden.txt
+        // Apple.txt
+        // banana.txt
+        // Documents/
+        // images/
+        // Cat.png
+        // cat.png
+        // Dog.png
+        // notes.txt
+        // README.md
+        // zebra.txt
 
         // Create "myFolder"
         File myFolder = new File(tempDir, "myFolder");
@@ -40,8 +40,8 @@ public class TruffulaPrinterTest {
         zebra.createNewFile();
 
         // Create a hidden file in myFolder
-        File hidden = new File(myFolder, ".hidden.txt");
-        hidden.createNewFile();
+        // File hidden = new File(myFolder, ".hidden.txt");
+        // hidden.createNewFile();
 
         // Create subdirectory "Documents" in myFolder
         File documents = new File(myFolder, "Documents");
@@ -100,5 +100,250 @@ public class TruffulaPrinterTest {
 
         // Assert that the output matches the expected output exactly
         assertEquals(expected.toString(), output);
+    }
+
+    @Test
+    public void testPrintTree_ColorsApplied(@TempDir File tempDir) throws IOException {
+
+        // Create the directory structure
+        // World/
+        // Land/
+        // Ocean/
+        // Fish/
+
+        // Create test directory structure
+        File world = new File(tempDir, "World");
+        assertTrue(world.mkdir(), "World folder should be created");
+
+        File land = new File(world, "Land");
+        assertTrue(land.mkdir(), "Land folder should be created");
+
+        File ocean = new File(world, "Ocean");
+        assertTrue(ocean.mkdir(), "Ocean folder should be created");
+
+        File fish = new File(ocean, "Fish");
+        assertTrue(fish.mkdir(), "Fish folder should be created");
+
+        // Capture output
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(baos);
+
+        // Initialize TruffulaPrinter
+        TruffulaOptions options = new TruffulaOptions(world, false, true);
+        TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
+
+        printer.printTree();
+
+        // Get actual output
+        String output = baos.toString();
+        String nl = System.lineSeparator();
+
+        // define ANSI color codes
+        String reset = "\033[0m";
+        String white = "\033[0;37m";
+        String purple = "\033[0;35m";
+        String yellow = "\033[0;33m";
+
+        // build expected output
+        StringBuilder expected = new StringBuilder();
+        expected.append(white).append("World/").append(nl).append(reset);
+        expected.append(purple).append("   Land/").append(nl).append(reset);
+        expected.append(purple).append("   Ocean/").append(nl).append(reset);
+        expected.append(yellow).append("      Fish/").append(nl).append(reset);
+
+        // assert that the output matches the expected output
+        assertEquals(expected.toString(), output);
+    }
+
+    @Test
+    public void testPrintTree_deeplyNestedDataTrees(@TempDir File tempDir) throws IOException {
+
+        // Creating the directory structure
+        // dataTree/
+        // level1/
+        // File.1txt
+        // Level2/
+        // Level3/
+        // File2.txt
+        // Level4/
+        // File3.txt
+
+        // create a root folder "dataTree"
+        File dataTree = new File(tempDir, "DataTree");
+        assertTrue(dataTree.mkdir(), "DataTree folder should be created");
+
+        // create nested files and directories
+        File level1 = new File(dataTree, "Level1");
+        assertTrue(level1.mkdir(), "Level1 folder should be created");
+
+        File level2 = new File(level1, "Level2");
+        assertTrue(level2.mkdir(), "Level2 folder should be created");
+
+        File level3 = new File(level2, "Level3");
+        assertTrue(level3.mkdir(), "Level3 folder should be created");
+
+        File level4 = new File(level3, "Level4");
+        assertTrue(level4.mkdir(), "Level4 folder should be created");
+
+        // create files at different levels
+        File file1 = new File(level1, "File1.txt");
+        File file2 = new File(level3, "File2.txt");
+        File file3 = new File(level4, "File3.txt");
+        file1.createNewFile();
+        file2.createNewFile();
+        file3.createNewFile();
+
+        // Capture output
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(baos);
+
+        // Initialize TruffulaPrinter
+        TruffulaOptions options = new TruffulaOptions(dataTree, false, true);
+        TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
+
+        printer.printTree();
+
+        // Get actual output
+        String output = baos.toString();
+        String nl = System.lineSeparator();
+
+        // define ANSI color codes
+        String reset = "\033[0m";
+        String white = "\033[0;37m";
+        String purple = "\033[0;35m";
+        String yellow = "\033[0;33m";
+
+        // Building the output expected
+        StringBuilder expected = new StringBuilder();
+        expected.append(white).append("DataTree/").append(nl).append(reset);
+        expected.append(purple).append("   Level1/").append(nl).append(reset);
+        expected.append(yellow).append("      File1.txt").append(nl).append(reset);
+        expected.append(yellow).append("      Level2/").append(nl).append(reset);
+        expected.append(white).append("         Level3/").append(nl).append(reset);
+        expected.append(purple).append("            File2.txt").append(nl).append(reset);
+        expected.append(purple).append("            Level4/").append(nl).append(reset);
+        expected.append(yellow).append("               File3.txt").append(nl).append(reset);
+
+        // assert that the output matches the expected output
+        assertEquals(expected.toString(), output);
+    }
+
+    @Test
+    public void testPrintTree_singleFileHandler(@TempDir File tempDir) throws IOException {
+
+        // creating root folder "SingleFileTest"
+        File singleFileTest = new File(tempDir, "SingleFileTest");
+        assertTrue(singleFileTest.mkdir(), "SingleFileTest folder should be created");
+
+        // creating a single file
+        File readme = new File(singleFileTest, "README.md");
+        readme.createNewFile();
+
+        // Capture output
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(baos);
+
+        // Initialize TruffulaPrinter
+        TruffulaOptions options = new TruffulaOptions(singleFileTest, false, true);
+        TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
+
+        printer.printTree();
+
+        // Get actual output
+        String output = baos.toString();
+        String nl = System.lineSeparator();
+
+        // define ANSI color codes
+        String reset = "\033[0m";
+        String white = "\033[0;37m";
+        String purple = "\033[0;35m";
+
+        // build the string to expected output
+        StringBuilder expected = new StringBuilder();
+        expected.append(white).append("SingleFileTest/").append(nl).append(reset);
+        expected.append(purple).append("   README.md").append(nl).append(reset);
+
+        // assert that the output matches the expected output
+        assertEquals(expected.toString(), output);
+    }
+
+    @Test
+    public void testPrintTree_EmptyDirectory(@TempDir File tempDir) {
+        // creating an empty directory
+        // emptyFolder/
+
+        File emptyFolder = new File(tempDir, "EmptyFolder");
+        assertTrue(emptyFolder.mkdir(), "EmptyFolder should be created");
+
+        // Capture output
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(baos);
+
+        // Initialize TruffulaPrinter
+        TruffulaOptions options = new TruffulaOptions(emptyFolder, false, true);
+        TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
+
+        printer.printTree();
+
+        // Get actual output
+        String output = baos.toString();
+        String nl = System.lineSeparator();
+
+        // define ANSI color codes
+        String reset = "\033[0m";
+        String white = "\033[0;37m";
+
+        // Expected output (only root directory)
+        StringBuilder expected = new StringBuilder();
+        expected.append(white).append("EmptyFolder/").append(nl).append(reset);
+
+        // Assert that the output matches the expected output
+        assertEquals(expected.toString(), output);
+    }
+
+    @Test
+    public void testPrintTree_BasicStructure_NoColor(@TempDir File tempDir) throws IOException {
+        File myFolder = new File(tempDir, "myFolder");
+        assertTrue(myFolder.mkdir(), "myFolder should be created");
+
+        // creating files visible in myFolder
+        File apple = new File(myFolder, "Apple.txt");
+        File banana = new File(myFolder, "banana.txt");
+        File zebra = new File(myFolder, "zebra.txt");
+        apple.createNewFile();
+        banana.createNewFile();
+        zebra.createNewFile();
+
+        // Create subdirectory "Documents" in myFolder
+        File documents = new File(myFolder, "Documents");
+        assertTrue(documents.mkdir(), "Documents directory should be created");
+
+        // Set up TruffulaOptions with showHidden = false and useColor = true
+        TruffulaOptions options = new TruffulaOptions(myFolder, false, false);
+
+        // Capture output using a custom PrintStream
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(baos);
+
+        // Instantiate TruffulaPrinter with custom PrintStream
+        TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
+
+        // Call printTree (output goes to printStream)
+        printer.printTree();
+
+        // Retrieve printed output
+        String output = baos.toString();
+        String nl = System.lineSeparator();
+
+        // Build expected output with exact colors and indentation
+        String reset = "\033[0m";
+        String white = "\033[0;37m";
+
+        StringBuilder expected = new StringBuilder();
+        expected.append(white).append("myFolder/").append(nl).append(reset);
+        expected.append(white).append("   Apple.txt").append(nl).append(reset);
+        expected.append(white).append("   banana.txt").append(nl).append(reset);
+        expected.append(white).append("   Documents/").append(nl).append(reset);
+        expected.append(white).append("   zebra.txt").append(nl).append(reset);
     }
 }

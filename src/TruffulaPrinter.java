@@ -1,3 +1,4 @@
+import java.io.File;
 import java.io.PrintStream;
 import java.util.List;
 
@@ -105,14 +106,76 @@ public class TruffulaPrinter {
   public void printTree() {
     // TODO: Implement this!
     // REQUIRED: ONLY use java.io, DO NOT use java.nio
-    
+
     // Hints:
     // - Add a recursive helper method
     // - For Wave 6: Use AlphabeticalFileSorter
     // DO NOT USE SYSTEM.OUT.PRINTLN
     // USE out.println instead (will use your ColorPrinter)
 
-    out.println("printTree was called!");
-    out.println("My options are: " + options);
+    File root = options.getRoot();
+
+    // check if the root directory exists
+    if (root == null || !root.exists() || !root.isDirectory()) {
+      out.println("Directory does not exist");
+      return;
+    }
+
+    // set the color to white
+    out.setCurrentColor(ConsoleColor.WHITE);
+    out.println(root.getName() + "/");
+
+    printTreeHelper(root, 1);
+  }
+
+  // create a helper method
+  private void printTreeHelper(File directory, int level) {
+    if (directory == null || !directory.isDirectory()) {
+      return;
+    }
+    File[] files = directory.listFiles();
+
+    if (files == null) {
+      return;
+    }
+
+    // sorting the files
+    files = AlphabeticalFileSorter.sort(files);
+
+    for (File file : files) {
+      // check if hidden files are to be shown
+      if (!options.isShowHidden() && file.isHidden()) {
+        continue;
+      }
+
+      if (options.isUseColor()) {
+        
+        // get the current color
+        ConsoleColor currentColor = colorSequence.get(level % DEFAULT_COLOR_SEQUENCE.size());
+        out.setCurrentColor(currentColor);
+      }
+
+      StringBuilder sb = new StringBuilder();
+
+      // add spaces for indentation
+      for (int i = 0; i < level; i++) {
+        sb.append("   ");
+      }
+      sb.append(file.getName());
+
+      // add a slash for directories
+      if (file.isDirectory()) {
+        sb.append("/");
+      }
+      out.println(sb.toString());
+
+      // recursively call the helper method
+      if (file.isDirectory()) {
+        printTreeHelper(file, level + 1);
+      }
+    }
+
+    // Reset color
+    out.setCurrentColor(ConsoleColor.RESET);
   }
 }
