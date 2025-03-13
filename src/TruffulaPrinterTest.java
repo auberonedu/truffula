@@ -3,6 +3,7 @@ import org.junit.jupiter.api.io.TempDir;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.nio.file.Files;
@@ -104,6 +105,9 @@ public class TruffulaPrinterTest {
 
         // Assert that the output matches the expected output exactly
         assertEquals(expected.toString(), output);
+
+        System.out.println(expected.toString());
+        System.out.println(output);
     }
 
     @Test
@@ -114,16 +118,16 @@ public class TruffulaPrinterTest {
         File file1 = new File(tempDir, "file1.txt");
         file1.createNewFile();
 
-        TruffulaOptions options = new TruffulaOptions(tempDir, false, true);  
+        TruffulaOptions options = new TruffulaOptions(tempDir, false, true);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         PrintStream printStream = new PrintStream(baos);
 
         // Create an instance of TruffulaPrinter
         TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
-        
+
         // Call the printTree method
         printer.printTree();
-        
+
         String output = baos.toString();
 
         assertNotNull(output, "Output should not be null");
@@ -134,7 +138,7 @@ public class TruffulaPrinterTest {
 
     @Test
     public void testPrintTreeAlphabetization(@TempDir File tempDir) throws IOException {
-    
+
         // create test files in an unsorted order
         File file1 = new File(tempDir, "zebra.txt");
         File file2 = new File(tempDir, "lion.txt");
@@ -144,7 +148,7 @@ public class TruffulaPrinterTest {
         file3.createNewFile();
 
         // sort files using AlphabeticalFileSorter
-        File[] files = {file1, file2, file3};
+        File[] files = { file1, file2, file3 };
         File[] sortedFiles = AlphabeticalFileSorter.sort(files);
 
         // Verify that files are sorted correctly
@@ -152,4 +156,46 @@ public class TruffulaPrinterTest {
         assertEquals("lion.txt", sortedFiles[1].getName());
         assertEquals("zebra.txt", sortedFiles[2].getName());
     }
+
+    @Test
+    public void testRootDirectoryUsed(@TempDir File tempDir) throws IOException {
+        // make sure the directory is empty
+        assertTrue(tempDir.exists());
+        assertTrue(tempDir.isDirectory());
+
+        // setup the TruffulaOptions with the temporary directory as the root
+        String[] args = { tempDir.getAbsolutePath() };
+        TruffulaOptions options = new TruffulaOptions(args);
+
+        // check if the root directory in the TruffulaOptions matches the tempDir
+        assertEquals(tempDir, options.getRoot());
+    }
+
+    @Test
+    public void testPrintTreeDirectory(@TempDir File tempDir) throws IOException {
+        // Create sample files and directories in the tempDir
+        File dir1 = new File(tempDir, "dir1");
+        dir1.mkdir();
+        File file1 = new File(tempDir, "file1.txt");
+        file1.createNewFile();
+
+        // Set up TruffulaOptions 
+        TruffulaOptions options = new TruffulaOptions(new String[]{tempDir.getAbsolutePath()});
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(baos);
+
+        // Instantiate TruffulaPrinter with custom PrintStream
+        TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
+
+       
+        printer.printTree();
+
+        String output = baos.toString().trim();
+
+        // Check if the output contains the expected directory and file names
+        assertTrue(output.contains("dir1/"));
+        assertTrue(output.contains("file1.txt"));
+    }
+
 }
