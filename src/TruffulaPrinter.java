@@ -136,8 +136,14 @@ public class TruffulaPrinter {
       for(File file : files){
         StringBuilder str = new StringBuilder();
         str.append("   ".repeat(level));
-        ConsoleColor color = getColorForLevel(level);
-        out.setCurrentColor(color);
+        if (options.isUseColor()) {
+          ConsoleColor color = getColorForLevel(level);
+          out.setCurrentColor(color);
+        } else {
+            
+            out.setCurrentColor(ConsoleColor.WHITE);
+        }
+
         str.append(file.getName());
           if(file.isDirectory()){
             str.append("/");

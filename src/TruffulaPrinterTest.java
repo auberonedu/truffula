@@ -143,7 +143,7 @@ public class TruffulaPrinterTest {
             cat.createNewFile();
             dog.createNewFile();
     
-            TruffulaOptions options = new TruffulaOptions(myFolder, false, true);
+            TruffulaOptions options = new TruffulaOptions(myFolder, false, false);
     
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             PrintStream printStream = new PrintStream(baos);
@@ -295,7 +295,7 @@ public class TruffulaPrinterTest {
         report.createNewFile();
         summary.createNewFile();
     
-        TruffulaOptions options = new TruffulaOptions(rootDir, false, true);
+        TruffulaOptions options = new TruffulaOptions(rootDir, false, false);
     
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         PrintStream printStream = new PrintStream(baos);
@@ -312,12 +312,13 @@ public class TruffulaPrinterTest {
     
         StringBuilder expected = new StringBuilder();
         expected.append(white).append("rootDir/").append(nl).append(reset);
-        expected.append(white).append("   Mango.txt").append(nl).append(reset);
         expected.append(white).append("   cherry.txt").append(nl).append(reset);
+        expected.append(white).append("   kiwi.txt").append(nl).append(reset);
+        expected.append(white).append("   Mango.txt").append(nl).append(reset);
         expected.append(white).append("   Projects/").append(nl).append(reset);
         expected.append(white).append("      report.docx").append(nl).append(reset);
         expected.append(white).append("      summary.pdf").append(nl).append(reset);
-        expected.append(white).append("   kiwi.txt").append(nl).append(reset);
+        
     
         assertEquals(expected.toString(), output);
     }
