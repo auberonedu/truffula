@@ -106,7 +106,7 @@ public class TruffulaPrinterTest {
         }
 
     @Test //test for color make file directory so it gets to white 3 times
-        public void testPrintTree_levelColor(@TempDir File tempDir) throws IOException {
+    public void testPrintTree_levelColor(@TempDir File tempDir) throws IOException {
             
             File level0 = new File(tempDir, "level0");
             assertTrue(level0.mkdir(), "level0 should be created");
@@ -169,7 +169,7 @@ public class TruffulaPrinterTest {
             assertTrue(output.contains("\u001B[0m"), "Output should contain reset color code after each print");
         }
     
-        @Test // tests when an empty directory is used
+    @Test // tests when an empty directory is used
     public void testEmptyDirectory(@TempDir File tempDir) throws IOException{
         File emptyDir = new File(tempDir, "emptyDirectory");
         assertTrue(emptyDir.mkdir(), "emptyDir should be created");
@@ -197,24 +197,60 @@ public class TruffulaPrinterTest {
 
 
 
-    @Test // tests that lexicographic situations are handled properly
-    public void testLexicographicFiles(@TempDir File tempDir) throws IOException{
-
+    @Test // Checks to see that colors are properly disabled
+    public void testDisabledColor(@TempDir File tempDir) throws IOException {
+        File rootDir = new File(tempDir, "rootDir");
+        assertTrue(rootDir.mkdir(), "rootDir should be created");
+    
+        File mango = new File(rootDir, "Mango.txt");
+        File cherry = new File(rootDir, "cherry.txt");
+        File kiwi = new File(rootDir, "kiwi.txt");
+        mango.createNewFile();
+        cherry.createNewFile();
+        kiwi.createNewFile();
+    
+        File projects = new File(rootDir, "Projects");
+        assertTrue(projects.mkdir(), "Projects directory should be created");
+    
+        File report = new File(projects, "report.docx");
+        File summary = new File(projects, "summary.pdf");
+        report.createNewFile();
+        summary.createNewFile();
+    
+        TruffulaOptions options = new TruffulaOptions(rootDir, false, true);
+    
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(baos);
+    
+        TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
+    
+        printer.printTree();
+    
+        String output = baos.toString();
+        String nl = System.lineSeparator();
+    
+        String reset = "\033[0m";
+        String white = "\033[0;37m";
+    
+        StringBuilder expected = new StringBuilder();
+        expected.append(white).append("rootDir/").append(nl).append(reset);
+        expected.append(white).append("   Mango.txt").append(nl).append(reset);
+        expected.append(white).append("   cherry.txt").append(nl).append(reset);
+        expected.append(white).append("   Projects/").append(nl).append(reset);
+        expected.append(white).append("      report.docx").append(nl).append(reset);
+        expected.append(white).append("      summary.pdf").append(nl).append(reset);
+        expected.append(white).append("   kiwi.txt").append(nl).append(reset);
+    
+        assertEquals(expected.toString(), output);
     }
-
-    @Test // checks to see that colors are properly disabled
-    public void testDisabledColor(@TempDir File tempDir) throws IOException{
-
-    }
+    
+    
 
     @Test // tests when there are a ton of nested directories
     public void testSuperNestedDirectories(@TempDir File tempDir) throws IOException{
 
     }
 
-    @Test // tests what happens when special characters are in the directory
-    public void testSpecialCharacters(@TempDir File tempDir) throws IOException{
 
-    }
 
 }
