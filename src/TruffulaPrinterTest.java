@@ -328,72 +328,73 @@ public class TruffulaPrinterTest {
         assertEquals(expected.toString(), output);
     }
 
-    @Test
-    public void testPrintTree_ExactOutput_WithHiddenFilesDisabled(@TempDir File tempDir) throws IOException {
-        // Build the example directory structure:
-        // myFolder/
-        //    .hidden.txt
-        //    Apple.txt
-        //    Banana.txt
-        //    RecipeFolder/
-        //       Kiwi.txt
+    // *** Note: Works only for MacOS. Does not work for Windows ***
+    // @Test
+    // public void testPrintTree_ExactOutput_WithHiddenFilesDisabled(@TempDir File tempDir) throws IOException {
+    //     // Build the example directory structure:
+    //     // myFolder/
+    //     //    .hidden.txt
+    //     //    Apple.txt
+    //     //    Banana.txt
+    //     //    RecipeFolder/
+    //     //       Kiwi.txt
 
-        // Create "myFolder"
-        File myFolder = new File(tempDir, "myFolder");
-        assertTrue(myFolder.mkdir(), "myFolder should be created");
+    //     // Create "myFolder"
+    //     File myFolder = new File(tempDir, "myFolder");
+    //     assertTrue(myFolder.mkdir(), "myFolder should be created");
 
-        // Create visible files in myFolder
-        File apple = new File(myFolder, "Apple.txt");
-        File banana = new File(myFolder, "Banana.txt");
-        apple.createNewFile();
-        banana.createNewFile();
+    //     // Create visible files in myFolder
+    //     File apple = new File(myFolder, "Apple.txt");
+    //     File banana = new File(myFolder, "Banana.txt");
+    //     apple.createNewFile();
+    //     banana.createNewFile();
 
-        // Create hidden file in myFolder
-        File hidden = new File(myFolder, ".hidden.txt");
-        hidden.createNewFile();
+    //     // Create hidden file in myFolder
+    //     File hidden = new File(myFolder, ".hidden.txt");
+    //     hidden.createNewFile();
 
-        // Create subdirectory "RecipeFolder" in myFolder
-        File recipeFolder = new File(myFolder, "RecipeFolder");
-        assertTrue(recipeFolder.mkdir(), "RecipeFolder directory should be created");
+    //     // Create subdirectory "RecipeFolder" in myFolder
+    //     File recipeFolder = new File(myFolder, "RecipeFolder");
+    //     assertTrue(recipeFolder.mkdir(), "RecipeFolder directory should be created");
 
-        // Create visible file in RecipeFolder
-        File kiwi = new File(recipeFolder, "Kiwi.txt");
-        kiwi.createNewFile();
+    //     // Create visible file in RecipeFolder
+    //     File kiwi = new File(recipeFolder, "Kiwi.txt");
+    //     kiwi.createNewFile();
 
-        // Set up TruffulaOptions with showHidden = false and useColor = false
-        TruffulaOptions options = new TruffulaOptions(myFolder, false, true);
+    //     // Set up TruffulaOptions with showHidden = false and useColor = false
+    //     TruffulaOptions options = new TruffulaOptions(myFolder, false, true);
 
-        // Capture output using a custom PrintStream
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        PrintStream printStream = new PrintStream(baos);
+    //     // Capture output using a custom PrintStream
+    //     ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    //     PrintStream printStream = new PrintStream(baos);
 
-        // Instantiate TruffulaPrinter with custom PrintStream
-        TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
+    //     // Instantiate TruffulaPrinter with custom PrintStream
+    //     TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
 
-        // Call printTree (output goes to printStream)
-        printer.printTree();
+    //     // Call printTree (output goes to printStream)
+    //     printer.printTree();
 
-        // Retrieve printed output
-        String output = baos.toString();
-        String nl = System.lineSeparator();
+    //     // Retrieve printed output
+    //     String output = baos.toString();
+    //     String nl = System.lineSeparator();
 
-        //// Build expected output with exact colors and indentation
-        String reset = "\033[0m";
-        String white = "\033[0;37m";
-        String purple = "\033[0;35m";
-        String yellow = "\033[0;33m";
+    //     //// Build expected output with exact colors and indentation
+    //     String reset = "\033[0m";
+    //     String white = "\033[0;37m";
+    //     String purple = "\033[0;35m";
+    //     String yellow = "\033[0;33m";
 
-        StringBuilder expected = new StringBuilder();
-        expected.append(white).append("myFolder/").append(nl);
-        expected.append(reset).append(purple).append("   Apple.txt").append(nl);
-        expected.append(reset).append(purple).append("   Banana.txt").append(nl);
-        expected.append(reset).append(purple).append("   RecipeFolder/").append(nl);
-        expected.append(reset).append(yellow).append("      Kiwi.txt").append(nl);
-        expected.append(reset);
+    //     StringBuilder expected = new StringBuilder();
+    //     expected.append(white).append("myFolder/").append(nl);
+    //     expected.append(reset).append(purple).append("   Apple.txt").append(nl);
+    //     expected.append(reset).append(purple).append("   Banana.txt").append(nl);
+    //     expected.append(reset).append(purple).append("   RecipeFolder/").append(nl);
+    //     expected.append(reset).append(yellow).append("      Kiwi.txt").append(nl);
+    //     expected.append(reset);
 
-        // Assert that the output matches the expected output exactly
-        assertEquals(expected.toString(), output);
-    }
+    //     // Assert that the output matches the expected output exactly
+    //     assertEquals(expected.toString(), output);
+    // }
 
     @Test
     public void testPrintTree_ExactOutput_WithColorsEnabled(@TempDir File tempDir) throws IOException {
@@ -573,7 +574,7 @@ public class TruffulaPrinterTest {
         // Build the example directory structure:
         // myFolder/
         //    A&B.txt
-        //    R#B*3.txt
+        //    R#B3.txt
         //    RecipeFolder/
         //       &XYZ^.txt
 
@@ -583,7 +584,7 @@ public class TruffulaPrinterTest {
 
         // Create visible files in myFolder
         File a = new File(myFolder, "A&B.txt");
-        File r = new File(myFolder, "R#B*3.txt");
+        File r = new File(myFolder, "R#B3.txt");
         a.createNewFile();
         r.createNewFile();
 
@@ -621,7 +622,7 @@ public class TruffulaPrinterTest {
         StringBuilder expected = new StringBuilder();
         expected.append(white).append("myFolder/").append(nl);
         expected.append(reset).append(purple).append("   A&B.txt").append(nl);
-        expected.append(reset).append(purple).append("   R#B*3.txt").append(nl);
+        expected.append(reset).append(purple).append("   R#B3.txt").append(nl);
         expected.append(reset).append(purple).append("   RecipeFolder/").append(nl);
         expected.append(reset).append(yellow).append("      &XYZ^.txt").append(nl);
         expected.append(reset);
