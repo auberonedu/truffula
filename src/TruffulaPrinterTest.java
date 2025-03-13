@@ -345,7 +345,7 @@ public class TruffulaPrinterTest {
         expected.append(white).append("   Projects/").append(nl).append(reset);
         expected.append(white).append("      report.docx").append(nl).append(reset);
         expected.append(white).append("      summary.pdf").append(nl).append(reset);
-        expected.append(white).append("   kiwi.txt").append(nl).append(reset);
+        
     
         assertEquals(expected.toString(), output);
     }
