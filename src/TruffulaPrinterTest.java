@@ -105,9 +105,9 @@ public class TruffulaPrinterTest {
             assertEquals(expected.toString(), output);
         }
 
-        // This is the test case for Wave 4 -- WILL NOT PASS NOW
-        @Test
-        public void testPrintTree_Basic(@TempDir File tempDir) throws IOException {
+    // This is the test case for Wave 4 -- WILL NOT PASS NOW
+    @Test
+    public void testPrintTree_Basic(@TempDir File tempDir) throws IOException {
 
             // Create "myFolder"
             File myFolder = new File(tempDir, "myFolder");
@@ -180,8 +180,6 @@ public class TruffulaPrinterTest {
             assertTrue(output.contains("      README.md"));
             assertTrue(output.contains("   zebra.txt"));;
         }
-
-
 
     @Test //test for color make file directory so it gets to white 3 times
     public void testPrintTree_levelColor(@TempDir File tempDir) throws IOException {
@@ -270,10 +268,39 @@ public class TruffulaPrinterTest {
         StringBuilder expected = new StringBuilder();
         expected.append(white).append("emptyDirectory/").append(n1).append(reset);
 
-        assertEquals(expected, output);
+        assertEquals(expected.toString(), output);
     }
 
+    @Test // tests when an empty directory is used
+    public void testDirectoryWithOnlyOneFile(@TempDir File tempDir) throws IOException{
+        File directory = new File(tempDir, "directory");
+        assertTrue(directory.mkdir(), "directory should be created");
 
+        File mango = new File(directory, "Mango.txt");
+        mango.createNewFile();
+
+        TruffulaOptions options = new TruffulaOptions(directory, false, true);
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(baos);
+
+        TruffulaPrinter Printer = new TruffulaPrinter(options, printStream);
+
+        Printer.printTree();
+
+        String output = baos.toString();
+        String n1 = System.lineSeparator();
+
+        String reset = "\033[0m";
+        String white = "\033[0;37m";
+        String purple = "\033[0;35m";
+
+        StringBuilder expected = new StringBuilder();
+        expected.append(white).append("directory/").append(n1).append(reset);
+        expected.append(purple).append("   Mango.txt").append(n1).append(reset);
+
+        assertEquals(expected.toString(), output);
+    }
 
     @Test // Checks to see that colors are properly disabled
     public void testDisabledColor(@TempDir File tempDir) throws IOException {
@@ -318,18 +345,75 @@ public class TruffulaPrinterTest {
         expected.append(white).append("   Projects/").append(nl).append(reset);
         expected.append(white).append("      report.docx").append(nl).append(reset);
         expected.append(white).append("      summary.pdf").append(nl).append(reset);
-        
+        expected.append(white).append("   kiwi.txt").append(nl).append(reset);
     
         assertEquals(expected.toString(), output);
     }
     
-    
-
     @Test // tests when there are a ton of nested directories
     public void testSuperNestedDirectories(@TempDir File tempDir) throws IOException{
+        File rootDir = new File(tempDir, "rootDir");
+        assertTrue(rootDir.mkdir(), "rootDir should be created");
 
+        // Level 1
+        File level1 = new File(rootDir, "Level1");
+        assertTrue(level1.mkdir(), "Level1 directory should be created");
+
+        // Level 2
+        File level2 = new File(level1, "Level2");
+        assertTrue(level2.mkdir(), "Level2 directory should be created");
+
+        // Level 3
+        File level3 = new File(level2, "Level3");
+        assertTrue(level3.mkdir(), "Level3 directory should be created");
+
+        // Level 4 (Cycles back to white)
+        File level4 = new File(level3, "Level4");
+        assertTrue(level4.mkdir(), "Level4 directory should be created");
+
+        // Add files inside each level
+        File file1 = new File(rootDir, "file1.txt");
+        File file2 = new File(level1, "file2.txt");
+        File file3 = new File(level2, "file3.txt");
+        File file4 = new File(level3, "file4.txt");
+        File file5 = new File(level4, "file5.txt");
+
+        file1.createNewFile();
+        file2.createNewFile();
+        file3.createNewFile();
+        file4.createNewFile();
+        file5.createNewFile();
+
+        // Enable color in options
+        TruffulaOptions options = new TruffulaOptions(rootDir, true, true);
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(baos);
+
+        TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
+
+        printer.printTree();
+
+        String output = baos.toString();
+        String nl = System.lineSeparator();
+
+        String reset = "\033[0m";
+        String white = "\033[0;37m";
+        String purple = "\033[0;35m";
+        String yellow = "\033[0;33m";
+
+        StringBuilder expected = new StringBuilder();
+        expected.append(white).append("rootDir/").append(nl).append(reset);
+        expected.append(purple).append("   file1.txt").append(nl).append(reset);
+        expected.append(purple).append("   Level1/").append(nl).append(reset);
+        expected.append(yellow).append("      file2.txt").append(nl).append(reset);
+        expected.append(yellow).append("      Level2/").append(nl).append(reset);
+        expected.append(white).append("         file3.txt").append(nl).append(reset);
+        expected.append(white).append("         Level3/").append(nl).append(reset);
+        expected.append(purple).append("            file4.txt").append(nl).append(reset);
+        expected.append(purple).append("            Level4/").append(nl).append(reset);
+        expected.append(yellow).append("               file5.txt").append(nl).append(reset);
+
+        assertEquals(expected.toString(), output);
     }
-
-
-
 }
