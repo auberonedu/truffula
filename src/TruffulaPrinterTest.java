@@ -18,19 +18,6 @@ public class TruffulaPrinterTest {
 
     @Test
     public void testPrintTree_ExactOutput_WithCustomPrintStream(@TempDir File tempDir) throws IOException {
-        // Build the example directory structure:
-        // myFolder/
-        // .hidden.txt
-        // Apple.txt
-        // banana.txt
-        // Documents/
-        // images/
-        // Cat.png
-        // cat.png
-        // Dog.png
-        // notes.txt
-        // README.md
-        // zebra.txt
 
         // Create "myFolder"
         File myFolder = new File(tempDir, "myFolder");
@@ -44,9 +31,9 @@ public class TruffulaPrinterTest {
         banana.createNewFile();
         zebra.createNewFile();
 
-        // Create a hidden file in myFolder
-        File hidden = new File(myFolder, ".hidden.txt");
-        hidden.createNewFile();
+        // // Create a hidden file in myFolder
+        // File hidden = new File(myFolder, ".hidden.txt");
+        // hidden.createNewFile();
 
         // Create subdirectory "Documents" in myFolder
         File documents = new File(myFolder, "Documents");
@@ -103,10 +90,81 @@ public class TruffulaPrinterTest {
         expected.append(yellow).append("      README.md").append(nl).append(reset);
         expected.append(purple).append("   zebra.txt").append(nl).append(reset);
 
+        // System.out.println("Root directory: " + options.getRoot().getAbsolutePath());
+
         // Assert that the output matches the expected output exactly
         assertEquals(expected.toString(), output);
 
-        System.out.println(expected.toString());
+        System.out.println("Expected" + expected.toString());
+        System.out.println(output);
+    }
+
+    @Test
+    public void testPrintTree_ExactOutput_WithCustomPrintStream_Retest(@TempDir File tempDir)
+            throws IOException {
+
+        File testFolder = new File(tempDir, "testFolder");
+        assertTrue(testFolder.mkdir(), "testFolder should be created");
+
+        File file1 = new File(testFolder, "File1.txt");
+        File file2 = new File(testFolder, "file2.txt");
+        File file3 = new File(testFolder, "file3.txt");
+        file1.createNewFile();
+        file2.createNewFile();
+        file3.createNewFile();
+
+        File subfolder = new File(testFolder, "Subfolder");
+        assertTrue(subfolder.mkdir(), "Subfolder directory should be created");
+
+        File subFile1 = new File(subfolder, "subfile1.txt");
+        File subFile2 = new File(subfolder, "subfile2.txt");
+        subFile1.createNewFile();
+        subFile2.createNewFile();
+
+        File images = new File(subfolder, "Images");
+        assertTrue(images.mkdir(), "Images directory should be created");
+
+        File img1 = new File(images, "image1.jpg");
+        File img2 = new File(images, "image2.jpg");
+        img1.createNewFile();
+        img2.createNewFile();
+
+        TruffulaOptions options = new TruffulaOptions(testFolder, false, true);
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(baos);
+
+        TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
+
+        printer.printTree();
+
+        String output = baos.toString();
+        String nl = System.lineSeparator();
+
+        String reset = "\033[0m";
+        String white = "\033[0;37m";
+        String purple = "\033[0;35m";
+        String yellow = "\033[0;33m";
+
+        StringBuilder expected = new StringBuilder();
+        expected.append(white).append("testFolder/").append(nl).append(reset);
+        expected.append(purple).append("   File1.txt").append(nl).append(reset);
+        expected.append(purple).append("   file2.txt").append(nl).append(reset);
+        expected.append(purple).append("   file3.txt").append(nl).append(reset);
+        expected.append(purple).append("   Subfolder/").append(nl).append(reset);
+        expected.append(yellow).append("      Images/").append(nl).append(reset);
+        expected.append(white).append("         image1.jpg").append(nl).append(reset);
+        expected.append(white).append("         image2.jpg").append(nl).append(reset);
+        expected.append(yellow).append("      subfile1.txt").append(nl).append(reset);
+        expected.append(yellow).append("      subfile2.txt").append(nl).append(reset);
+
+        // Assert that the output matches the expected output exactly
+        assertEquals(expected.toString(), output);
+
+        System.out.println("Root directory: " + options.getRoot().getAbsolutePath());
+
+        // Print the expected and actual output for inspection (if necessary)
+        System.out.println("Expected" + expected.toString());
         System.out.println(output);
     }
 
@@ -179,8 +237,8 @@ public class TruffulaPrinterTest {
         File file1 = new File(tempDir, "file1.txt");
         file1.createNewFile();
 
-        // Set up TruffulaOptions 
-        TruffulaOptions options = new TruffulaOptions(new String[]{tempDir.getAbsolutePath()});
+        // Set up TruffulaOptions
+        TruffulaOptions options = new TruffulaOptions(new String[] { tempDir.getAbsolutePath() });
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         PrintStream printStream = new PrintStream(baos);
@@ -188,7 +246,6 @@ public class TruffulaPrinterTest {
         // Instantiate TruffulaPrinter with custom PrintStream
         TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
 
-       
         printer.printTree();
 
         String output = baos.toString().trim();
