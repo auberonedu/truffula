@@ -129,36 +129,53 @@ public class TruffulaPrinter {
   }
 
   // create a helper method
-  private void printTreeHelper(File dir, int level) {
-    File[] files = dir.listFiles();
+  private void printTreeHelper(File directory, int level) {
+    if (directory == null || !directory.isDirectory()) {
+      return;
+    }
+    File[] files = directory.listFiles();
 
-    if (files == null) return;
+    if (files == null) {
+      return;
+    }
 
-    // sort files alphabetically ( we already did the sorting in the previous wave)
+    // sorting the files
     files = AlphabeticalFileSorter.sort(files);
 
-    ConsoleColor color = LevelColor(level);
-
-    // sort the files
     for (File file : files) {
-      out.setCurrentColor(color);
-      //experimental code to see if it prints the file with proper indentation
-      out.println(spaceIndent(file.getName() + (file.isDirectory() ? "/" : ""), level));
+      // check if hidden files are to be shown
+      if (!options.isShowHidden() && file.isHidden()) {
+        continue;
+      }
+
+      if (options.isUseColor()) {
+        
+        // get the current color
+        ConsoleColor currentColor = colorSequence.get(level % DEFAULT_COLOR_SEQUENCE.size());
+        out.setCurrentColor(currentColor);
+      }
+
+      StringBuilder sb = new StringBuilder();
+
+      // add spaces for indentation
+      for (int i = 0; i < level; i++) {
+        sb.append("   ");
+      }
+      sb.append(file.getName());
+
+      // add a slash for directories
+      if (file.isDirectory()) {
+        sb.append("/");
+      }
+      out.println(sb.toString());
+
+      // recursively call the helper method
       if (file.isDirectory()) {
         printTreeHelper(file, level + 1);
       }
     }
 
-    // resetting color
+    // Reset color
     out.setCurrentColor(ConsoleColor.RESET);
-  }
-
-  // get the color for the level
-  private ConsoleColor LevelColor (int level) {
-    return colorSequence.get(level % colorSequence.size());
-  }
-
-  public static String spaceIndent(String name, int indentLevel) {
-    return "   ".repeat(indentLevel) + name;
   }
 }
