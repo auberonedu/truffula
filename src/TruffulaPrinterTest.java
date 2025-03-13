@@ -212,9 +212,9 @@ public class TruffulaPrinterTest {
         expected.append(white).append("myFolder/").append(nl).append(reset);
         expected.append(purple).append("   #Apple#.txt").append(nl).append(reset);
         expected.append(purple).append("   $banana$.txt").append(nl).append(reset);
+        expected.append(purple).append("   %zebra%.txt").append(nl).append(reset);
         expected.append(purple).append("   Documents/").append(nl).append(reset);
         expected.append(yellow).append("      images/").append(nl).append(reset);
-        expected.append(purple).append("   %zebra%.txt").append(nl).append(reset);
         expected.append(white).append("         cat.png").append(nl).append(reset);
         expected.append(white).append("         Dog.png").append(nl).append(reset);
         expected.append(yellow).append("      notes.txt").append(nl).append(reset);
