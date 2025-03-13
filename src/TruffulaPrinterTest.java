@@ -161,11 +161,8 @@ public class TruffulaPrinterTest {
         // Assert that the output matches the expected output exactly
         assertEquals(expected.toString(), output);
 
-        System.out.println("Root directory: " + options.getRoot().getAbsolutePath());
+        // System.out.println("Root directory: " + options.getRoot().getAbsolutePath());
 
-        // Print the expected and actual output for inspection (if necessary)
-        System.out.println("Expected" + expected.toString());
-        System.out.println(output);
     }
 
     @Test
@@ -192,6 +189,37 @@ public class TruffulaPrinterTest {
 
         assertTrue(output.contains("dir1"), "Output should contain dir1");
         assertTrue(output.contains("file1.txt"), "Output should contain file1.txt");
+    }
+
+    @Test
+    public void testPrintTreeWithColorPurple(@TempDir File tempDir) throws IOException {
+        File dir1 = new File(tempDir, "dir1");
+        dir1.mkdir();
+        File file1 = new File(tempDir, "file1.txt");
+        file1.createNewFile();
+
+        // options for printing with color
+        TruffulaOptions options = new TruffulaOptions(tempDir, false, true);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(baos);
+
+        // instance of TruffulaPrinter
+        TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
+
+        printer.printTree();
+
+        String output = baos.toString();
+
+        assertNotNull(output, "Output should not be null");
+
+        System.out.println(output);
+
+        // check that the output contains directory/file names
+        assertTrue(output.contains("dir1"), "Output should contain dir1");
+        assertTrue(output.contains("file1.txt"), "Output should contain file1.txt");
+
+        // verify that direct children are purple (\033[0;35m)
+        assertTrue(output.contains("\033[0;35m"));
     }
 
     @Test
@@ -254,5 +282,7 @@ public class TruffulaPrinterTest {
         assertTrue(output.contains("dir1/"));
         assertTrue(output.contains("file1.txt"));
     }
+
+
 
 }
