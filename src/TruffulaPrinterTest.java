@@ -129,7 +129,7 @@ public class TruffulaPrinterTest {
         String white = "\033[0;37m";
 
         StringBuilder expected = new StringBuilder();
-        expected.append(white).append("myFolder/").append(nl).append(reset);
+        expected.append(white).append("emptyFolder/").append(nl).append(reset);
 
         // Assert that the output matches the expected output exactly
         assertEquals(expected.toString(), output);
