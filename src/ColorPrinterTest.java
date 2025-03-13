@@ -61,4 +61,18 @@ class ColorPrinterTest {
 
     assertEquals(expectedOutput, outputStream.toString());
   }
+
+  @Test
+  void testDefaultColorIsWhite() {
+    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    PrintStream printStream = new PrintStream(outputStream);
+    ColorPrinter printer = new ColorPrinter(printStream);
+
+    String message = "Default color test.";
+    printer.print(message, true);
+
+    String expectedOutput = ConsoleColor.WHITE.getCode() + message + ConsoleColor.RESET.getCode();
+
+    assertEquals(expectedOutput, outputStream.toString());
+  }
 }
