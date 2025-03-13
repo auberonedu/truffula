@@ -1,6 +1,7 @@
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -53,5 +54,13 @@ public class TruffulaOptionsTest {
     assertEquals(directory.getAbsolutePath(), options.getRoot().getAbsolutePath());
     assertTrue(options.isShowHidden(), "Hidden files should be shown.");
     assertTrue(options.isUseColor(), "Color should be enabled by default.");
+  }
+
+  @Test
+  void testValidDirectoryWithInvalidFlags() {
+    String[] args = {"-x", "/valid/path/to/directory"};
+                                                // lambda expression. v .to create a new instance of TrufflaOptions
+    Exception exception = assertThrows(IllegalArgumentException.class, () -> new TruffulaOptions(args));
+    assertEquals("-x is not a valid argument.", exception.getMessage());
   }
 }
