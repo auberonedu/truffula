@@ -134,8 +134,8 @@ public class TruffulaPrinter {
       files = AlphabeticalFileSorter.sort(files);
 
       for(File file : files){
-        StringBuilder str = new StringBuilder();
-        str.append("   ".repeat(level));
+        //StringBuilder str = new StringBuilder();
+        String indent = "   ".repeat(level);
         if (options.isUseColor()) {
           ConsoleColor color = getColorForLevel(level);
           out.setCurrentColor(color);
@@ -144,14 +144,14 @@ public class TruffulaPrinter {
             out.setCurrentColor(ConsoleColor.WHITE);
         }
 
-        str.append(file.getName());
-          if(file.isDirectory()){
-            str.append("/");
-          }
-        out.println(str.toString());
-      printTreeHelper(file, level +1);
+        out.println(indent + (file.isDirectory() ? file.getName() + "/" : file.getName()));
+
+
+        if(file.isDirectory()){
+          printTreeHelper(file, level +1);
+        }
+      }
     }
-  }
   }
   
 
