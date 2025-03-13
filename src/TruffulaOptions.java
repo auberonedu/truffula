@@ -103,44 +103,41 @@ public class TruffulaOptions  {
    * @throws FileNotFoundException if the directory cannot be found or if the path points to a file
    */
   public TruffulaOptions(String[] args) throws IllegalArgumentException, FileNotFoundException {
-    // TODO: Replace the below lines with your implementation
-    root = null;
-    showHidden = false;
-    useColor = false;
+    this.showHidden = false;
+    this.useColor = true;
+
+    if (args.length == 0) throw new IllegalArgumentException("Filepath missing.");
 
     boolean hasPath = false;
 
-    for(int i = 0; i < args.length; i++) {
-      if(args[i].charAt(0) == '-') {
-        switch(args[i]) {
+    for (int i = 0; i < args.length; i++) {
+      if(args[i].startsWith("-")) {
+        switch (args[i]) {
           case "-h":
-            showHidden = true;
+            this.showHidden = true;
             break;
           case "-nc":
-            useColor = false;
+            this.useColor = false;
             break;
           default:
-            throw new IllegalArgumentException(args[i]+" is not a valid argument.");
+            throw new IllegalArgumentException(args[i] + " is not a valid argument.");
             
         }
-      }
-      else {
+      } else {
         File test = new File(args[i]);
-        if(test.exists()) {
+        if (test.exists()) {
           hasPath = true;
-          if(test.isDirectory()) {
-            root = test;
-          }
-          else {
+          if (test.isDirectory()) {
+            this.root = test;
+          } else {
             throw new FileNotFoundException(args[i]+ " points to a file, not a directory.");
           }
-        }
-        else {
+        } else {
           throw new FileNotFoundException(args[i]+ " does not exist.");
         }
       }
     }
-    if(hasPath == false) {
+    if (!hasPath) {
       throw new IllegalArgumentException("Filepath missing.");
     }
   }
