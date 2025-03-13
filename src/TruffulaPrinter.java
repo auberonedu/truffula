@@ -122,19 +122,20 @@ public class TruffulaPrinter {
     // get the root directory
 
     File root = options.getRoot();
- 
-    if(root == null){
+
+    if (root == null) {
       out.println("Root directory is null");
     }
 
-    if(!root.exists() || !root.isDirectory()){
+    if (!root.exists() || !root.isDirectory()) {
       out.println("Invalid Root");
     }
 
-    // print root name
+    // print root name and set color to white
+    out.setCurrentColor(ConsoleColor.WHITE);
     out.println(root.getName() + "/");
 
-    // then start at depth 1 
+    // then start at depth 1
     printTreeHelper(root, 1);
 
   }
@@ -166,15 +167,19 @@ public class TruffulaPrinter {
       // gets name of file and append "/" for directories
       String fileName = file.getName();
       if (file.isDirectory()) {
-        fileName += "/"; 
+        fileName += "/";
       }
+
+      // use modulo to determine depth 
+      int colorIndex = depth % colorSequence.size();
+      out.setCurrentColor(DEFAULT_COLOR_SEQUENCE.get(colorIndex));
 
       // Print the file/directory name with the appropriate indentation
       out.println(indent + fileName);
 
       // if is a directory, recursively print its contents
       if (file.isDirectory()) {
-        printTreeHelper(file, depth + 1); 
+        printTreeHelper(file, depth + 1);
       }
     }
   }
