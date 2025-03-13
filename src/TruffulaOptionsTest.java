@@ -26,4 +26,32 @@ public class TruffulaOptionsTest {
     assertTrue(options.isShowHidden());
     assertFalse(options.isUseColor());
   }
+
+  @Test
+  void testValidDirectoryWithNoColorOnly(@TempDir File tempDir) throws FileNotFoundException {
+    File directory = new File(tempDir, "subfolder");
+    directory.mkdir();
+    String directoryPath = directory.getAbsolutePath();
+    String[] args = {"-nc", directoryPath};
+
+    TruffulaOptions options = new TruffulaOptions(args);
+
+    assertEquals(directory.getAbsolutePath(), options.getRoot().getAbsolutePath());
+    assertFalse(options.isShowHidden(), "Hidden files should NOT be shown.");
+    assertFalse(options.isUseColor(), "Color should be disabled");
+  }
+
+  @Test
+  void testValidDirectoryWithShowHiddenOnly(@TempDir File tempDir) throws FileNotFoundException {
+    File directory = new File(tempDir, "subfolder");
+    directory.mkdir();
+    String directoryPath = directory.getAbsolutePath();
+    String[] args = {"-h", directoryPath};
+
+    TruffulaOptions options = new TruffulaOptions(args);
+
+    assertEquals(directory.getAbsolutePath(), options.getRoot().getAbsolutePath());
+    assertTrue(options.isShowHidden(), "Hidden files should be shown.");
+    assertTrue(options.isUseColor(), "Color should be enabled by default.");
+  }
 }
