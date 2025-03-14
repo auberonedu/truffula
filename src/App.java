@@ -47,7 +47,7 @@ public class App {
     // Then, call printTree on the TruffulaPrinter
     try {
       TruffulaOptions options = new TruffulaOptions(args);
-      TruffulaPrinter printer = new TruffulaPrinter(System.out, options);
+      TruffulaPrinter printer = new TruffulaPrinter(options, System.out);
 
       printer.printTree();
       
