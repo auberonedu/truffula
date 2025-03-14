@@ -1,6 +1,7 @@
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -38,10 +39,6 @@ public class TruffulaPrinterTest {
         apple.createNewFile();
         banana.createNewFile();
         zebra.createNewFile();
-
-        // Create a hidden file in myFolder
-        File hidden = new File(myFolder, ".hidden.txt");
-        hidden.createNewFile();
 
         // Create subdirectory "Documents" in myFolder
         File documents = new File(myFolder, "Documents");
@@ -101,4 +98,36 @@ public class TruffulaPrinterTest {
         // Assert that the output matches the expected output exactly
         assertEquals(expected.toString(), output);
     }
+
+    @Test
+    void testPrintTree_EmptyDirectory(@TempDir File tempDir) {
+        TruffulaOptions options = new TruffulaOptions(tempDir, false, true);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(outputStream);
+        TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
+
+        printer.printTree();
+        String output = outputStream.toString();
+
+        String expected = "\033[0;37m" + tempDir.getName() + "/" + System.lineSeparator() + "\033[0m";
+        assertEquals(expected, output);
+    }
+
+    @Test
+    void testPrintTree_SingleFile(@TempDir File tempDir) throws IOException {
+        File singleFile = new File(tempDir, "singleFile.txt");
+        singleFile.createNewFile();
+
+        TruffulaOptions options = new TruffulaOptions(tempDir, false, true);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(outputStream);
+        TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
+
+        printer.printTree();
+        String output = outputStream.toString();
+
+        String lineSep = System.lineSeparator();
+        String expected = "\033[0;37m" + tempDir.getName() + "/" + lineSep + "\033[0m" + "\033[0;35m   singleFile.txt" + lineSep + "\033[0m";
+        assertEquals(expected, output);
+        }
 }

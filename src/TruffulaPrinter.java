@@ -1,3 +1,4 @@
+import java.io.File;
 import java.io.PrintStream;
 import java.util.List;
 
@@ -111,8 +112,47 @@ public class TruffulaPrinter {
     // - For Wave 6: Use AlphabeticalFileSorter
     // DO NOT USE SYSTEM.OUT.PRINTLN
     // USE out.println instead (will use your ColorPrinter)
+    File root = options.getRoot();
 
-    out.println("printTree was called!");
-    out.println("My options are: " + options);
+    // Checking for validation of a directory
+    if (root == null || !root.exists() || !root.isDirectory()) {
+      out.println("Error: Invalid directory.");
+      return;
+    }
+
+    // Helper method
+    printTree(root, 0);
+    boolean printDebug = false;
+    if(printDebug) {
+      out.println("printTree was called!");
+      out.println("My options are: " + options);
+    }
+  }
+
+  // Helper method
+  private void printTree(File directory, int depth) {
+    // Checking if the directory is valid
+    if (!directory.isDirectory()) return;
+
+    // Printing the directory name with proper flow
+    out.setCurrentColor(DEFAULT_COLOR_SEQUENCE.get((depth)%3));
+    out.println("   ".repeat(depth)+ directory.getName()+"/");
+
+    // Get list of files and subdirectories inside the current directory
+    File[] files = directory.listFiles();
+    files = AlphabeticalFileSorter.sort(files);
+    
+    // If the files are empty, return
+    if (files == null) return;
+
+    // Iterate through the files
+    for (File file : files) {
+      if (file.isDirectory()) { // If there is a directory, recurse
+        printTree(file, depth + 1);
+      } else { // Else, print the it's name with the proper indentation for the flow
+        out.setCurrentColor(DEFAULT_COLOR_SEQUENCE.get((depth+1)%3));
+        out.println("   ".repeat(depth+1) + file.getName());
+      }
+    }
   }
 }
