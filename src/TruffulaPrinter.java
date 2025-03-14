@@ -135,6 +135,7 @@ public class TruffulaPrinter {
     if (!directory.isDirectory()) return;
 
     // Printing the directory name with proper flow
+    out.setCurrentColor(DEFAULT_COLOR_SEQUENCE.get((depth)%3));
     out.println("   ".repeat(depth)+ directory.getName()+"/");
 
     // Get list of files and subdirectories inside the current directory
@@ -148,6 +149,7 @@ public class TruffulaPrinter {
       if (file.isDirectory()) { // If there is a directory, recurse
         printTree(file, depth + 1);
       } else { // Else, print the it's name with the proper indentation for the flow
+        out.setCurrentColor(DEFAULT_COLOR_SEQUENCE.get((depth+1)%3));
         out.println("   ".repeat(depth+1) + file.getName());
       }
     }
