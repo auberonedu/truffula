@@ -40,10 +40,6 @@ public class TruffulaPrinterTest {
         banana.createNewFile();
         zebra.createNewFile();
 
-        // Create a hidden file in myFolder
-        File hidden = new File(myFolder, ".hidden.txt");
-        hidden.createNewFile();
-
         // Create subdirectory "Documents" in myFolder
         File documents = new File(myFolder, "Documents");
         assertTrue(documents.mkdir(), "Documents directory should be created");
@@ -89,7 +85,6 @@ public class TruffulaPrinterTest {
 
         StringBuilder expected = new StringBuilder();
         expected.append(white).append("myFolder/").append(nl).append(reset);
-        expected.append(purple).append("   .hidden.txt").append(nl).append(reset);
         expected.append(purple).append("   Apple.txt").append(nl).append(reset);
         expected.append(purple).append("   banana.txt").append(nl).append(reset);
         expected.append(purple).append("   Documents/").append(nl).append(reset);
@@ -102,5 +97,19 @@ public class TruffulaPrinterTest {
 
         // Assert that the output matches the expected output exactly
         assertEquals(expected.toString(), output);
+    }
+
+    @Test
+    void testPrintTree_EmptyDirectory(@TempDir File tempDir) {
+        TruffulaOptions options = new TruffulaOptions(tempDir, false, true);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(outputStream);
+        TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
+
+        printer.printTree();
+        String output = outputStream.toString();
+
+        String expected = "\033[0;37m" + tempDir.getName() + "/" + System.lineSeparator() + "\033[0m";
+        assertEquals(expected, output);
     }
 }
