@@ -90,6 +90,7 @@ public class TruffulaPrinterTest {
         StringBuilder expected = new StringBuilder();
         expected.append(white).append("myFolder/").append(nl).append(reset);
         expected.append(purple).append("   Apple.txt").append(nl).append(reset);
+        expected.append(purple).append("   .hidden.txt").append(nl).append(reset);
         expected.append(purple).append("   banana.txt").append(nl).append(reset);
         expected.append(purple).append("   Documents/").append(nl).append(reset);
         expected.append(yellow).append("      images/").append(nl).append(reset);

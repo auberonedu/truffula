@@ -122,9 +122,11 @@ public class TruffulaPrinter {
 
     // Helper method
     printTree(root, 0);
-
-    out.println("printTree was called!");
-    out.println("My options are: " + options);
+    boolean printDebug = false;
+    if(printDebug) {
+      out.println("printTree was called!");
+      out.println("My options are: " + options);
+    }
   }
 
   // Helper method
@@ -133,7 +135,7 @@ public class TruffulaPrinter {
     if (!directory.isDirectory()) return;
 
     // Printing the directory name with proper flow
-    out.println(" ".repeat(depth * 2) + "/-- " + directory.getName());
+    out.println("   ".repeat(depth)+ directory.getName()+"/");
 
     // Get list of files and subdirectories inside the current directory
     File[] files = directory.listFiles();
@@ -146,7 +148,7 @@ public class TruffulaPrinter {
       if (file.isDirectory()) { // If there is a directory, recurse
         printTree(file, depth + 1);
       } else { // Else, print the it's name with the proper indentation for the flow
-        out.println(" ".repeat((depth + 1) * 2) + "/-- " + file.getName());
+        out.println("   ".repeat(depth+1) + file.getName());
       }
     }
   }
