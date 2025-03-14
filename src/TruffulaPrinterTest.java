@@ -112,4 +112,22 @@ public class TruffulaPrinterTest {
         String expected = "\033[0;37m" + tempDir.getName() + "/" + System.lineSeparator() + "\033[0m";
         assertEquals(expected, output);
     }
+
+    @Test
+    void testPrintTree_SingleFile(@TempDir File tempDir) throws IOException {
+        File singleFile = new File(tempDir, "singleFile.txt");
+        singleFile.createNewFile();
+
+        TruffulaOptions options = new TruffulaOptions(tempDir, false, true);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(outputStream);
+        TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
+
+        printer.printTree();
+        String output = outputStream.toString();
+
+        String lineSep = System.lineSeparator();
+        String expected = "\033[0;37m" + tempDir.getName() + "/" + lineSep + "\033[0m" + "\033[0;35m   singleFile.txt" + lineSep + "\033[0m";
+        assertEquals(expected, output);
+        }
 }
