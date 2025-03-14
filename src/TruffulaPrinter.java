@@ -140,7 +140,8 @@ public class TruffulaPrinter {
 
     // Get list of files and subdirectories inside the current directory
     File[] files = directory.listFiles();
-
+    files = AlphabeticalFileSorter.sort(files);
+    
     // If the files are empty, return
     if (files == null) return;
 
