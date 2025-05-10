@@ -86,7 +86,17 @@ public class ColorPrinter {
    * @param reset   if true, resets the color after printing; if false, keeps the current color
    */
   public void print(String message, boolean reset) {
-    // TODO: Implement this!
+    if (message == null) {
+      throw new IllegalArgumentException("Message cannot be null.");
+    }
+
+    if (message.isEmpty()) return;
+
+    if (reset) {
+      printStream.print(currentColor + message + ConsoleColor.RESET);
+    } else {
+      printStream.print(currentColor + message);
+    }
   }
 
   /**
@@ -108,5 +118,42 @@ public class ColorPrinter {
   public ColorPrinter(PrintStream printStream, ConsoleColor color) {
     this.printStream = printStream;
     this.currentColor = color;
+  }
+
+  public static void main(String[] args) {
+    ColorPrinter printer = new ColorPrinter(System.out);
+
+    // RED color
+    printer.setCurrentColor(ConsoleColor.RED);
+    printer.println("This is red text.");
+
+    // BLACK color
+    printer.setCurrentColor(ConsoleColor.BLACK);
+    printer.println("This is black text.");
+
+    // GREEN color
+    printer.setCurrentColor(ConsoleColor.GREEN);
+    printer.println("This is green text.");
+
+    // YELLOW color
+    printer.setCurrentColor(ConsoleColor.YELLOW);
+    printer.println("This is yellow text.");
+
+    // BLUE color
+    printer.setCurrentColor(ConsoleColor.BLUE);
+    printer.println("This is blue text.");
+
+    // PURPLE color (testing the reset)
+    printer.setCurrentColor(ConsoleColor.PURPLE);
+    printer.println("This is purple text.", false);
+    printer.println("This is purple text too.");
+
+    // CYAN color
+    printer.setCurrentColor(ConsoleColor.CYAN);
+    printer.println("This is cyan text.");
+
+    // WHITE color
+    printer.setCurrentColor(ConsoleColor.WHITE);
+    printer.println("This is white text.");
   }
 }
