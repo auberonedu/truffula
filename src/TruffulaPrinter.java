@@ -1,4 +1,4 @@
-import java.io.PrintStream;
+import java.io.*;
 import java.util.List;
 
 /**
@@ -103,16 +103,37 @@ public class TruffulaPrinter {
    *    zebra.txt
    */
   public void printTree() {
-    // TODO: Implement this!
-    // REQUIRED: ONLY use java.io, DO NOT use java.nio
-    
-    // Hints:
-    // - Add a recursive helper method
-    // - For Wave 6: Use AlphabeticalFileSorter
-    // DO NOT USE SYSTEM.OUT.PRINTLN
-    // USE out.println instead (will use your ColorPrinter)
+    printDirectory(options.getRoot(), 0);
+  }
 
-    out.println("printTree was called!");
-    out.println("My options are: " + options);
+  private void printDirectory(File dir, int depth) {
+    printIndented(dir.getName() + "/", depth);
+
+    File[] contents = dir.listFiles();
+    if (contents == null) return;
+
+    AlphabeticalFileSorter.sort(contents);
+
+    for (File f : contents) {
+      boolean isDotFile = f.getName().startsWith(".");
+      if ((f.isHidden() || isDotFile) && !options.isShowHidden()) continue;
+      if (f.isDirectory()) printDirectory(f, depth + 1);
+      else printIndented(f.getName(), depth + 1);
+    }
+  }
+
+  private void printIndented(String text, int depth) {
+    if (!options.isUseColor()) out.setCurrentColor(ConsoleColor.WHITE);
+
+    else {
+      ConsoleColor color = colorSequence.get(depth % colorSequence.size());
+      out.setCurrentColor(color);
+    }
+
+    StringBuilder sb = new StringBuilder();
+    for (int i = 0; i < depth; i++) sb.append("   ");
+    sb.append(text);
+
+    out.println(sb.toString());
   }
 }

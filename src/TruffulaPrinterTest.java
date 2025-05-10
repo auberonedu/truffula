@@ -11,6 +11,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TruffulaPrinterTest {
@@ -148,5 +149,78 @@ public class TruffulaPrinterTest {
 
         // Assert that the output matches the expected output exactly
         assertEquals(expected.toString(), output);
+    }
+
+    @Test
+    void testBasicStructure_NoColorNoHidden(@TempDir File tempDir) throws IOException {
+        // Create:
+        // root/
+        //    subDir/
+        //       inside.txt
+        //    file1.txt
+        File root = new File(tempDir, "root");
+        assertTrue(root.mkdir());
+        File subDir = new File(root, "subDir");
+        assertTrue(subDir.mkdir());
+        File inside = new File(subDir, "inside.txt");
+        inside.createNewFile();
+        File file1 = new File(root, "file1.txt");
+        file1.createNewFile();
+
+        TruffulaOptions opts = new TruffulaOptions(root, false, true); // showHidden doesn't matter for wave 4 yet
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream ps = new PrintStream(baos);
+        TruffulaPrinter printer = new TruffulaPrinter(opts, ps);
+        printer.printTree();
+
+        String output = baos.toString();
+
+        assertTrue(output.contains("root/"));
+        assertTrue(output.contains("subDir/"));
+        assertTrue(output.contains("inside.txt"));
+        assertTrue(output.contains("file1.txt"));
+    }
+
+    @Test
+    void testHiddenFilesSkipped(@TempDir File tempDir) throws IOException {
+        File root = new File(tempDir, "root");
+        root.mkdir();
+        File visible = new File(root, "visible.txt");
+        visible.createNewFile();
+        File hidden = new File(root, ".hidden.txt");
+        hidden.createNewFile();
+
+        TruffulaOptions opts = new TruffulaOptions(root, false, true);
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream ps = new PrintStream(baos);
+        TruffulaPrinter printer = new TruffulaPrinter(opts, ps);
+        printer.printTree();
+
+        String output = baos.toString();
+        assertTrue(output.contains("root/"));
+        assertTrue(output.contains("visible.txt"));
+        assertFalse(output.contains(".hidden.txt"));
+    }
+
+    @Test
+    void testColorCycling(@TempDir File tempDir) throws IOException {
+        File root = new File(tempDir, "root");
+        root.mkdir();
+        File child = new File(root, "child");
+        child.mkdir();
+
+        TruffulaOptions opts = new TruffulaOptions(root, false, true);
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream ps = new PrintStream(baos);
+
+        TruffulaPrinter printer = new TruffulaPrinter(opts, ps);
+        printer.printTree();
+
+        String output = baos.toString();
+        assertTrue(output.contains(ConsoleColor.WHITE.toString() + "root/"));
+        assertTrue(output.contains(ConsoleColor.PURPLE.toString() + "   child/"));
     }
 }
