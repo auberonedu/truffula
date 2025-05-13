@@ -99,7 +99,7 @@ In this wave we will make it so that you can call truffula from the command line
 ### Creating an executable JAR
 JAR is short for "Java Archive". It's a collection of our compiled code that we can share with others. You may have noticed in the lib folder that there is a JAR for JUnit. This is how we've been able to use all of the JUnit functionality.
 
-Make sure you are in the root of the repository, then compile your code:
+Make sure you are in the root of the repository, then compile your code (UPDATED):
 
 ```
 javac -d target src/App.java src/ColorPrinter.java src/ConsoleColor.java src/TruffulaOptions.java src/TruffulaPrinter.java src/AlphabeticalFileSorter.java 

@@ -1,3 +1,4 @@
+import java.io.File;
 import java.io.PrintStream;
 import java.util.List;
 
@@ -103,16 +104,65 @@ public class TruffulaPrinter {
    *    zebra.txt
    */
   public void printTree() {
-    // TODO: Implement this!
-    // REQUIRED: ONLY use java.io, DO NOT use java.nio
-    
-    // Hints:
-    // - Add a recursive helper method
-    // - For Wave 6: Use AlphabeticalFileSorter
-    // DO NOT USE SYSTEM.OUT.PRINTLN
-    // USE out.println instead (will use your ColorPrinter)
+    File root = options.getRoot();
+    boolean showHidden = options.isShowHidden();
+    boolean showColor = options.isUseColor();
+   
+    if (root == null || !root.isDirectory() || (showHidden == false && root.isHidden())) {
+      throw new IllegalArgumentException("Can't find directory");
+    }
 
-    out.println("printTree was called!");
-    out.println("My options are: " + options);
+    int depth = 0;
+    out.println(root.getName() + "/");
+  
+    File[] listOfFiles = root.listFiles();
+    AlphabeticalFileSorter.sort(listOfFiles);
+
+    for (File file: listOfFiles) {
+      printTreeHelper(file, depth, showHidden, showColor);
+    }
+
+    // out.println("printTree was called!");
+    // out.println("My options are: " + options);
+  }
+ 
+  private int printTreeHelper(File root, int depth, boolean showHidden, boolean showColor) {
+    if ((root.isHidden() && !showHidden) || (root.getName().charAt(0) == '.' && !showHidden)) return depth;
+
+    depth++;
+
+    StringBuilder spacesString = new StringBuilder();
+
+    for (int i = 0; i < depth; i++) {
+      spacesString.append("   ");
+    }
+
+    String spaces = spacesString.toString();
+    String printedFile = "";
+    int colorPicker = depth % 3;
+    ConsoleColor levelColor = DEFAULT_COLOR_SEQUENCE.get(colorPicker);
+    
+    if (!root.isDirectory()) {
+      if (showColor == true) {
+        out.setCurrentColor(levelColor);
+      } 
+      printedFile = spaces + root.getName();
+      out.println(printedFile);
+      return depth;
+    }
+
+    if (showColor == true) {
+      out.setCurrentColor(levelColor);
+    } 
+    printedFile = spaces + root.getName() + "/";
+    out.println(printedFile);
+
+    File[] list = root.listFiles();
+    AlphabeticalFileSorter.sort(list);
+    
+    for (File file: list) {
+      printTreeHelper(file, depth, showHidden, showColor);
+    }
+    return depth;
   }
 }
